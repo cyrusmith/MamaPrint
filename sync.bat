@@ -1,1 +1,0 @@
-rsync -avz --chmod=a+rwx,g+rwx,o+rwx app bootstrap public_html vendor gildiachel@egepro.ru:mamaprint.lovelyboards.ru
