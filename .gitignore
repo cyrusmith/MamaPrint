@@ -7,3 +7,5 @@ composer.lock
 .DS_Store
 Thumbs.db
 /*.bat
+app/config/local/database.php
+.idea/
