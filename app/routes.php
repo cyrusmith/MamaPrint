@@ -13,5 +13,7 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
+	return View::make('main');
 });
+
+Route::post('subscribe/getcards', 'SubscribeController@getCards');
