@@ -9,3 +9,6 @@ Thumbs.db
 /*.bat
 app/config/local/database.php
 .idea/
+bower_components/
+all.js
+styles.css

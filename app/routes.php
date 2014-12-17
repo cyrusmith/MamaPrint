@@ -16,4 +16,9 @@ Route::get('/', function()
 	return View::make('main');
 });
 
+Route::get('/workbook', function()
+{
+	return View::make('workbook');
+});
+
 Route::post('subscribe/getcards', 'SubscribeController@getCards');

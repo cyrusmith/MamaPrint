@@ -3,12 +3,30 @@
 <head>
 
     <title>Mama-print - Материалы для занятий с ребенком</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta name='yandex-verification' content='51cf46d6ef645bbd' />
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
 
 </head>
 
-<body>
+<body class="page-main">
+
+<div id="workbook-popup" class="white-popup mfp-hide">
+    <div class="curlytitle">
+        <img src="/img/winterbook-title.png"/>
+    </div>
+    <div class="title">
+        <h1>
+            Тридцать творческих уроков на тему: «Новый год и зима» для детей дошкольного возраста
+        </h1>
+        <h4>Вы будете счастливы видеть, как ваш ребенок становится настоящим художником!</h4>
+    </div>
+    <div class="row text-center">
+        <p>Как получить бесплатно?</p>
+        <a class="btn btn-link" href="/workbook">Подробнее</a>
+    </div>
+</div>
+
 <div id="main">
     <div id="logo">
         <img src="i/logo.png" id="logo"/>
@@ -57,7 +75,7 @@
         Праздники<br>
         <img src="i/cat3.jpg"/><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-        <form action="get2.php" name="get2" method="post" id="fform2">
+        <form action="{{URL::action('SubscribeController@getCards')}}" name="get2" method="post" id="fform2">
             Получите комплект<br>
             познавательных карточек<br>
             прямо сейчас!<br>
@@ -72,12 +90,12 @@
         Идеи для дома<br>
         <img src="i/cat6.jpg"/><br><br><br><br><br><br><br><br><br><br><br>
 
-        <form action="get3.php" name="get3" method="post" id="fform3">
+        <form action="{{URL::action('SubscribeController@getCards')}}" name="get3" method="post" id="fform3">
             Получите комплект<br>
             познавательных карточек<br>
             прямо сейчас!<br>
             <input type="text" class="field" placeholder="Введите имя: *" name="name"/><br>
-            <input type="text" class="field" placeholder="Введите e-mail: *"  name="email"/><br>
+            <input type="text" class="field" placeholder="Введите e-mail: *" name="email"/><br>
             <input type="submit" value="ПОЛУЧИТЬ ФАЙЛЫ!">
         </form>
         <img src="i/social1.jpg"/>
@@ -102,7 +120,7 @@
 <div id="callback_popup">
     <a href="#" class="close">X</a>
 
-    <form class="callback_form" action="callback.php" name="callback" method="post">
+    <form class="{{URL::action('SubscribeController@getCards')}}" action="callback.php" name="callback" method="post">
         <div class="input text">
             <input placeholder="Ваше имя" name="name"/>
         </div>
@@ -115,11 +133,45 @@
     </form>
 </div>
 
-<!-- Yandex.Metrika counter --><script type="text/javascript">(function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter22980460 = new Ya.Metrika({id:22980460, webvisor:true, clickmap:true, trackLinks:true, accurateTrackBounce:true}); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks");</script><noscript><div><img src="//mc.yandex.ru/watch/22980460" style="position:absolute; left:-9999px;" alt="" /></div></noscript><!-- /Yandex.Metrika counter -->
-
 <script src='jscript/lib/jquery-1.9.1.min.js'></script>
 <script src='jscript/lib/jquery.leanModal.min.js'></script>
 <script src='jscript/main.js'></script>
+
+@if (Config::get('app.debug'))
+    <script src="bower_components/requirejs/require.js" data-main="js/main.js"></script>
+@else
+    <script src="all.js"></script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">(function (d, w, c) {
+            (w[c] = w[c] || []).push(function () {
+                try {
+                    w.yaCounter22980460 = new Ya.Metrika({
+                        id: 22980460,
+                        webvisor: true,
+                        clickmap: true,
+                        trackLinks: true,
+                        accurateTrackBounce: true
+                    });
+                } catch (e) {
+                }
+            });
+            var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () {
+                n.parentNode.insertBefore(s, n);
+            };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else {
+                f();
+            }
+        })(document, window, "yandex_metrika_callbacks");</script>
+    <noscript>
+        <div><img src="//mc.yandex.ru/watch/22980460" style="position:absolute; left:-9999px;" alt=""/></div>
+    </noscript><!-- /Yandex.Metrika counter -->
+
+@endif
 
 </body>
 

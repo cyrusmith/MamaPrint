@@ -1,0 +1,105 @@
+/**
+ * Created by cyrusmith on 17.12.2014.
+ */
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
+
+@import "../bower_components/bootstrap/less/bootstrap.less";
+@import (less) "../bower_components/magnific-popup/dist/magnific-popup.css";
+@import "mainpage.less";
+
+strong {
+  font-weight: bold;
+}
+
+.white-popup {
+  width: 90%;
+  padding: 1em;
+  background: #FFF;
+  margin: 20px auto;
+  position: relative;
+  .mfp-close {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+  }
+}
+
+.header {
+  padding: 2em 0;
+  background: url(img/head-bg.png) repeat-x 50% 50%;
+  background-size: auto 100%;
+  .logo {
+    text-align: center;
+  }
+}
+
+.page {
+  .curlytitle {
+    text-align: center;
+    padding: 2em 0 0;
+  }
+  .title {
+    text-align: center;
+  }
+
+  .collage {
+    width: 100%;
+  }
+
+  .c2a {
+    padding: 2em 0;
+    text-align: center;
+    p {
+      padding: 2em 0;
+    }
+  }
+}
+
+.footer {
+  padding: 1em 0;
+  border-top: 1px solid #666;
+}
+
+h1, h2, h3 {
+  font-family: 'Ubuntu Condensed', Verdana, Arial, Helvetica, sans-serif;
+}
+
+h4 {
+  font-family: Georgia, 'Times New Roman';
+  font-style: italic;
+}
+
+@media (min-width: @screen-sm-min) {
+
+  .white-popup {
+    width: 450px;
+    padding: 1em;
+    background: #FFF;
+  }
+
+  .header {
+    height: 12em;
+    .logo {
+      text-align: left;
+      padding-top: 2em;
+    }
+    .contacts {
+      padding-top: 3em;
+      a {
+        display: inline-block;
+        width: 32px;
+        height: 32px;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        &.email {
+          background-image: url(img/ic-email.png);
+        }
+        &.vk {
+          background-image: url(img/ic-vk.png);
+        }
+      }
+    }
+  }
+
+}
