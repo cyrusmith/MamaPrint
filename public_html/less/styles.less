@@ -5,7 +5,7 @@
 
 @import "../bower_components/bootstrap/less/bootstrap.less";
 @import (less) "../bower_components/magnific-popup/dist/magnific-popup.css";
-@import "mainpage.less";
+@import "_mainpage.less";
 
 strong {
   font-weight: bold;
@@ -25,11 +25,17 @@ strong {
 }
 
 .header {
-  padding: 2em 0;
   background: url(img/head-bg.png) repeat-x 50% 50%;
   background-size: auto 100%;
+  padding: 1em inherit;
   .logo {
     text-align: center;
+    a {
+      display: inline-block;
+      img {
+        height: 8em;
+      }
+    }
   }
 }
 
@@ -53,6 +59,11 @@ strong {
       padding: 2em 0;
     }
   }
+
+  .preview {
+    margin: 0 auto;
+    width: 100%;
+  }
 }
 
 .footer {
@@ -71,6 +82,12 @@ h4 {
 
 @media (min-width: @screen-sm-min) {
 
+  .page {
+    .preview {
+      width: 600px;
+    }
+  }
+
   .white-popup {
     width: 450px;
     padding: 1em;
@@ -78,25 +95,31 @@ h4 {
   }
 
   .header {
-    height: 12em;
+    height: 18em;
+    padding: 0em inherit;
     .logo {
       text-align: left;
       padding-top: 2em;
+      a {
+        img {
+          height: auto;
+        }
+      }
     }
     .contacts {
-      padding-top: 3em;
-      a {
-        display: inline-block;
-        width: 32px;
-        height: 32px;
-        background-size: 100% 100%;
-        background-repeat: no-repeat;
-        background-position: 50% 50%;
-        &.email {
-          background-image: url(img/ic-email.png);
+      padding-top: 5em;
+      p {
+        font-size: 1.8em;
+        font-weight: bold;
+        a,span {
+          display: inline-block;
+          white-space: nowrap;
+          padding: .2em;
+          background: #FFF;
+          .border-bottom-radius(3px);
         }
-        &.vk {
-          background-image: url(img/ic-vk.png);
+        a {
+          color: #cd2447;
         }
       }
     }

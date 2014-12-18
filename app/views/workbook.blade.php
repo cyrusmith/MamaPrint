@@ -17,16 +17,25 @@
 <div class="container">
 
     <div class="row header">
-        <div class="col-sm-8 logo">
+
+        <div class="col-sm-6 logo">
             <a href="/">
-                <img src="img/logo.png"/>
+                <img src="img/logobig.png"/>
             </a>
         </div>
 
-        <div class="col-sm-4 text-right contacts hidden-xs">
-            <a href="mailto:info@mamaprint.ru" class="email"></a>
+        <div class="col-sm-6 text-right contacts hidden-xs">
+            <p>
+                <a href="mailto:info@mamaprint.ru" class="email">info@mama-print.ru</a>
+            </p>
+            <p>
+                <span class="phone">+7(908)052-81-87 </span>
+            </p>
+
             <a href="https://vk.com/mama_print" target="_blank" class="vk"></a>
+
         </div>
+
     </div>
 
 
@@ -42,7 +51,7 @@
         </div>
 
         <div class="preview">
-            <div data-configid="0/10552992" style="width:100%; height:500px;" class="issuuembed"></div>
+            <div data-configid="0/10552992" style="width:100%; height:400px;" class="issuuembed"></div>
             <script type="text/javascript" src="//e.issuu.com/embed.js" async="true"></script>
         </div>
 

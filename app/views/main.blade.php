@@ -11,13 +11,24 @@
 
 <body class="page-main">
 
+<div class="fixedtop">
+    <div class="contents">
+        <div class="curlytitle">
+            <a href="/workbook">
+                <img src="/img/winterbook-title.png" width="200"/>
+            </a>
+            <a href="/workbook" class="btn btn-primary">Как получить бесплатно?</a>
+        </div>
+    </div>
+</div>
+
 <div id="workbook-popup" class="white-popup mfp-hide">
     <div class="curlytitle">
-        <img src="/img/winterbook-title.png"/>
+        <a href="/workbook"><img src="/img/winterbook-title.png"/></a>
     </div>
     <div class="title">
         <h1>
-            Тридцать творческих уроков на тему: «Новый год и зима» для детей дошкольного возраста
+            <a href="/workbook">Тридцать творческих уроков для малышей на тему «Новый год и зима»</a>
         </h1>
         <h4>Вы будете счастливы видеть, как ваш ребенок становится настоящим художником!</h4>
     </div>
@@ -34,15 +45,15 @@
     <div id="contact">
         <p><span class="email"><a href="mailto:info@mama-print.ru">info@mama-print.ru</a></span><br>
             <span style="font:bold 24px aAlbionicTitulInflBold, arial;">+7(908)052-81-87</span></p>
+
+
     </div>
     <div id="descriptor">
-        <img src="i/descriptor.png" id="descriptor"/>
-
-        <p id="descriptor">
+        <p style="padding-top:50px; font: bold 32px Tahoma;">
             <span style="color:#cd2447; font: bold 48px Tahoma;">Скачайте и распечатайте</span> качественные<br>материалы
             для занятий с ребенком <span style="color:#cd2447; font: bold 36px Tahoma;">0+</span></p>
 
-        <p id="descriptor" style="top:180px; ">
+        <p>
             <span style="font: bold 24px Tahoma; ">Полноценное занятие </span>
             <span style="color:#cd2447; font: bold 24px Tahoma;">всего за 5 минут</span></p>
     </div>
