@@ -11,14 +11,23 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('main');
+Route::get('/', function () {
+    return View::make('main');
 });
 
-Route::get('/workbook', function()
-{
-	return View::make('workbook');
+Route::get('/workbook', function () {
+    return View::make('workbook');
 });
+
+Route::get('/login', function () {
+    return View::make('auth.login');
+});
+
+Route::get('/register', function () {
+    return View::make('auth.register');
+});
+
+Route::post('/login', 'AuthController@login');
+Route::post('/register', 'AuthController@register');
 
 Route::post('subscribe/getcards', 'SubscribeController@getCards');

@@ -12,3 +12,4 @@ app/config/local/database.php
 bower_components/
 all.js
 styles.css
+app/config/database.php
