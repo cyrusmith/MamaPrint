@@ -119,6 +119,7 @@ return array(
 
     'attributes' => array(),
 
-    'strong_password' => 'Пароль слабый'
+    'strong_password' => 'Пароль слабый',
+    'check_user_with_email' => 'Пользователь с таким email уже существует'
 
 );
