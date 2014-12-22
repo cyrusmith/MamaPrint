@@ -5,7 +5,7 @@
     <title>Mama-print @yield('page_title')</title>
 
     <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="/styles.css">
 
     <meta name="description" content=""/>
     <meta name="keywords" content=""/>
@@ -22,14 +22,37 @@
             <a href="/">
                 <img src="img/logobig.png"/>
             </a>
+
+            <div class="authcontrols visible-xs">
+                @if(Auth::check())
+                    <span class="authname">Вы вошли как {{Auth::user()->name}}</span>
+                    <a class="btn btn-warning btn-sm" href="/logout">Выйти</a>
+                @else
+                    <a class="btn btn-primary btn-sm" href="/login">Войти</a> или <a class="btn btn-link register"
+                                                                                     href="/register">Зарегистрироваться</a>
+                    <br>
+                @endif
+            </div>
         </div>
 
         <div class="col-sm-6 text-right contacts hidden-xs">
-            <p>
+            <p class="email">
                 <a href="mailto:info@mamaprint.ru" class="email">info@mama-print.ru</a>
             </p>
-            <p>
+
+            <p class="email">
                 <span class="phone">+7(908)052-81-87 </span>
+            </p>
+
+            <p class="authcontrols">
+                @if(Auth::check())
+                    <span>Вы вошли как {{Auth::user()->name}}</span>
+                    <a class="btn btn-warning" href="/logout">Выйти</a>
+                @else
+                    <a class="btn btn-primary btn-sm" href="/login">Войти</a> или <a class="btn btn-link"
+                                                                                     href="/register">Зарегистрироваться</a>
+                    <br>
+                @endif
             </p>
 
             <a href="https://vk.com/mama_print" target="_blank" class="vk"></a>
@@ -43,7 +66,9 @@
     </div>
 
     <div class="footer row">
-        <div class="col-xs-6">mama-print.ru</div>
+        <div class="col-xs-6">info@mama-print.ru<br>
+            +7(908)052-81-87
+        </div>
         <div class="col-xs-6 text-right">&copy; 2014</div>
     </div>
 

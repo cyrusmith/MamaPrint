@@ -9,6 +9,54 @@
 class AuthController extends BaseController
 {
 
+    public function confirm()
+    {
+
+        $hash = Input::get('hash');
+
+        if (empty($hash)) {
+            Response::view('auth.confirm', array(
+                'error' => 'Неверный запрос'
+            ), 400);
+        }
+
+        try {
+
+            DB::beginTransaction();
+
+            $pendingUser = UserPending::where('hash', '=', $hash)->first();
+            if (empty($pendingUser)) {
+                return Response::view('auth.confirm', array(
+                    'error' => 'Устаревший запрос'
+                ), 400);
+            }
+
+            $user = User::where('email', '=', $pendingUser->email)->first();
+
+            if (!empty($user)) {
+                return Response::view('auth.confirm', array(
+                    'error' => 'Пользователь уже подтвержден'
+                ), 400);
+            }
+
+            $user = new User;
+            $user->email = $pendingUser->email;
+            $user->name = $pendingUser->name;
+            $user->password = $pendingUser->password;
+
+            $user->save();
+
+            UserPending::where('email', '=', $user->email)->delete();
+
+            DB::commit();
+
+            return Redirect::to('/login');
+
+        } catch (Exception $e) {
+            DB::rollback();
+        }
+    }
+
     public function register()
     {
 
@@ -31,7 +79,7 @@ class AuthController extends BaseController
         $form = array(
             'password' => Input::get('password'),
             'password2' => Input::get('password2'),
-            'email' => Input::get('email'),
+            'email' => mb_strtolower(Input::get('email')),
             'name' => Input::get('name')
         );
 
@@ -49,28 +97,24 @@ class AuthController extends BaseController
             return Redirect::to('register')->withErrors($validator)->with('form', $form);
         }
 
-        $user = new User;
-        $user->name = $form['name'];
-        $user->password = Hash::make($form['password']);
-        $user->email = $form['email'];
+        $userPending = new UserPending;
+        $userPending->email = $form["email"];
+        $userPending->name = $form["name"];
+        $userPending->password = Hash::make($form["password"]);
+        $userPending->hash = str_random(40);
+        $userPending->save();
 
-        $usersConfirm = null;
-
-        DB::transaction(function () use ($user, &$usersConfirm) {
-            $user->save();
-            $usersConfirm = UsersConfirm::newInstanceFor($user);
-            $usersConfirm->save();
-        });
-
-        if (!$user->id) {
+        if (!$userPending->id) {
             App::abort(500);
         }
 
         Mail::send('emails.auth.register', array(
-            'hash' => $usersConfirm->hash
-        ), function ($message) use ($user) {
-            $message->to($user->email, 'MamaPrint')->subject('Регистрация на сайте mama-print.ru');
+            'action' => URL::action("AuthController@confirm", array("hash" => $userPending->hash))
+        ), function ($message) use ($userPending) {
+            $message->to($userPending->email, 'MamaPrint')->subject('Регистрация на сайте mama-print.ru');
         });
+
+        return Redirect::to('/register/regcomplete');
 
     }
 
@@ -81,11 +125,20 @@ class AuthController extends BaseController
         $password = Input::get('password');
 
         if (Auth::attempt(array('email' => $email, 'password' => $password))) {
-            return Redirect::intended();
+            return Redirect::intended('/workbook');
         } else {
-            return View::make('user.profile', array('email' => $email));
+            return Redirect::to('/login')->with('data', array(
+                'error' => 'Неправильные емейл или пароль',
+                'email' => $email
+            ));
         }
 
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return Redirect::to('/workbook');
     }
 
 }

@@ -19,12 +19,18 @@ Route::get('/workbook', function () {
     return View::make('workbook');
 });
 
-Route::get('/login', function () {
+Route::get('/login', array('before' => 'guest', function () {
     return View::make('auth.login');
-});
+}));
+Route::get('/logout', 'AuthController@logout');
 
-Route::get('/register', function () {
+Route::get('/register', array('before' => 'guest', function () {
     return View::make('auth.register');
+}));
+
+Route::get('/register/confirm', 'AuthController@confirm');
+Route::get('/register/regcomplete', function () {
+    return View::make('auth.regcomplete');
 });
 
 Route::post('/login', 'AuthController@login');

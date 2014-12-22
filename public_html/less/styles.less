@@ -2,7 +2,6 @@
  * Created by cyrusmith on 17.12.2014.
  */
 @import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
-
 @import "../bower_components/bootstrap/less/bootstrap.less";
 @import (less) "../bower_components/magnific-popup/dist/magnific-popup.css";
 @import "_mainpage.less";
@@ -29,6 +28,15 @@ strong {
   background-size: auto 100%;
   padding: 1em inherit;
   .logo {
+    .authcontrols {
+      padding-top: 2em;
+      .authname, a.register {
+        display: inline-block;
+        padding: .2em;
+        background: #FFF;
+        border-radius: 2px;
+      }
+    }
     text-align: center;
     a {
       display: inline-block;
@@ -116,16 +124,35 @@ h4 {
       p {
         font-size: 1.8em;
         font-weight: bold;
-        a,span {
-          display: inline-block;
-          white-space: nowrap;
-          padding: .2em;
-          background: #FFF;
-          .border-bottom-radius(3px);
+        &.email, &.phone {
+          a, span {
+            display: inline-block;
+            white-space: nowrap;
+            padding: .2em;
+            background: #FFF;
+            .border-bottom-radius(3px);
+          }
+          a {
+            color: #cd2447;
+          }
         }
-        a {
-          color: #cd2447;
+
+        &.authcontrols {
+          font-size: .875em;
+          span {
+            display: inline-block;
+            padding: .2em;
+            background-color: #FFF;
+            margin-right: 1em;
+            border-radius: 3px;
+          }
+          a.btn-link {
+            display: inline-block;
+            padding: .2em;
+            background-color: #FFF;
+          }
         }
+
       }
     }
   }
