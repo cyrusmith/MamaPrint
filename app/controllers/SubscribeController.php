@@ -9,6 +9,16 @@
 class SubscribeController extends BaseController
 {
 
+    public function test1()
+    {
+        $user = new User;
+        $user->name = "Vasya";
+        $user->email = "sav@mail.ru";
+        $user->password = "pass1";
+        $user->save();
+        return "OK!";
+    }
+
     public function getCards()
     {
 
