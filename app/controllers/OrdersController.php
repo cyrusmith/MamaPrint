@@ -8,6 +8,7 @@
  */
 
 use Order\Order;
+use Order\OrderItem;
 use Catalog\CatalogItem;
 
 class OrdersController extends BaseController
@@ -25,21 +26,31 @@ class OrdersController extends BaseController
 
         $user = App::make('UsersService')->getUser();
 
-        DB::transaction(function () use ($item, $user) {
+        if (empty($user)) {
+            App::abort(500, 'user not set');
+        }
 
-            $order = new Order;
+        $order = new Order;
+
+        DB::transaction(function () use ($item, $user, &$order) {
+
             $order->total = $item->price;
-            $order->user()->assign($user);
+            $order->user()->associate($user);
             $order->save();
 
             $orderItem = new OrderItem;
-            $orderItem->title = $item->title;
             $orderItem->price = $item->price;
+            $orderItem->catalogItem()->associate($item);
             $order->items()->save($orderItem);
+            $order->save();
         });
-        return $itemId;
-    }
 
+        if ($order->id) {
+            return Redirect::to('/pay/' . $order->id);
+        }
+
+        App::abort(500, 'Could not create order');
+    }
 
 
 }

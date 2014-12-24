@@ -39,19 +39,21 @@ class OrdersTest extends TestCase
     {
         $crawler = $this->client->request('POST', '/buyitem/1');
 
-        $this->assertTrue($this->client->getResponse()->isOk());
-
         $order = Order::all()->first();
 
         $this->assertTrue(!empty($order));
         $this->assertTrue($order->id == 1);
+        $this->assertEquals($order->total, 10000);
 
         $items = $order->items();
 
         $this->assertTrue(!empty($items));
+        $item = $items->first();
+        $this->assertEquals($item->id, 1);
+        $this->assertEquals($item->price, 10000);
 
+        $this->assertRedirectedTo('/pay/1');
 
-        $this->assertRedirectedToAction('PaymentsController@pay');
     }
 
 }

@@ -29,7 +29,7 @@ return array(
     ),
 
     'onpay' => array(
-        'secret' => ''
+        'secret' => '123'
     )
 
 );

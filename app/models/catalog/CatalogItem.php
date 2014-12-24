@@ -14,4 +14,10 @@ use Eloquent;
 class CatalogItem extends Eloquent
 {
     protected $table = 'catalog_items';
+
+    public function getPrice($value)
+    {
+        return (int)$value;
+    }
+
 }

@@ -18,12 +18,17 @@ class Order extends Eloquent
 
     public function items()
     {
-        return $this->hasMany('OrderItem');
+        return $this->hasMany('Order\OrderItem');
     }
 
     public function user()
     {
         return $this->belongsTo('User');
+    }
+
+    public function getTotalAttribute($value)
+    {
+        return intval($value);
     }
 
 }
