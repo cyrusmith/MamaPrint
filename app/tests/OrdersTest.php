@@ -17,11 +17,11 @@ class OrdersTest extends TestCase
         $item->price = 10000;
         $item->save();
 
-        $user = new User(array(
-            'name' => 'John',
-            'email' => 'john@mail.ru',
-            'password' => 'pass1'
-        ));
+        $user = new User;
+
+        $user->name = "John";
+        $user->email = "john@mail.ru";
+        $user->password = "123";
 
         $user->save();
 
@@ -47,7 +47,7 @@ class OrdersTest extends TestCase
         $this->assertTrue($order->id == 1);
 
         $items = $order->items();
-        echo $items;
+
         $this->assertTrue(!empty($items));
 
 

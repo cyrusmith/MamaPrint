@@ -23,10 +23,13 @@ class OrdersController extends BaseController
             ), 404);
         }
 
-        DB::transaction(function () use ($item) {
+        $user = App::make('UsersService')->getUser();
+
+        DB::transaction(function () use ($item, $user) {
 
             $order = new Order;
             $order->total = $item->price;
+            $order->user()->assign($user);
             $order->save();
 
             $orderItem = new OrderItem;
@@ -36,5 +39,7 @@ class OrdersController extends BaseController
         });
         return $itemId;
     }
+
+
 
 }

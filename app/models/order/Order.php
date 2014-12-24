@@ -21,4 +21,9 @@ class Order extends Eloquent
         return $this->hasMany('OrderItem');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('User');
+    }
+
 }
