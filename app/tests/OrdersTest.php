@@ -7,6 +7,7 @@ class OrdersTest extends TestCase
 {
 
     private $user;
+    private $account;
 
     public function setUp()
     {
@@ -25,7 +26,22 @@ class OrdersTest extends TestCase
         $this->user->save();
         $this->be($this->user);
 
+        $this->account = new \Account\Account();
+        $this->account->balance = 0;
+        $this->account->currency = "RUR";
+        $this->account->user()->associate($this->user);
+        $this->account->save();
+
+        $refill = new \Account\OperationRefill();
+        $refill->amount = 12000;
+
+        $this->account->addOperation($refill);
+        $this->account->save();
+
+        $this->assertEquals(12000, $this->account->balance);
+
     }
+
 
     public function testBuyItemNonExist()
     {
@@ -55,7 +71,6 @@ class OrdersTest extends TestCase
 
     }
 
-    /*
     public function testServicePayOrder()
     {
 
@@ -71,16 +86,14 @@ class OrdersTest extends TestCase
         $this->assertEquals($order->status, Order::STATUS_COMPLETE);
 
         $user = User::find($this->user->id);
-        $account =  $user->account();
+        $account = $user->account;
 
-        $opCount = $account->operations()->count();
-        $this->assertEquals($opCount, 2);
+        $this->assertEquals(2000, $account->balance);
 
-        $refill =
-
-        $this->assertEquals($account->total, 0);
+        $purchase = $account->operations()->where('type', 'like', '%OperationPurchase')->first();
+        $this->assertNotEmpty($purchase);
+        $this->assertEquals($purchase->amount, 10000);
 
     }
-    */
 
 }

@@ -56,7 +56,7 @@ class AccountTest extends TestCase
         $this->assertTrue($op instanceof OperationPurchase);
         $this->assertEquals($op->amount, 666);
     }
-    
+
     /**
      * @expectedException Account\AccountException
      */

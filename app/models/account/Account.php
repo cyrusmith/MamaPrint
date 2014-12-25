@@ -10,6 +10,7 @@
 namespace Account;
 
 use Eloquent;
+use Illuminate\Support\Facades\Lang;
 
 class Account extends Eloquent
 {
@@ -35,7 +36,7 @@ class Account extends Eloquent
     {
         $newBalance = intval($this->balance) - intval($amount);
         if ($newBalance < 0) {
-            throw new AccountException('Недостаточно средств');
+            throw new AccountException(Lang::get('messages.insufficient_amount'));
         }
         $this->balance = $newBalance;
     }
@@ -53,6 +54,7 @@ class Account extends Eloquent
         }
         $operation->changeAccountSum($this);
         $this->operations()->save($operation);
+        return $operation;
     }
 
 }
