@@ -63,6 +63,26 @@ class CreateUsersTable extends Migration
             $table->dateTime('created_at');
         });
 
+        Schema::create('accounts', function ($table) {
+            $table->increments('id');
+            $table->bigInteger('user_id');
+            $table->integer('balance');
+            $table->string('currency');
+            $table->dateTime('updated_at');
+            $table->dateTime('created_at');
+        });
+
+        Schema::create('operations', function ($table) {
+            $table->increments('id');
+            $table->string('type');
+            $table->bigInteger('account_id');
+            $table->integer('amount');
+            $table->string('gateway')->nullable();
+            $table->string('gateway_operation_id')->nullable();
+            $table->dateTime('updated_at');
+            $table->dateTime('created_at');
+        });
+
     }
 
     /**
