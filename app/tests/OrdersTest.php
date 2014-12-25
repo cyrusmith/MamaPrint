@@ -17,15 +17,13 @@ class OrdersTest extends TestCase
         $item->price = 10000;
         $item->save();
 
-        $user = new User;
+        $this->user = new User;
 
-        $user->name = "John";
-        $user->email = "john@mail.ru";
-        $user->password = "123";
-
-        $user->save();
-
-        $this->be($user);
+        $this->user->name = "John";
+        $this->user->email = "john@mail.ru";
+        $this->user->password = "123";
+        $this->user->save();
+        $this->be($this->user);
 
     }
 
@@ -44,6 +42,7 @@ class OrdersTest extends TestCase
         $this->assertTrue(!empty($order));
         $this->assertTrue($order->id == 1);
         $this->assertEquals($order->total, 10000);
+        $this->assertEquals($order->status, Order::STATUS_PENDING);
 
         $items = $order->items();
 
@@ -53,6 +52,26 @@ class OrdersTest extends TestCase
         $this->assertEquals($item->price, 10000);
 
         $this->assertRedirectedTo('/pay/1');
+
+    }
+
+    public function testServicePayOrder()
+    {
+
+        $crawler = $this->client->request('POST', '/buyitem/1');
+
+        $orderService = new OrderService();
+
+        $orderService->payOrder(1);
+
+        $order = Order::find(1);
+
+        $this->assertNotEmpty($order);
+        $this->assertEquals($order->status, Order::STATUS_COMPLETE);
+
+        $user = User::find($this->user->id);
+
+        $user->account()->operations()->where();
 
     }
 

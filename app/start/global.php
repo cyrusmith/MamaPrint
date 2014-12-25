@@ -81,4 +81,8 @@ App::singleton('UsersService', function ($app) {
     return new UsersService;
 });
 
+App::singleton('OrderService', function ($app) {
+    return new OrderService;
+});
+
 require app_path() . '/filters.php';

@@ -14,6 +14,10 @@ use Eloquent;
 class Order extends Eloquent
 {
 
+    const STATUS_CART = 'cart';
+    const STATUS_PENDING = 'pending';
+    const STATUS_COMPLETE = 'complete';
+
     protected $table = 'orders';
 
     public function items()

@@ -35,6 +35,7 @@ class OrdersController extends BaseController
         DB::transaction(function () use ($item, $user, &$order) {
 
             $order->total = $item->price;
+            $order->status = Order::STATUS_PENDING;
             $order->user()->associate($user);
             $order->save();
 
@@ -51,6 +52,5 @@ class OrdersController extends BaseController
 
         App::abort(500, 'Could not create order');
     }
-
 
 }

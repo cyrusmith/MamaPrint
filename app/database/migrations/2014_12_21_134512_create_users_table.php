@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Order\Order;
 
 class CreateUsersTable extends Migration
 {
@@ -19,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('guestid')->nullable();
             $table->string('name');
             $table->string('password');
+            $table->string('phone')->nullable();
             $table->string('remember_token', 100)->nullable();
             $table->dateTime('updated_at');
             $table->dateTime('created_at');
@@ -45,6 +47,7 @@ class CreateUsersTable extends Migration
 
         Schema::create('orders', function ($table) {
             $table->increments('id');
+            $table->enum('status', array(Order::STATUS_CART, Order::STATUS_PENDING, Order::STATUS_COMPLETE));
             $table->bigInteger('user_id');
             $table->integer('total');
             $table->dateTime('updated_at');
