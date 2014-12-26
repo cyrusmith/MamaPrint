@@ -35,6 +35,7 @@ Route::get('/register/regcomplete', function () {
 
 Route::post('/login', 'AuthController@login');
 Route::post('/register', 'AuthController@register');
+Route::post('/register_guest', 'AuthController@registerGuest');
 
 Route::post('subscribe/getcards', 'SubscribeController@getCards');
 

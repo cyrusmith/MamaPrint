@@ -12,8 +12,18 @@ use Order\Order;
 class PaymentsController extends BaseController
 {
 
-    public function pay()
+    public function pay($orderId)
     {
+
+        $order = Order::find($orderId);
+
+        if (empty($order)) {
+            App::abort(404);
+        }
+
+        return Response::view('payments.pay', [
+            'items' => $order->items
+        ]);
 
     }
 

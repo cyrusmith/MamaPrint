@@ -53,11 +53,19 @@
 
             <img src="/img/collage.jpg" class="collage"/>
 
-            <div class="c2a">
-                <button class="btn btn-lg btn-danger">Скачать за 99 рублей</button>
-                <p>или <a href="/login" class="btn btn-sm btn-default">войти</a> и скачать всего <strong>за 39
-                        рублей!</strong></p>
-            </div>
+            @if(Auth::check())
+            @else
+                <div class="c2a">
+                    <form action="{{URL::action('OrdersController@buyitem', ['itemId' => '1'])}}" method="post">
+                        <button class="btn btn-lg btn-danger">Скачать за 99 рублей</button>
+                        <input type="hidden" name="_token" value="<?php echo csrf_token();?>"/>
+                    </form>
+                    <p>или <a href="/login" class="btn btn-sm btn-default">войти</a> и скачать всего <strong>за 39
+                            рублей!</strong></p>
+                </div>
+
+            @endif;
+
 
         </div>
     </div>
