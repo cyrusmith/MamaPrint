@@ -74,6 +74,16 @@
 
 </div>
 
+<script>
+    (function (scope) {
+        var user = <?php echo Auth::user()?Auth::user()->toJson():'null'?>, token = '<?php echo csrf_token(); ?>';
+        scope.mamaprint = {
+            user: user,
+            token: token
+        }
+    })(this);
+</script>
+
 @if (Config::get('app.debug'))
     <script src="bower_components/requirejs/require.js" data-main="js/main.js"></script>
 @else

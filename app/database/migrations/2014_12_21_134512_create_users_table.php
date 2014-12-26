@@ -26,6 +26,19 @@ class CreateUsersTable extends Migration
             $table->dateTime('created_at');
         });
 
+        Schema::create('roles', function ($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->dateTime('updated_at');
+            $table->dateTime('created_at');
+        });
+
+        Schema::create('role_user', function ($table) {
+            $table->increments('id');
+            $table->bigInteger('user_id');
+            $table->bigInteger('role_id');
+        });
+
         Schema::create('user_pending', function ($table) {
             $table->increments('id');
             $table->string('hash');
@@ -94,6 +107,8 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::drop('users');
+        Schema::drop('roles');
+        Schema::drop('role_user');
         Schema::drop('user_pending');
         Schema::drop('orders');
         Schema::drop('order_items');

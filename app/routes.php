@@ -38,7 +38,7 @@ Route::post('/register', 'AuthController@register');
 
 Route::post('subscribe/getcards', 'SubscribeController@getCards');
 
-Route::post('/buyitem/{itemId}', 'OrdersController@buyitem');
+Route::post('/buyitem/{itemId}', array('before' => 'csrf', 'uses' => 'OrdersController@buyitem'));
 Route::get('/pay/{orderId}', 'PaymentsController@pay');
 
 Route::get('/api/v1/payments/onpay', 'PaymentsController@onpayApi');
