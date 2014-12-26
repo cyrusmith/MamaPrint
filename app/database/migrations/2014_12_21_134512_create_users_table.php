@@ -41,6 +41,7 @@ class CreateUsersTable extends Migration
             $table->bigInteger('parent_id')->nullable();
             $table->string('title');
             $table->integer('price');
+            $table->integer('registered_price')->nullable(); //price for registered users
             $table->dateTime('updated_at');
             $table->dateTime('created_at');
         });
@@ -97,6 +98,8 @@ class CreateUsersTable extends Migration
         Schema::drop('orders');
         Schema::drop('order_items');
         Schema::drop('catalog_items');
+        Schema::drop('accounts');
+        Schema::drop('operations');
     }
 
 }

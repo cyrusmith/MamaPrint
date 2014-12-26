@@ -10,6 +10,7 @@
 namespace Catalog;
 
 use Eloquent;
+use Illuminate\Support\Facades\Auth;
 
 class CatalogItem extends Eloquent
 {
@@ -18,6 +19,16 @@ class CatalogItem extends Eloquent
     public function getPrice($value)
     {
         return (int)$value;
+    }
+
+    public function getOrderPrice()
+    {
+        //TODO create price rules in orders package instead of do it here
+        $user = Auth::user();
+        if (!empty($user) && empty($user->guestid) && !empty($this->registered_price)) {
+            return (int)$this->registered_price;
+        }
+        return (int)$this->price;
     }
 
 }

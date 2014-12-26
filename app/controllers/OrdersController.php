@@ -34,13 +34,15 @@ class OrdersController extends BaseController
 
         DB::transaction(function () use ($item, $user, &$order) {
 
-            $order->total = $item->price;
+            $itemPrice = $item->getOrderPrice();
+
+            $order->total = $itemPrice;
             $order->status = Order::STATUS_PENDING;
             $order->user()->associate($user);
             $order->save();
 
             $orderItem = new OrderItem;
-            $orderItem->price = $item->price;
+            $orderItem->price = $itemPrice;
             $orderItem->catalogItem()->associate($item);
             $order->items()->save($orderItem);
             $order->save();
