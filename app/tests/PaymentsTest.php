@@ -18,6 +18,11 @@ class PaymentsTest extends TestCase
         $item->price = 10099;
         $item->save();
 
+        $item = new CatalogItem;
+        $item->title = 'Item2';
+        $item->price = 10000;
+        $item->save();
+
         $this->user = new User;
 
         $this->user->name = "John";
@@ -37,7 +42,7 @@ class PaymentsTest extends TestCase
 
     public function testOnpayEmptyRequest()
     {
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay');
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay');
 
         $this->assertTrue($this->client->getResponse()->isClientError());
     }
@@ -45,16 +50,22 @@ class PaymentsTest extends TestCase
     public function testOnpayCheckInvalidOrderId()
     {
         $crawler = $this->client->request('POST', '/buyitem/1');
-
         $amount = 100.99;
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay', array(), array(), array(), json_encode(array(
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', array(
             "type" => "check",
             "pay_for" => "2",
             "amount" => $amount,
             "way" => "RUR",
             "mode" => "fix",
-            "signature" => md5("check;1;$amount;RUR;fix;" . Config::get('services.onpay.secret'))
-        )));
+            "signature" => sha1("check;1;$amount;RUR;fix;" . Config::get('services.onpay.secret'))
+        )/*, array(), array(), json_encode(array(
+            "type" => "check",
+            "pay_for" => "2",
+            "amount" => $amount,
+            "way" => "RUR",
+            "mode" => "fix",
+            "signature" => sha1("check;1;$amount;RUR;fix;" . Config::get('services.onpay.secret'))
+        ))*/);
 
         $this->assertTrue($this->client->getResponse()->isClientError(), "Request should fail");
     }
@@ -64,14 +75,14 @@ class PaymentsTest extends TestCase
         $crawler = $this->client->request('POST', '/buyitem/1');
 
         $amount = 200.99;
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay', array(), array(), array(), json_encode(array(
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', array(
             "type" => "check",
             "pay_for" => "1",
             "amount" => $amount,
             "way" => "RUR",
             "mode" => "fix",
-            "signature" => md5("check;1;$amount;RUR;fix;" . Config::get('services.onpay.secret'))
-        )));
+            "signature" => sha1("check;1;$amount;RUR;fix;" . Config::get('services.onpay.secret'))
+        ));
 
         $this->assertTrue($this->client->getResponse()->isClientError(), "Request should fail");
     }
@@ -81,14 +92,14 @@ class PaymentsTest extends TestCase
         $crawler = $this->client->request('POST', '/buyitem/1');
 
         $amount = 100.99;
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay', array(), array(), array(), json_encode(array(
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', array(
             "type" => "check",
             "pay_for" => "1",
             "amount" => $amount,
             "way" => "USD",
             "mode" => "fix",
-            "signature" => md5("check;1;$amount;USD;fix;" . Config::get('services.onpay.secret'))
-        )));
+            "signature" => sha1("check;1;$amount;USD;fix;" . Config::get('services.onpay.secret'))
+        ));
 
         $this->assertTrue($this->client->getResponse()->isClientError(), "Request should fail");
     }
@@ -98,14 +109,14 @@ class PaymentsTest extends TestCase
         $crawler = $this->client->request('POST', '/buyitem/1');
 
         $amount = 100.99;
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay', array(), array(), array(), json_encode(array(
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', array(
             "type" => "check",
             "pay_for" => "1",
             "amount" => $amount,
             "way" => "RUR",
             "mode" => "free",
-            "signature" => md5("check;1;$amount;RUR;free;" . Config::get('services.onpay.secret'))
-        )));
+            "signature" => sha1("check;1;$amount;RUR;free;" . Config::get('services.onpay.secret'))
+        ));
 
         $this->assertTrue($this->client->getResponse()->isClientError(), "Request should fail");
     }
@@ -115,14 +126,14 @@ class PaymentsTest extends TestCase
         $crawler = $this->client->request('POST', '/buyitem/1');
 
         $amount = 100.99;
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay', array(), array(), array(), json_encode(array(
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', array(
             "type" => "check",
             "pay_for" => "1",
             "amount" => $amount,
             "way" => "RUR",
             "mode" => "fix",
-            "signature" => md5("spoil;check;1;$amount;RUR;fix;" . Config::get('services.onpay.secret'))
-        )));
+            "signature" => sha1("spoil;check;1;$amount;RUR;fix;" . Config::get('services.onpay.secret'))
+        ));
 
         $this->assertTrue($this->client->getResponse()->isClientError(), "Request should fail");
     }
@@ -133,28 +144,55 @@ class PaymentsTest extends TestCase
         $crawler = $this->client->request('POST', '/buyitem/1');
 
         $amount = 100.99;
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay', array(), array(), array(), json_encode(array(
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', array(
             "type" => "check",
             "pay_for" => "1",
             "amount" => $amount,
             "way" => "RUR",
             "mode" => "fix",
-            "signature" => md5("check;1;$amount;RUR;fix;" . Config::get('services.onpay.secret'))
-        )));
+            "signature" => sha1("check;1;$amount;RUR;fix;" . Config::get('services.onpay.secret'))
+        ));
 
         $this->assertTrue($this->client->getResponse()->isOk(), "Response is not successful");
         $json = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals($json["status"], true, "Status not true");
         $this->assertEquals($json["pay_for"], "1", "Payfor not valid");
-        $this->assertEquals($json["signature"], md5("check;true;1;" . Config::get('services.onpay.secret')), "signature not valid");
+        $this->assertEquals($json["signature"], sha1("check;true;1;" . Config::get('services.onpay.secret')), "signature not valid");
+
+    }
+
+    public function testOnpayCheckValidIntegerAmount()
+    {
+
+        $crawler = $this->client->request('POST', '/buyitem/2');
+
+        $amount = 100.0;
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', array(
+            "type" => "check",
+            "pay_for" => "1",
+            "amount" => $amount,
+            "way" => "RUR",
+            "mode" => "fix",
+            "signature" => sha1("check;1;100.0;RUR;fix;" . Config::get('services.onpay.secret'))
+        ));
+
+        $this->assertTrue($this->client->getResponse()->isOk(), "Response is not successful");
+        $json = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals($json["status"], true, "Status not true");
+        $this->assertEquals($json["pay_for"], "1", "Payfor not valid");
+        $this->assertEquals($json["signature"], sha1("check;true;1;" . Config::get('services.onpay.secret')), "signature not valid");
 
     }
 
     private function getPayJson($payFor, $amount, $balanceWay = "RUR")
     {
+
+        $amount = intval($amount * 100) / 100.0;
+        $amount = number_format($amount, ($amount == intval($amount)) ? 1 : 2, '.', '');
+
         return [
             "type" => "pay",
-            "signature" => md5("pay;$payFor;$amount;RUR;$amount;RUR;" . Config::get('services.onpay.secret')),
+            "signature" => sha1("pay;$payFor;$amount;RUR;$amount;RUR;" . Config::get('services.onpay.secret')),
             "pay_for" => $payFor,
             "way" => $balanceWay,
             "user" => [
@@ -190,13 +228,34 @@ class PaymentsTest extends TestCase
 
         $payFor = "1";
         $amount = 100.99;
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay', array(), array(), array(), json_encode($this->getPayJson($payFor, $amount)));
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', $this->getPayJson($payFor, $amount));
 
         $this->assertTrue($this->client->getResponse()->isOk(), "Response is not successful");
         $json = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals($json["code"], true, "Status not true");
         $this->assertEquals($json["pay_for"], $payFor, "Payfor not valid");
-        $this->assertEquals($json["signature"], md5("pay;true;$payFor;" . Config::get('services.onpay.secret')), "signature not valid");
+        $this->assertEquals($json["signature"], sha1("pay;true;$payFor;" . Config::get('services.onpay.secret')), "signature not valid");
+
+        $order = Order::find($payFor);
+        $this->assertTrue(!empty($order), "No order found");
+        $this->assertEquals($order->status, Order::STATUS_COMPLETE);
+
+    }
+
+    public function testOnpayPayValidintegerAmount()
+    {
+
+        $crawler = $this->client->request('POST', '/buyitem/2');
+
+        $payFor = "1";
+        $amount = 100.0;
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', $this->getPayJson($payFor, $amount));
+
+        $this->assertTrue($this->client->getResponse()->isOk(), "Response is not successful");
+        $json = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals($json["code"], true, "Status not true");
+        $this->assertEquals($json["pay_for"], $payFor, "Payfor not valid");
+        $this->assertEquals($json["signature"], sha1("pay;true;$payFor;" . Config::get('services.onpay.secret')), "signature not valid");
 
         $order = Order::find($payFor);
         $this->assertTrue(!empty($order), "No order found");
@@ -210,13 +269,13 @@ class PaymentsTest extends TestCase
 
         $payFor = "2";
         $amount = 100.99;
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay', array(), array(), array(), json_encode($this->getPayJson($payFor, $amount)));
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', $this->getPayJson($payFor, $amount));
 
         $this->assertTrue($this->client->getResponse()->isClientError(), "Response should fail");
         $json = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals($json["code"], false, "Status not true");
         $this->assertEquals($json["pay_for"], $payFor, "Payfor not valid");
-        $this->assertEquals($json["signature"], md5("pay;false;$payFor;" . Config::get('services.onpay.secret')), "signature not valid");
+        $this->assertEquals($json["signature"], sha1("pay;false;$payFor;" . Config::get('services.onpay.secret')), "signature not valid");
 
     }
 
@@ -226,13 +285,13 @@ class PaymentsTest extends TestCase
 
         $payFor = "1";
         $amount = 130.99;
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay', array(), array(), array(), json_encode($this->getPayJson($payFor, $amount)));
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', $this->getPayJson($payFor, $amount));
 
         $this->assertTrue($this->client->getResponse()->isClientError(), "Response should fail");
         $json = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals($json["code"], false, "Status not true");
         $this->assertEquals($json["pay_for"], $payFor, "Payfor not valid");
-        $this->assertEquals($json["signature"], md5("pay;false;$payFor;" . Config::get('services.onpay.secret')), "signature not valid");
+        $this->assertEquals($json["signature"], sha1("pay;false;$payFor;" . Config::get('services.onpay.secret')), "signature not valid");
 
     }
 
@@ -242,13 +301,13 @@ class PaymentsTest extends TestCase
 
         $payFor = "1";
         $amount = 100.99;
-        $crawler = $this->client->request('GET', '/api/v1/payments/onpay', array(), array(), array(), json_encode($this->getPayJson($payFor, $amount, "USD")));
+        $crawler = $this->client->request('POST', '/api/v1/payments/onpay', $this->getPayJson($payFor, $amount, "USD"));
 
         $this->assertTrue($this->client->getResponse()->isClientError(), "Response should fail");
         $json = json_decode($this->client->getResponse()->getContent(), true);
         $this->assertEquals($json["code"], false, "Status not true");
         $this->assertEquals($json["pay_for"], $payFor, "Payfor not valid");
-        $this->assertEquals($json["signature"], md5("pay;false;$payFor;" . Config::get('services.onpay.secret')), "signature not valid");
+        $this->assertEquals($json["signature"], sha1("pay;false;$payFor;" . Config::get('services.onpay.secret')), "signature not valid");
 
     }
 

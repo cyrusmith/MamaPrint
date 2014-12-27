@@ -16,12 +16,18 @@ class OrderService
 
             $order = \Order\Order::find($orderId);
 
+            Log::debug($order);
+
             if (empty($order)) {
                 throw new InvalidArgumentException("Order #$orderId not found");
             }
 
             $sum = intval($order->total);
-            $account = $order->user->account;
+
+            $user = User::find($order->user->id);
+            $account = $user->accounts()->first();
+
+            Log::debug($account);
 
             $purchase = new \Account\OperationPurchase();
             $purchase->amount = $sum;
@@ -31,11 +37,13 @@ class OrderService
             $account->save();
             $order->save();
 
+            Log::debug("About to commit");
+
             DB::commit();
 
         } catch (Exception $e) {
-            DB::rollback();
             Log::error($e->getMessage());
+            DB::rollback();
             throw $e;
         }
     }

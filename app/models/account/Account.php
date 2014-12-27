@@ -24,7 +24,7 @@ class Account extends Eloquent
 
     public function operations()
     {
-        return $this->hasMany('Account\Operation');
+        return $this->hasMany('\Account\Operation');
     }
 
     public function plus($amount)

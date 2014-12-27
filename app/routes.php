@@ -42,7 +42,7 @@ Route::post('subscribe/getcards', 'SubscribeController@getCards');
 Route::post('/buyitem/{itemId}', array('before' => 'csrf', 'uses' => 'OrdersController@buyitem'));
 
 
-Route::get('/api/v1/payments/onpay', 'PaymentsController@onpayApi');
+Route::post('/api/v1/payments/onpay', 'PaymentsController@onpayApi');
 
 Route::get('/pay/success/{orderId}', 'PaymentsController@paymentSuccess');
 

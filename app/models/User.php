@@ -26,9 +26,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     protected $fillable = array('name', 'email', 'password');
 
-    public function account()
+    public function accounts()
     {
-        return $this->hasOne('Account\Account');
+        return $this->hasMany('\Account\Account');
     }
 
     public function roles()

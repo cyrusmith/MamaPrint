@@ -85,9 +85,9 @@
 </script>
 
 @if (Config::get('app.debug'))
-    <script src="bower_components/requirejs/require.js" data-main="js/main.js"></script>
+    <script src="/bower_components/requirejs/require.js" data-main="/js/main.js"></script>
 @else
-    <script src="all.js"></script>
+    <script src="/all.js"></script>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">(function (d, w, c) {
             (w[c] = w[c] || []).push(function () {

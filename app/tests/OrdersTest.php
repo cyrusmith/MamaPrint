@@ -86,7 +86,7 @@ class OrdersTest extends TestCase
         $this->assertEquals($order->status, Order::STATUS_COMPLETE);
 
         $user = User::find($this->user->id);
-        $account = $user->account;
+        $account = $user->accounts()->first();
 
         $this->assertEquals(2000, $account->balance);
 
