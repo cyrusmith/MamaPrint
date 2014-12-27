@@ -21,14 +21,44 @@ class PaymentsController extends BaseController
             App::abort(404);
         }
 
+        $user = App::make('UsersService')->getUser();
+
+        if ($order->user->id !== $user->id) {
+            App::abort(404);
+        }
+
         return Response::view('payments.pay', [
-            'items' => $order->items
+            'order' => $order
         ]);
+
+    }
+
+    public function paymentSuccess($orderId)
+    {
+
+        $order = Order::find($orderId);
+
+        if (empty($order)) {
+            return Redirect::to('/');
+        }
+
+        $user = App::make('UsersService')->getUser();
+
+        if ($order->user->id !== $user->id) {
+            return Redirect::to('/');
+        }
+
+        if ($order->status === Order::STATUS_COMPLETE) {
+            return Redirect::to('/download/' . $orderId);
+        }
+
+        return View::make('payments.success');
 
     }
 
     public function onpayApi()
     {
+
         $request = Request::instance();
         $content = $request->getContent();
         if (empty($content)) {

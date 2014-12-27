@@ -53,6 +53,8 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->bigInteger('parent_id')->nullable();
             $table->string('title');
+            $table->string('short_description')->nullable();
+            $table->text('long_description')->nullable();
             $table->integer('price');
             $table->integer('registered_price')->nullable(); //price for registered users
             $table->dateTime('updated_at');

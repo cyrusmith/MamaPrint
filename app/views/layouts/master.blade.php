@@ -20,7 +20,7 @@
 
         <div class="col-sm-6 logo">
             <a href="/">
-                <img src="img/logobig.png"/>
+                <img src="/img/logobig.png"/>
             </a>
 
             <div class="authcontrols visible-xs">
