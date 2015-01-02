@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
         $winterBook = new CatalogItem();
 
-        $winterBook->title = 'Winter book';
+        $winterBook->title = 'Зимняя тетрадка';
         $winterBook->price = 9900;
         $winterBook->short_description = 'Тридцать творческих уроков на тему: «Новый год и зима» для детей дошкольного возраста';
         $winterBook->registered_price = 3900;

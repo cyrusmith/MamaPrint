@@ -49,11 +49,9 @@ class PaymentsController extends BaseController
             return Redirect::to('/');
         }
 
-        if ($order->status === Order::STATUS_COMPLETE) {
-            return Redirect::to('/download/' . $orderId);
-        }
-
-        return Response::view('payments.success');
+        return Response::view('payments.success', [
+            'order' => $order
+        ]);
 
     }
 
