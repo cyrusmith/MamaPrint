@@ -17,6 +17,7 @@ class AuthController extends BaseController
         }
 
         $guestid = Cookie::get('guestid', null);
+
         $needToRegister = false;
         if (empty($guestid)) {
             $guestid = str_random(40);

@@ -16,10 +16,13 @@ class CatalogItemTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->item = new CatalogItem;
+        $this->item = new CatalogItem();
         $this->item->title = "Item1";
         $this->item->price = 10000;
         $this->item->registered_price = 7900;
+        $this->item->asset_extension = 'pdf';
+        $this->item->asset_name = 'winterbook';
+        $this->item->slug = 'winterbook';
         $this->item->save();
     }
 

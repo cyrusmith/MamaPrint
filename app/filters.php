@@ -78,4 +78,16 @@ Route::filter('csrf', function () {
     }
 });
 
-App::after('AuthController@registerGuest');
+App::after(function ($request, $response) {
+
+    if (($request->getPathInfo() === "/api/v1/payments/onpay") || Auth::check()) {
+        if (method_exists($response, 'withCookie')) {
+            $response->withCookie(Cookie::forever('guestid', null));
+        }
+
+        return;
+    }
+    $guestid = App::make('AuthService')->registerGuest(Cookie::get('guestid', null));
+    $response->withCookie(Cookie::forever('guestid', $guestid));
+    Session::set('guestid', $guestid);
+});

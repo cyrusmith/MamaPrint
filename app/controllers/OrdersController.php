@@ -55,4 +55,36 @@ class OrdersController extends BaseController
         App::abort(500, 'Could not create order');
     }
 
+    public function download($orderId)
+    {
+        $user = App::make('UsersService')->getUser();
+
+        if (empty($user)) {
+            App::abort(400);
+        }
+
+        $order = $user->orders()->where('id', '=', $orderId)->first();
+
+        if (empty($order)) {
+            App::abort(404);
+        }
+
+        if (!$order->isComplete()) {
+            App::abort(404);
+        }
+
+        $orderItem = $order->items()->first();
+        $catalogItem = $orderItem->catalogItem;
+
+        $file = base_path() . DIRECTORY_SEPARATOR . 'downloads' . DIRECTORY_SEPARATOR . $catalogItem->id . '.' . $catalogItem->asset_extension;
+
+        if (file_exists($file)) {
+            return Response::download($file, $catalogItem->asset_name);
+        } else {
+            Log::error($file . ' does not exists');
+            App::abort(404);
+        }
+
+    }
+
 }

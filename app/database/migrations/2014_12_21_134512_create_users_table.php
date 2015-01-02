@@ -55,6 +55,9 @@ class CreateUsersTable extends Migration
             $table->string('title');
             $table->string('short_description')->nullable();
             $table->text('long_description')->nullable();
+            $table->string('asset_extension');
+            $table->string('asset_name');
+            $table->string('slug');
             $table->integer('price');
             $table->integer('registered_price')->nullable(); //price for registered users
             $table->dateTime('updated_at');

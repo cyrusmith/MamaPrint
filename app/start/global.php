@@ -85,4 +85,8 @@ App::singleton('OrderService', function ($app) {
     return new OrderService;
 });
 
+App::singleton('AuthService', function ($app) {
+    return new AuthService;
+});
+
 require app_path() . '/filters.php';

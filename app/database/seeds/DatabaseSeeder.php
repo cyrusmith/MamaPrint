@@ -1,5 +1,7 @@
 <?php
 
+use Catalog\CatalogItem;
+
 class DatabaseSeeder extends Seeder
 {
 
@@ -24,11 +26,15 @@ class DatabaseSeeder extends Seeder
         $user->roles()->save(Role::getByName(Role::ROLE_ADMIN));
         $user->save();
 
-        $winterBook = new \Catalog\CatalogItem();
+        $winterBook = new CatalogItem();
 
         $winterBook->title = 'Winter book';
-        $winterBook->price = 99;
-        $winterBook->registered_price = 39;
+        $winterBook->price = 9900;
+        $winterBook->short_description = 'Тридцать творческих уроков на тему: «Новый год и зима» для детей дошкольного возраста';
+        $winterBook->registered_price = 3900;
+        $winterBook->asset_extension = 'pdf';
+        $winterBook->asset_name = 'mamaprint_winterbook';
+        $winterBook->slug = 'winterbook';
         $winterBook->save();
 
         // $this->call('UserTableSeeder');

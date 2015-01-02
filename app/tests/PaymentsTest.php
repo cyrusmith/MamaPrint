@@ -16,11 +16,17 @@ class PaymentsTest extends TestCase
         $item = new CatalogItem;
         $item->title = 'Item1';
         $item->price = 10099;
+        $item->asset_extension = 'pdf';
+        $item->asset_name = 'winterbook';
+        $item->slug = 'winterbook';
         $item->save();
 
         $item = new CatalogItem;
         $item->title = 'Item2';
         $item->price = 10000;
+        $item->asset_extension = 'pdf';
+        $item->asset_name = 'winterbook';
+        $item->slug = 'winterbook';
         $item->save();
 
         $this->user = new User;
@@ -239,6 +245,10 @@ class PaymentsTest extends TestCase
         $order = Order::find($payFor);
         $this->assertTrue(!empty($order), "No order found");
         $this->assertEquals($order->status, Order::STATUS_COMPLETE);
+
+        $user = User::find($this->user->id);
+
+        $this->assertEquals(12000, $user->accounts()->first()->balance);
 
     }
 

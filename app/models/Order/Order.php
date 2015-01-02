@@ -1,4 +1,4 @@
-<?php
+<?php namespace Order;
 
 /**
  * Created by PhpStorm.
@@ -6,8 +6,6 @@
  * Date: 23.12.2014
  * Time: 21:25
  */
-
-namespace Order;
 
 use Eloquent;
 
@@ -33,6 +31,11 @@ class Order extends Eloquent
     public function getTotalAttribute($value)
     {
         return intval($value);
+    }
+
+    public function isComplete()
+    {
+        return $this->status === self::STATUS_COMPLETE;
     }
 
 }

@@ -37,10 +37,9 @@ Route::post('/login', 'AuthController@login');
 Route::post('/register', 'AuthController@register');
 Route::post('/register_guest', 'AuthController@registerGuest');
 
-Route::post('subscribe/getcards', 'SubscribeController@getCards');
+Route::post('/subscribe/getcards', 'SubscribeController@getCards');
 
 Route::post('/buyitem/{itemId}', array('before' => 'csrf', 'uses' => 'OrdersController@buyitem'));
-
 
 Route::post('/api/v1/payments/onpay', 'PaymentsController@onpayApi');
 
@@ -51,3 +50,4 @@ Route::get('/pay/fail', function () {
 });
 
 Route::get('/pay/{orderId}', 'PaymentsController@pay');
+Route::get('/orders/{orderId}/download', 'OrdersController@download')->where(['orderId' => '[0-9]+']);

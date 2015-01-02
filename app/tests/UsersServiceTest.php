@@ -36,8 +36,11 @@ class UsersServiceTest extends TestCase
     public function testGetUserGuestNotExistsWithGuestId()
     {
         $questId = "23498web23489wefib234";
-        Session::shouldReceive('get')->once()->with('guiestid')->andReturn($questId);;
+
+        $this->session(['guestid' => $questId]);
+
         $user = $this->userService->getUser();
+        $this->assertNotEmpty($user);
         $this->assertTrue($user->guestid === $questId);
     }
 
@@ -50,10 +53,12 @@ class UsersServiceTest extends TestCase
             'email' => $questId,
             'password' => $questId
         ));
-        Session::shouldReceive('get')->once()->with('guiestid')->andReturn($questId);;
 
-        $user = $this->userService->getUser();
+        $this->session(['guestid' => $questId]);
 
+        $user = App::make('UsersService')->getUser();
+
+        $this->assertNotEmpty($user);
         $this->assertTrue($user->guestid === $questId);
     }
 

@@ -8,6 +8,7 @@
  */
 
 use Order\Order;
+use Account\OperationRefill;
 
 class PaymentsController extends BaseController
 {
@@ -108,6 +109,7 @@ class PaymentsController extends BaseController
                 $currency = Input::get('balance.way');
                 $signature = Input::get('signature');
 
+                $paymentId = Input::get('payment.id');
                 $paymentAmount = Input::get('payment.amount');
                 $paymentAmount = intval($paymentAmount * 100) / 100.0;
                 $paymentAmountStr = number_format($paymentAmount, ($paymentAmount == intval($paymentAmount)) ? 1 : 2, '.', '');
@@ -136,14 +138,37 @@ class PaymentsController extends BaseController
 
                 try {
                     Log::debug("About to payOrder");
+
+                    DB::beginTransaction();
+
+                    $currencyIfTST = $currency == 'TST' ? "RUR" : $currency;
+
+                    $account = $order->user->accounts()->where('currency', '=', $currencyIfTST)->first();
+
+                    if (empty($account)) {
+                        throw new InvalidArgumentException('Could not find account with currency' . $currencyIfTST);
+                    }
+
+                    $refill = new OperationRefill;
+                    $refill->amount = intval($amount * 100);
+
+                    $refill->gateway = 'onpay';
+                    $refill->gateway_operation_id = $paymentId;
+                    $account->addOperation($refill);
+                    $account->save();
+
                     $orderService->payOrder($order->id);
+
+                    DB::commit();
+
                     return Response::json(array(
                         "code" => true,
                         "pay_for" => $payFor,
                         "signature" => sha1("pay;true;$payFor;" . Config::get('services.onpay.secret'))
                     ), 200);
                 } catch (Exception $e) {
-                    Log::error('Fail to pa order: ' . $e->getMessage());
+                    Log::error('Fail to pay order: ' . $e->getMessage());
+                    DB::rollback();
                     return Response::json(array(
                         "code" => false,
                         "pay_for" => $payFor,

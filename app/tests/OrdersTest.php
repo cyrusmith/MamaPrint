@@ -16,6 +16,9 @@ class OrdersTest extends TestCase
         $item = new CatalogItem;
         $item->title = 'Item1';
         $item->price = 10000;
+        $item->asset_extension = 'pdf';
+        $item->asset_name = 'winterbook';
+        $item->slug = 'winterbook';
         $item->save();
 
         $this->user = new User;

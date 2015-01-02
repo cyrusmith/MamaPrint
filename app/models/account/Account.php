@@ -1,4 +1,4 @@
-<?php
+<?php namespace Account;
 
 /**
  * Created by PhpStorm.
@@ -7,7 +7,6 @@
  * Time: 19:07
  */
 
-namespace Account;
 
 use Eloquent;
 use Illuminate\Support\Facades\Lang;

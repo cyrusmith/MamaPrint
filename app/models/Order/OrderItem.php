@@ -1,4 +1,4 @@
-<?php
+<?php namespace Order;
 
 /**
  * Created by PhpStorm.
@@ -7,8 +7,6 @@
  * Time: 21:49
  */
 
-
-namespace Order;
 
 use Eloquent;
 
