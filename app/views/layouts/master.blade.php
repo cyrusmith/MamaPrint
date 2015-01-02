@@ -62,6 +62,18 @@
     </div>
 
     <div class="page row">
+
+        @define $msg = null
+
+        @if(Session::get('message'))
+            <?php
+        @endif
+        <div class="alert alert-warning alert-dismissible fade in" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+            <strong>Holy guacamole!</strong> Best check yo self, you're not looking too good.
+        </div>
+
         @yield('content')
     </div>
 

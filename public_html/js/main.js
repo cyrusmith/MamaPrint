@@ -8,6 +8,7 @@ require.config({
     paths: {
         '$': '../bower_components/jquery/dist/jquery',
         'magnific': '../bower_components/magnific-popup/dist/jquery.magnific-popup',
+        'bootstrap': '../bower_components/bootstrap/dist/js/bootstrap',
         'requireLib': '../bower_components/requirejs/require'
     },
 
@@ -17,16 +18,17 @@ require.config({
         '$': {
             exports: 'jQuery'
         },
-        magnific: ['$']
+        magnific: ['$'],
+        bootstrap: ['$']
     },
 
     include: ['requireLib', 'main']
 });
 
-require(['$', 'magnific'], function ($) {
+require(['$', 'magnific','bootstrap'], function ($) {
 
     $(function () {
-        if($('body').hasClass('page-main')) {
+        if ($('body').hasClass('page-main')) {
 
             $.magnificPopup.open({
                 items: {

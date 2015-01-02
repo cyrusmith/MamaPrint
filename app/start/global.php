@@ -89,4 +89,8 @@ App::singleton('AuthService', function ($app) {
     return new AuthService;
 });
 
+Blade::extend(function($value) {
+    return preg_replace('/\@define(.+)/', '<?php ${1}; ?>', $value);
+});
+
 require app_path() . '/filters.php';
