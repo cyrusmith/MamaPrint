@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         $user->save();
 
         $user->roles()->save(Role::getByName(Role::ROLE_ADMIN));
+        $user->roles()->save(Role::getByName(Role::ROLE_USER));
         $user->save();
 
         $winterBook = new CatalogItem();

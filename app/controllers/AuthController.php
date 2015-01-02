@@ -74,8 +74,12 @@ class AuthController extends BaseController
             $user->email = $pendingUser->email;
             $user->name = $pendingUser->name;
             $user->password = $pendingUser->password;
-
             $user->save();
+
+            $account = new \Account\Account();
+            $account->balance = 0;
+            $account->currency = "RUR";
+            $user->accounts()->save($account);
 
             UserPending::where('email', '=', $user->email)->delete();
 
@@ -142,7 +146,7 @@ class AuthController extends BaseController
         Mail::send('emails.auth.register', array(
             'action' => URL::action("AuthController@confirm", array("hash" => $userPending->hash))
         ), function ($message) use ($userPending) {
-            $message->to($userPending->email, 'MamaPrint')->subject('Регистрация на сайте mama-print.ru');
+            $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($userPending->email, $userPending->name)->subject('Регистрация на сайте mama-print.ru');
         });
 
         return Redirect::to('/register/regcomplete');
