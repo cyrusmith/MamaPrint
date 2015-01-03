@@ -157,6 +157,15 @@ class PaymentsController extends BaseController
 
                     $orderService->payOrder($order->id);
 
+                    if (Auth::check()) {
+                        Mail::send('emails.payments.order', array(
+                            "orderId" => $order->id
+                        ), function ($message) {
+                            $user = Auth::user();
+                            $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($user->email, $user->name)->subject('Покупка на сайте mama-print.ru');
+                        });
+                    }
+
                     DB::commit();
 
                     return Response::json(array(

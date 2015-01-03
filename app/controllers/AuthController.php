@@ -85,7 +85,7 @@ class AuthController extends BaseController
 
             DB::commit();
 
-            return Redirect::to('/login');
+            return Redirect::to('/login')->with('message', Lang::get('messages.thankyou_registration'));
 
         } catch (Exception $e) {
             DB::rollback();
