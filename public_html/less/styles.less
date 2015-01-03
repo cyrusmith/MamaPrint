@@ -6,6 +6,23 @@
 @import (less) "../bower_components/magnific-popup/dist/magnific-popup.css";
 @import "_mainpage.less";
 
+@font-face {
+  font-family: 'mon_amour_twomedium';
+  src: url('fonts/mon_amour_two-webfont.eot');
+  src: url('fonts/mon_amour_two-webfont.eot?#iefix') format('embedded-opentype'),
+  url('fonts/mon_amour_two-webfont.woff2') format('woff2'),
+  url('fonts/mon_amour_two-webfont.woff') format('woff'),
+  url('fonts/mon_amour_two-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+.font-hanwritten {
+  font-family: mon_amour_twomedium;
+  font-weight: bold;
+}
+
 strong {
   font-weight: bold;
 }
@@ -49,11 +66,46 @@ strong {
 
 .page {
 
-  padding-top: 1em;
+  .mainmenu {
+    text-align: center;
+
+    a {
+      display: inline-block;
+      margin-right: .5em;
+      color: #333;
+      font-size: 1.4em;
+      text-decoration: underline;
+      &:hover {
+        text-decoration: none;
+      }
+      &.font-hanwritten {
+        color: #f62254;
+      }
+      &.active {
+        text-decoration: none;
+        color: #666;
+      }
+    }
+
+    span {
+      display: inline-block;
+      margin-right: .5em;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #666;
+    }
+
+  }
+
+  padding-top: 2em;
 
   .curlytitle {
     text-align: center;
     padding: 2em 0 0;
+    h2 {
+      color: #f62254;
+      font-size: 3em;
+    }
   }
   .title {
     text-align: center;
@@ -67,7 +119,7 @@ strong {
     padding: 2em 0;
     text-align: center;
     p {
-      padding: 2em 0;
+      padding: 2em 0 0;
     }
   }
 

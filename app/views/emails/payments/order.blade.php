@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 </head>
 <body>
-<h2>Регистрация на mama-print.ru</h2>
+<h2>Покупка сайте на mama-print.ru</h2>
 
 <div>
     <p>Спасибо за покупку на сайте mama-print.ru!</p>

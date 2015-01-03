@@ -9,6 +9,7 @@ require.config({
         '$': '../bower_components/jquery/dist/jquery',
         'magnific': '../bower_components/magnific-popup/dist/jquery.magnific-popup',
         'bootstrap': '../bower_components/bootstrap/dist/js/bootstrap',
+        'headhesive': '../bower_components/headhesive.js/dist/headhesive',
         'requireLib': '../bower_components/requirejs/require'
     },
 
@@ -19,13 +20,16 @@ require.config({
             exports: 'jQuery'
         },
         magnific: ['$'],
-        bootstrap: ['$']
+        bootstrap: ['$'],
+        headhesive: {
+            exports: 'Headhesive'
+        }
     },
 
     include: ['requireLib', 'main']
 });
 
-require(['$', 'magnific','bootstrap'], function ($) {
+require(['$', 'headhesive', 'magnific', 'bootstrap'], function ($, Headhesive) {
 
     $(function () {
         if ($('body').hasClass('page-main')) {

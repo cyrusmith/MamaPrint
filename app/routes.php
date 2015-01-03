@@ -51,3 +51,14 @@ Route::get('/pay/fail', function () {
 
 Route::get('/pay/{orderId}', 'PaymentsController@pay');
 Route::get('/orders/{orderId}/download', 'OrdersController@download')->where(['orderId' => '[0-9]+']);
+
+Route::get('/about', function() {
+    return View::make('statics.about');
+});
+
+Route::get('/public_offer', function() {
+    return View::make('statics.public_offer');
+});
+Route::get('/howto', function() {
+    return View::make('statics.howto');
+});

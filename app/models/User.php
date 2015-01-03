@@ -41,6 +41,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $this->belongsToMany('Role');
     }
 
+    public function isGuest()
+    {
+        return !empty($this->guestid);
+    }
+
     public function getRolesOrDefault()
     {
         if (!$this->roles->isEmpty()) {

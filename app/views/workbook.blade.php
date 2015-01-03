@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="curlytitle">
-        <img src="/img/winterbook-title.png"/>
+        <h2 Class="font-hanwritten">Зимняя тетрадка</h2>
     </div>
     <div class="title">
         <h1>
@@ -36,6 +36,22 @@
                 <li>Теперь можно творить!</li>
             </ul>
 
+            <div class="c2a">
+                @if(Auth::check())
+                    <form action="{{URL::action('OrdersController@buyitem', ['itemId' => '1'])}}" method="post">
+                        <button class="btn btn-lg btn-danger">Скачать за 39 рублей</button>
+                        <input type="hidden" name="_token" value="<?php echo csrf_token();?>"/>
+                    </form>
+                @else
+                    <form action="{{URL::action('OrdersController@buyitem', ['itemId' => '1'])}}" method="post">
+                        <button class="btn btn-lg btn-danger">Скачать за 99 рублей</button>
+                        <input type="hidden" name="_token" value="<?php echo csrf_token();?>"/>
+                    </form>
+                    <p>или <a href="/login" class="btn btn-sm btn-default">войти</a> и скачать всего <strong>за 39
+                            рублей!</strong></p>
+                @endif
+            </div>
+
             <h3>Есть ли в этом какая-то польза?</h3>
 
             <ol>
@@ -66,7 +82,7 @@
                     </form>
                     <p>или <a href="/login" class="btn btn-sm btn-default">войти</a> и скачать всего <strong>за 39
                             рублей!</strong></p>
-                @endif;
+                @endif
             </div>
 
         </div>

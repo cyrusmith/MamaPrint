@@ -157,12 +157,32 @@ class PaymentsController extends BaseController
 
                     $orderService->payOrder($order->id);
 
-                    if (Auth::check()) {
+                    $userEmail = Input::get('user.email');
+                    $userName = '';
+
+                    $user = $order->user;
+
+                    if (!$user->isGuest()) {
+                        if (empty($userEmail)) {
+                            $userEmail = $user->email;
+                        }
+                        $userName = $user->name;
+                    }
+
+                    if (!empty($userEmail)) {
+
+                        $todata = [
+                            'email' => $userEmail,
+                            'name' => $userName
+                        ];
+
+                        Log::debug($todata);
+
                         Mail::send('emails.payments.order', array(
                             "orderId" => $order->id
-                        ), function ($message) {
-                            $user = Auth::user();
-                            $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($user->email, $user->name)->subject('Покупка на сайте mama-print.ru');
+                        ), function ($message) use ($todata) {
+                            Log::debug('$userName=' . $todata['name']);
+                            $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($todata['email'], $todata['name'])->subject('Покупка на сайте mama-print.ru');
                         });
                     }
 
