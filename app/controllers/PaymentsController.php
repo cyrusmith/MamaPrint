@@ -81,6 +81,15 @@ class PaymentsController extends BaseController
                     || $mode != "fix"
                     || $signature != sha1("check;$payFor;$amountStr;$currency;$mode;" . Config::get('services.onpay.secret'))
                 ) {
+
+                    Log::debug([
+                        'total' => $order->total !== intval(100 * $amount),
+                        'currency' => $currency,
+                        'mode' => $mode,
+                        'signature' => $signature != sha1("check;$payFor;$amountStr;$currency;$mode;" . Config::get('services.onpay.secret')),
+                        'str' => "check;$payFor;$amountStr;$currency;$mode;"
+                    ]);
+
                     return Response::json(array(
                         "status" => false,
                         "pay_for" => $payFor,
@@ -176,23 +185,25 @@ class PaymentsController extends BaseController
                             'name' => $userName
                         ];
 
-                        Log::debug($todata);
+                        try {
+                            Mail::send('emails.payments.order', array(
+                                "orderId" => $order->id
+                            ), function ($message) use ($todata) {
+                                Log::debug($todata);
+                                $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($todata['email'], empty($todata['name'])?"Клиент mama-print":$todata['name'])->subject('Покупка на сайте mama-print.ru');
+                            });
+                        } catch (Exception $e) {
+                            Log::error("Failed to send message: ".$e->getMessage());
+                        }
 
-                        Mail::send('emails.payments.order', array(
-                            "orderId" => $order->id
-                        ), function ($message) use ($todata) {
-                            Log::debug('$userName=' . $todata['name']);
-                            $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($todata['email'], $todata['name'])->subject('Покупка на сайте mama-print.ru');
-                        });
+                        DB::commit();
+
+                        return Response::json(array(
+                            "code" => true,
+                            "pay_for" => $payFor,
+                            "signature" => sha1("pay;true;$payFor;" . Config::get('services.onpay.secret'))
+                        ), 200);
                     }
-
-                    DB::commit();
-
-                    return Response::json(array(
-                        "code" => true,
-                        "pay_for" => $payFor,
-                        "signature" => sha1("pay;true;$payFor;" . Config::get('services.onpay.secret'))
-                    ), 200);
                 } catch (Exception $e) {
                     Log::error('Fail to pay order: ' . $e->getMessage());
                     DB::rollback();

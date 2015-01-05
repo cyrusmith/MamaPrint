@@ -63,13 +63,15 @@
 
     <div class="page row">
         <div class="mainmenu">
-            <a href="" class="font-hanwritten {{Request::is('workbook')?'active':''}}">Зимняя-тетрадка</a>
+            <a href="/workbook" class="font-hanwritten {{Request::is('workbook')?'active':''}}">Зимняя-тетрадка</a>
             <span>/</span>
             <a href="/about" class="{{Request::is('about')?'active':''}}">О нас</a>
             <span>/</span>
             <a href="/public_offer" class="{{Request::is('public_offer')?'active':''}}">Публичная оферта</a>
             <span>/</span>
             <a href="/howto" class="{{Request::is('howto')?'active':''}}">Как оформить заказ</a>
+            <span>/</span>
+            <a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a>
         </div>
 
         @if(Session::get('message'))

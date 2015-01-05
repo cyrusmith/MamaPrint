@@ -50,6 +50,7 @@
                     <p>или <a href="/login" class="btn btn-sm btn-default">войти</a> и скачать всего <strong>за 39
                             рублей!</strong></p>
                 @endif
+                <p><span style="position: relative;top: 4px;">Оплата с помощью</span> <img src="/img/onpay-logo.png" width="120"></p>
             </div>
 
             <h3>Есть ли в этом какая-то польза?</h3>
@@ -83,6 +84,7 @@
                     <p>или <a href="/login" class="btn btn-sm btn-default">войти</a> и скачать всего <strong>за 39
                             рублей!</strong></p>
                 @endif
+                    <p><span style="position: relative;top: 4px;">Оплата с помощью</span> <img src="/img/onpay-logo.png" width="120"></p>
             </div>
 
         </div>

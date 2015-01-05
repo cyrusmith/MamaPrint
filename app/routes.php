@@ -62,3 +62,6 @@ Route::get('/public_offer', function() {
 Route::get('/howto', function() {
     return View::make('statics.howto');
 });
+Route::get('/contacts', function() {
+    return View::make('statics.contacts');
+});

@@ -12,13 +12,27 @@
 <body class="page-main">
 
 <div class="fixedtop">
+
     <div class="contents">
-        <div class="curlytitle">
+
+        <div class="mainmenu">
+            <a href="/workbook" class="font-hanwritten {{Request::is('workbook')?'active':''}}">Зимняя-тетрадка</a>
+            <span>/</span>
+            <a href="/about" class="{{Request::is('about')?'active':''}}">О нас</a>
+            <span>/</span>
+            <a href="/public_offer" class="{{Request::is('public_offer')?'active':''}}">Публичная оферта</a>
+            <span>/</span>
+            <a href="/howto" class="{{Request::is('howto')?'active':''}}">Как оформить заказ</a>
+            <span>/</span>
+            <a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a>
+        </div>
+
+        <!--<div class="curlytitle">
             <a href="/workbook">
                 <img src="/img/winterbook-title.png" width="200"/>
             </a>
             <a href="/workbook" class="btn btn-primary">Как получить бесплатно?</a>
-        </div>
+        </div>-->
     </div>
 </div>
 
@@ -39,6 +53,8 @@
 </div>
 
 <div id="main">
+
+
     <div id="logo">
         <img src="i/logo.png" id="logo"/>
     </div>
