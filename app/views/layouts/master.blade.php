@@ -92,10 +92,19 @@
     </div>
 
     <div class="footer row">
-        <div class="col-xs-6">info@mama-print.ru<br>
+        <div class="col-xs-3">info@mama-print.ru<br>
             +7(908)052-81-87
         </div>
-        <div class="col-xs-6 text-right">&copy; 2014</div>
+        <div class="col-xs-6 text-center">
+            <div class="paygateways-links">
+                <a href="http://webmoney.ru"><img src="/img/onpay-logo.png" width="80"/></a>
+                <!--<a href="http://webmoney.ru"><img src="/img/ic-wm.png"/></a>
+                 begin WebMoney Transfer : attestation label
+                <a href="https://passport.webmoney.ru/asp/certview.asp?wmid=349969046743" target="_blank"><img src="/img/ic-wm-att.png" alt="Здесь находится аттестат нашего WM идентификатора 349969046743" border="0" /><br /><span style="font-size: 0.7em;">Проверить аттестат</span></a>
+                end WebMoney Transfer : attestation label -->
+            </div>
+        </div>
+        <div class="col-xs-3 text-right">&copy; 2014</div>
     </div>
 
 </div>

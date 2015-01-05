@@ -79,7 +79,7 @@ class OrdersController extends BaseController
         $file = base_path() . DIRECTORY_SEPARATOR . 'downloads' . DIRECTORY_SEPARATOR . $catalogItem->id . '.' . $catalogItem->asset_extension;
 
         if (file_exists($file)) {
-            return Response::download($file, $catalogItem->asset_name);
+            return Response::download($file, $catalogItem->asset_name.".".$catalogItem->asset_extension);
         } else {
             Log::error($file . ' does not exists');
             App::abort(404);

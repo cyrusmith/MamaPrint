@@ -12,8 +12,10 @@
     </div>
 
     <div class="preview">
-        <div data-configid="0/10552992" style="width:100%; height:400px;" class="issuuembed"></div>
+
+        <div data-configid="0/10793120" style="width:100%; height:400px;" class="issuuembed"></div>
         <script type="text/javascript" src="//e.issuu.com/embed.js" async="true"></script>
+
     </div>
 
     <div class="row">
@@ -50,7 +52,8 @@
                     <p>или <a href="/login" class="btn btn-sm btn-default">войти</a> и скачать всего <strong>за 39
                             рублей!</strong></p>
                 @endif
-                <p><span style="position: relative;top: 4px;">Оплата с помощью</span> <img src="/img/onpay-logo.png" width="120"></p>
+                <p><span style="position: relative;top: 4px;">Оплата с помощью</span> <img src="/img/onpay-logo.png"
+                                                                                           width="120"></p>
             </div>
 
             <h3>Есть ли в этом какая-то польза?</h3>
@@ -84,7 +87,8 @@
                     <p>или <a href="/login" class="btn btn-sm btn-default">войти</a> и скачать всего <strong>за 39
                             рублей!</strong></p>
                 @endif
-                    <p><span style="position: relative;top: 4px;">Оплата с помощью</span> <img src="/img/onpay-logo.png" width="120"></p>
+                <p><span style="position: relative;top: 4px;">Оплата с помощью</span> <img src="/img/onpay-logo.png"
+                                                                                           width="120"></p>
             </div>
 
         </div>

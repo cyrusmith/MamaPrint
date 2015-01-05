@@ -82,14 +82,6 @@ class PaymentsController extends BaseController
                     || $signature != sha1("check;$payFor;$amountStr;$currency;$mode;" . Config::get('services.onpay.secret'))
                 ) {
 
-                    Log::debug([
-                        'total' => $order->total !== intval(100 * $amount),
-                        'currency' => $currency,
-                        'mode' => $mode,
-                        'signature' => $signature != sha1("check;$payFor;$amountStr;$currency;$mode;" . Config::get('services.onpay.secret')),
-                        'str' => "check;$payFor;$amountStr;$currency;$mode;"
-                    ]);
-
                     return Response::json(array(
                         "status" => false,
                         "pay_for" => $payFor,
@@ -109,9 +101,12 @@ class PaymentsController extends BaseController
 
                 $payFor = Input::get('pay_for');
 
-                $amount = Input::get('balance.amount');
-                $amount = intval($amount * 100) / 100.0;
-                $amountStr = number_format($amount, ($amount == intval($amount)) ? 1 : 2, '.', '');
+                $fromAmount = Input::get('order.from_amount');
+                $fromAmount = intval($fromAmount * 100) / 100.0;
+
+                $balanceAmount = Input::get('balance.amount');
+                $balanceAmount = intval($balanceAmount * 100) / 100.0;
+                $balanceAmountStr = number_format($balanceAmount, ($balanceAmount == intval($balanceAmount)) ? 1 : 2, '.', '');
 
                 $currency = Input::get('balance.way');
                 $signature = Input::get('signature');
@@ -125,14 +120,14 @@ class PaymentsController extends BaseController
                 $balanceWay = $currency;
 
                 Log::debug($signature);
-                Log::debug(sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$amountStr;$balanceWay;" . Config::get('services.onpay.secret')));
-                Log::debug("pay;$payFor;$paymentAmountStr;$paymentWay;$amountStr;$balanceWay;" . Config::get('services.onpay.secret'));
+                Log::debug(sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret')));
+                Log::debug("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
 
                 $order = Order::find($payFor);
                 if (empty($order)
-                    || ($order->total !== intval(100 * $amount))
+                    || ($order->total !== intval(100 * $fromAmount))
                     || ($currency != "RUR" && $currency != "TST")
-                    || $signature != sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$amountStr;$balanceWay;" . Config::get('services.onpay.secret'))
+                    || $signature != sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'))
                 ) {
                     return Response::json(array(
                         "code" => false,
@@ -157,7 +152,7 @@ class PaymentsController extends BaseController
                     }
 
                     $refill = new OperationRefill;
-                    $refill->amount = intval($amount * 100);
+                    $refill->amount = intval($fromAmount * 100);
 
                     $refill->gateway = 'onpay';
                     $refill->gateway_operation_id = $paymentId;
@@ -190,16 +185,16 @@ class PaymentsController extends BaseController
                                 "orderId" => $order->id
                             ), function ($message) use ($todata) {
                                 Log::debug($todata);
-                                $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($todata['email'], empty($todata['name'])?"Клиент mama-print":$todata['name'])->subject('Покупка на сайте mama-print.ru');
+                                $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($todata['email'], empty($todata['name']) ? "Клиент mama-print" : $todata['name'])->subject('Покупка на сайте mama-print.ru');
                             });
                         } catch (Exception $e) {
-                            Log::error("Failed to send message: ".$e->getMessage());
+                            Log::error("Failed to send message: " . $e->getMessage());
                         }
 
                         DB::commit();
 
                         return Response::json(array(
-                            "code" => true,
+                            "status" => true,
                             "pay_for" => $payFor,
                             "signature" => sha1("pay;true;$payFor;" . Config::get('services.onpay.secret'))
                         ), 200);
