@@ -57,7 +57,6 @@ Route::get('/user', array('before' => 'auth', 'uses' => 'UserController@download
 Route::get('/about', function() {
     return View::make('statics.about');
 });
-
 Route::get('/public_offer', function() {
     return View::make('statics.public_offer');
 });
@@ -66,4 +65,10 @@ Route::get('/howto', function() {
 });
 Route::get('/contacts', function() {
     return View::make('statics.contacts');
+});
+
+//admin
+//Route::get('/admin', 'Admin\AdminCatalogController@index');
+Route::get('/admin/catalog', function() {
+    return View::make('admin.catalog.index');
 });
