@@ -121,7 +121,7 @@ class AuthController extends BaseController
         $validator = Validator::make(
             $form,
             array(
-                'password' => array('required', 'strongPassword'),
+                'password' => array('required'),
                 'password2' => array('required', 'same:password'),
                 'name' => array('required'),
                 'email' => array('email', 'required', 'checkUserWithEmail'),
