@@ -15,7 +15,8 @@
 	"requirejs": "latest",
 	"bootstrap": "latest",
 	"magnific-popup": "0.9.9",
-    "headhesive.js": "latest"
+    "headhesive.js": "latest",
+    "tinymce": "4.1.7"
   },
   "ignore": [
     "**/.*",

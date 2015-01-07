@@ -68,7 +68,5 @@ Route::get('/contacts', function() {
 });
 
 //admin
-//Route::get('/admin', 'Admin\AdminCatalogController@index');
-Route::get('/admin/catalog', function() {
-    return View::make('admin.catalog.index');
-});
+Route::get('/admin/catalog', 'Admin\AdminCatalogController@index');
+Route::get('/admin/catalog/add', 'Admin\AdminCatalogController@add');

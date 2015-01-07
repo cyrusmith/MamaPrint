@@ -9,12 +9,23 @@
 namespace Admin;
 
 
-class AdminCatalogController extends BaseController
+use Illuminate\Support\Facades\Lang;
+
+class AdminCatalogController extends AdminController
 {
 
     public function index()
     {
-        return View::make("admin.catalog.index");
+        $this->addToolbarAction('add', 'Новый', 'catalog/add');
+        return $this->makeView("admin.catalog.index");
+    }
+
+    public function add()
+    {
+        $this->setPageTitle(Lang::get('static.admin.pagetitle.catalog'));
+        $this->addToolbarAction('save', 'Сохранить', 'catalog/add', 'post');
+        $this->addToolbarAction('cancel', 'Отмена', 'catalog');
+        return $this->makeView("admin.catalog.save");
     }
 
 }
