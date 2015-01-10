@@ -25,7 +25,7 @@
 
             <div class="authcontrols visible-xs">
                 @if(Auth::check())
-                    <span class="authname">Вы вошли как {{Auth::user()->name}}</span>
+                    <a class="btn btn-sm btn-primary" href="/user" title="{{Auth::user()->name}}">Личный кабинет</a>
                     <a class="btn btn-warning btn-sm" href="/logout">Выйти</a>
                 @else
                     <a class="btn btn-primary btn-sm" href="/login">Войти</a> или <a class="btn btn-link register"
@@ -46,8 +46,8 @@
 
             <p class="authcontrols">
                 @if(Auth::check())
-                    <span>Вы вошли как {{Auth::user()->name}}</span>
-                    <a class="btn btn-warning" href="/logout">Выйти</a>
+                    <a class="btn btn-sm btn-primary" href="/user" title="{{Auth::user()->name}}">Личный кабинет</a>
+                    <a class="btn btn-sm btn-warning" href="/logout">Выйти</a>
                 @else
                     <a class="btn btn-primary btn-sm" href="/login">Войти</a> или <a class="btn btn-link"
                                                                                      href="/register">Зарегистрироваться</a>

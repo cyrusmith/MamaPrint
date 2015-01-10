@@ -52,6 +52,8 @@ Route::get('/pay/fail', function () {
 Route::get('/pay/{orderId}', 'PaymentsController@pay');
 Route::get('/orders/{orderId}/download', 'OrdersController@download')->where(['orderId' => '[0-9]+']);
 
+Route::get('/user', array('before' => 'auth', 'uses' => 'UserController@downloads'));
+
 Route::get('/about', function() {
     return View::make('statics.about');
 });
