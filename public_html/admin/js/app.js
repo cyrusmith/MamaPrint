@@ -1,17 +1,17 @@
-define(['$', 'tinymce'], function ($, tinymce) {
+define(['$', 'tinymce', 'editform'], function ($, tinymce, editform) {
 
     'use strict';
 
     return new App;
 
-
     function App() {
 
         this.init = init;
 
-
         function init() {
             $(function () {
+
+                editform.init();
 
                 $('[data-toggle="tooltip"]').tooltip({
                     container: 'body'

@@ -27,7 +27,7 @@ $base_url =
 	// Get domain portion
 	$_SERVER['HTTP_HOST']; // DON'T TOUCH (base url (only domain) of site (without final /)).
 $upload_dir = '/assets/'; // path from base_url to base of upload folder (with start and final /)
-$current_path = '../../../../assets/'; // relative path from filemanager folder to upload folder (with final /)
+$current_path = '../../../../assets/static'; // relative path from filemanager folder to upload folder (with final /)
 //thumbs folder can't put inside upload folder
 $thumbs_base_path = '../../../../thumbs/'; // relative path from filemanager folder to thumbs folder (with final /)
 

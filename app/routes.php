@@ -70,3 +70,5 @@ Route::get('/contacts', function() {
 //admin
 Route::get('/admin/catalog', 'Admin\AdminCatalogController@index');
 Route::get('/admin/catalog/add', 'Admin\AdminCatalogController@add');
+Route::get('/admin/catalog/edit/{id}', 'Admin\AdminCatalogController@edit');
+Route::post('/admin/catalog/save', 'Admin\AdminCatalogController@save');

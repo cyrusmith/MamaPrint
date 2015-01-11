@@ -31,4 +31,22 @@ class CatalogItem extends Eloquent
         return (int)$this->price;
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany('Catalog\Tag', 'tag_catalog_item');
+    }
+
+    public function getTagsAsString($separator = ',')
+    {
+        if ($this->tags->isEmpty()) {
+            return '';
+        }
+
+        $names = [];
+        foreach ($this->tags as $tag) {
+            $names[] = $tag->tag;
+        }
+        return implode($separator, $names);
+    }
+
 }

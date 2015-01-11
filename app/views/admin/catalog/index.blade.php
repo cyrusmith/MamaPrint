@@ -1,9 +1,29 @@
 @extends('layouts.admin')
 
 @section('pagetitle')
-   Каталог
+    Каталог
 @stop
 
 @section('content')
-    Hello catatlog!
+
+
+    @if($items->isEmpty())
+        <h3>Пока ни одного товара не добавлено</h3>
+    @else
+        <table class="table">
+            @foreach($items as $item)
+                <tr>
+                    <td><a href="{{URL::action('Admin\AdminCatalogController@edit', [
+                        'id' => $item->id
+                    ])}}">{{$item->title}}</a></td>
+                    <td>{{$item->price/100}}
+                        @if($item->old_price > 0)
+                            <strike>{{$item->old_price/100}}</strike>
+                        @endif</td>
+                    <td>{{$item->getTagsAsString()}}</td>
+                </tr>
+            @endforeach
+        </table>
+    @endif
+
 @stop

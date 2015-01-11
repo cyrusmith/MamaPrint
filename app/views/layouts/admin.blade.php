@@ -53,17 +53,18 @@
             <div class="panel-body row">
 
                 <div class="col-sm-2">
-                    @if(!empty($pagetitle))
-                        {{$pagetitle}}
-                    @else
-                        @yield('title')
-                    @endif
-
+                    <h4>
+                        @if(!empty($pagetitle))
+                            {{$pagetitle}}
+                        @else
+                            @yield('title')
+                        @endif
+                    </h4>
                 </div>
                 <div class="col-sm-10 text-right">
                     @if(isset($toolbaractions) && !empty($toolbaractions))
                         @foreach($toolbaractions as $action)
-                            <a class="btn btn-default dropdown-toggle admin-action-{{$action['method']}}" type="button"
+                            <a class="btn btn-default admin-action-{{$action['method']}}" type="button"
                                href="/admin/{{$action['url']}}">
                                 {{$action['title']}}
                             </a>
