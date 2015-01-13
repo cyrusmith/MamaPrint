@@ -15,10 +15,10 @@ class Catalog extends Migration
     {
         Schema::table('catalog_items', function ($table) {
             $table->dropColumn(array('asset_extension', 'asset_name'));
-            $table->string('old_price');
-            $table->string('info_age');
-            $table->string('info_targets');
-            $table->string('info_level');
+            $table->string('old_price')->nullable();
+            $table->string('info_age')->nullable();
+            $table->string('info_targets')->nullable();
+            $table->string('info_level')->nullable();
         });
 
         Schema::create('tags', function ($table) {

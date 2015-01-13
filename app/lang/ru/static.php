@@ -1,6 +1,7 @@
 <?php
 return [
     'admin.save' => 'Сохранить',
+    'admin.currency.rub' => 'руб.',
     'admin.catitem.title' => 'Название',
     'admin.catitem.title.help' => 'Заголовок товара',
     'admin.catitem.breaf' => 'Короткое описание',

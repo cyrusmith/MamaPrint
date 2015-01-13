@@ -15,4 +15,8 @@ class BaseController extends Controller {
 		}
 	}
 
+	protected function withErrorMessage($response, $msg) {
+		return $response->with('error', $msg);
+	}
+
 }
