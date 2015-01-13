@@ -104,38 +104,12 @@
             @endif
         </div>
 
-        <fieldset>
-            <legend>Файлы</legend>
+        <fieldset class="attachments">
+            <legend><span class="glyphicon glyphicon-file"></span> Файлы</legend>
 
-            <div class="attachments" data-controller="AttachmentsController">
+            <div class="attachmentslist" data-widget="attachments">
 
                 <ul class="list" data-container="attachments">
-                    <li class="panel panel-default">
-                        <div class="panel-heading">{{Lang::get('static.admin.catitem.attachment')}}</div>
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label for="attachment1title"
-                                       class="control-label">{{Lang::get('static.admin.catitem.attachmenttitle')}}</label>
-                                <input type="text" class="form-control" id="attachment1title">
-                            </div>
-                            <div class="form-group">
-                                <label for="attachment1description"
-                                       class="control-label">{{Lang::get('static.admin.catitem.attachmentdescription')}}</label>
-                                <textarea id="attachment1description" name="attachment1description"
-                                          class="form-control"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="attachment1"
-                                       class="control-label">{{Lang::get('static.admin.catitem.choosefile')}}</label>
-                                <input type="file" id="attachment1">
-                            </div>
-                            <p class="text-right">
-                                <a class="btn btn-default btn-danger btn-sm" data-control="addfile"><span
-                                            class="glyphicon glyphicon-trash"></span> {{Lang::get('static.admin.removeattachment')}}</a>
-                            </p>
-                        </div>
-
-                    </li>
                 </ul>
 
                 <a class="btn btn-default btn-primary btn-sm" data-control="addfile"><span
@@ -146,7 +120,7 @@
         </fieldset>
 
         <fieldset>
-            <legend>Доп. информация</legend>
+            <legend><span class="glyphicon glyphicon-info-sign"></span> Доп. информация</legend>
             <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
                 <label for="catitemage" class="control-label">{{Lang::get('static.admin.catitem.age')}}</label>
                 <input type="text" class="form-control" id="catitemage"
@@ -180,4 +154,54 @@
         <button type="submit" class="btn btn-default">{{Lang::get('static.admin.save')}}</button>
         <input type="hidden" name="id" value="{{$data['id'] or ''}}">
     </form>
+
+
+    <script type="x-tpl" id="attachment-item-tpl">
+        <li class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h4>{{Lang::get('static.admin.catitem.attachment')}}</h4>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <a class="btn btn-default btn-danger btn-xs" data-control="removefile"><span
+                                                class="glyphicon glyphicon-trash"></span> {{Lang::get('static.admin.removeattachment')}}
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="attachment1title"
+                                       class="control-label">{{Lang::get('static.admin.catitem.attachmenttitle')}}</label>
+                                <input type="text" class="form-control" id="attachment1title">
+                            </div>
+                            <div class="form-group">
+                                <label for="attachment1description"
+                                       class="control-label">{{Lang::get('static.admin.catitem.attachmentdescription')}}</label>
+                                <textarea id="attachment1description" name="attachment1description"
+                                          class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="attachment1"
+                                       class="control-label">{{Lang::get('static.admin.catitem.choosefile')}}</label>
+                                <input type="file" id="attachment1">
+                            </div>
+                            <dl>
+                                <dl>
+                                    <dt>{{Lang::get('static.admin.catitem.attachment.extension')}}</dt>
+                                    <dd>pdf</dd>
+                                    <dt>{{Lang::get('static.admin.catitem.attachment.mime')}}</dt>
+                                    <dd>application/pdf</dd>
+                                    <dt>{{Lang::get('static.admin.catitem.attachment.size')}}</dt>
+                                    <dd>123456</dd>
+                                </dl>
+                            </dl>
+                        </div>
+
+                    </li>
+
+    </script>
+
 @stop

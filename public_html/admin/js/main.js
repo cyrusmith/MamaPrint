@@ -6,7 +6,9 @@
 require.config({
     paths: {
         '$': '../../bower_components/jquery/dist/jquery',
-        'bootstrap': '../../bower_components/bootstrap/dist/js/bootstrap',
+        'twitterbootstrap': '../../bower_components/bootstrap/dist/js/bootstrap',
+        'backbone': '../../bower_components/backbone/backbone',
+        'underscore': '../../bower_components/underscore/underscore',
         'requireLib': '../../bower_components/requirejs/require',
         'tinymce': '../lib/tinymce/js/tinymce/tinymce.min'
     },
@@ -15,13 +17,19 @@ require.config({
         '$': {
             exports: 'jQuery'
         },
-        bootstrap: ['$'],
+        twitterbootstrap: ['$'],
         tinymce: {
             exports: 'tinymce'
+        },
+        backbone: {
+            deps: ['$', 'underscore'],
+            exports: 'Backbone'
+        },
+        underscore: {
+            exports: '_'
         }
     },
-    include: ['requireLib', 'main']
+    include: ['requireLib', 'twitterbootstrap', 'bootstrap']
 });
-require(['app', 'bootstrap', 'tinymce'], function (app) {
-	app.init();
-});
+
+require(['bootstrap']);
