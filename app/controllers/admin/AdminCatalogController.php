@@ -23,7 +23,7 @@ class AdminCatalogController extends AdminController
     {
 
         $items = CatalogItem::paginate(10);
-
+        $this->setPageTitle(Lang::get('static.admin.pagetitle.catalog'));
         $this->addToolbarAction('add', 'Новый', 'catalog/add');
         return $this->makeView("admin.catalog.index", [
             'items' => $items
@@ -33,7 +33,7 @@ class AdminCatalogController extends AdminController
     public function add()
     {
         $item = new CatalogItem;
-        $this->setPageTitle(Lang::get('static.admin.pagetitle.catalog'));
+        $this->setPageTitle(Lang::get('static.admin.pagetitle.addcatalogitem'));
         $this->addToolbarAction('save', 'Сохранить', 'catalog/save', 'post');
         $this->addToolbarAction('cancel', 'Отмена', 'catalog');
         return $this->makeView("admin.catalog.save", [
@@ -51,7 +51,7 @@ class AdminCatalogController extends AdminController
             App::abort(404);
         }
 
-        $this->setPageTitle(Lang::get('static.admin.pagetitle.catalog'));
+        $this->setPageTitle($item->title);
         $this->addToolbarAction('save', 'Сохранить', 'catalog/save', 'post');
         $this->addToolbarAction('cancel', 'Отмена', 'catalog');
         return $this->makeView("admin.catalog.save", [
@@ -121,13 +121,17 @@ class AdminCatalogController extends AdminController
 
             $item->save();
 
+            $id = $item->id;
+
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
             return $this->withErrorMessage(Redirect::action('Admin\AdminCatalogController@' . ($form['id'] ? 'edit' . $form['id'] : 'add')), $e->getMessage());
         }
 
-        return Redirect::to('/admin/catalog');
+        return $this->withSuccessMessage(Redirect::action('Admin\AdminCatalogController@edit', [
+            'id' => $id
+        ]), Lang::get('messages.admin.catalogitemsaved'));
     }
 
 }

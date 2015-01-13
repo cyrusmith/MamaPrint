@@ -89,7 +89,8 @@
 
         <div class="form-group {{$errors->has('long_description')?'has-error':''}}">
             <label for="article" class="control-label">{{Lang::get('static.admin.catitem.descr')}}</label>
-            <textarea class="wysiwyg" name="long_description">{{$data['short_description'] or ''}}</textarea>
+            <textarea class="wysiwyg" name="long_description"
+                      class="form-control">{{$data['long_description'] or ''}}</textarea>
             @if($errors->has('long_description'))
                 <p class="text-danger">{{$errors->first('long_description')}}</p>
             @endif
@@ -102,6 +103,47 @@
                 <p class="text-danger">{{$errors->first('tags')}}</p>
             @endif
         </div>
+
+        <fieldset>
+            <legend>Файлы</legend>
+
+            <div class="attachments" data-controller="AttachmentsController">
+
+                <ul class="list" data-container="attachments">
+                    <li class="panel panel-default">
+                        <div class="panel-heading">{{Lang::get('static.admin.catitem.attachment')}}</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="attachment1title"
+                                       class="control-label">{{Lang::get('static.admin.catitem.attachmenttitle')}}</label>
+                                <input type="text" class="form-control" id="attachment1title">
+                            </div>
+                            <div class="form-group">
+                                <label for="attachment1description"
+                                       class="control-label">{{Lang::get('static.admin.catitem.attachmentdescription')}}</label>
+                                <textarea id="attachment1description" name="attachment1description"
+                                          class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="attachment1"
+                                       class="control-label">{{Lang::get('static.admin.catitem.choosefile')}}</label>
+                                <input type="file" id="attachment1">
+                            </div>
+                            <p class="text-right">
+                                <a class="btn btn-default btn-danger btn-sm" data-control="addfile"><span
+                                            class="glyphicon glyphicon-trash"></span> {{Lang::get('static.admin.removeattachment')}}</a>
+                            </p>
+                        </div>
+
+                    </li>
+                </ul>
+
+                <a class="btn btn-default btn-primary btn-sm" data-control="addfile"><span
+                            class="glyphicon glyphicon-plus"></span> {{Lang::get('static.admin.addattachment')}}</a>
+
+            </div>
+
+        </fieldset>
 
         <fieldset>
             <legend>Доп. информация</legend>

@@ -13,6 +13,9 @@
         <table class="table">
             @foreach($items as $item)
                 <tr>
+                    <td>
+                        # {{$item->id}}
+                    </td>
                     <td><a href="{{URL::action('Admin\AdminCatalogController@edit', [
                         'id' => $item->id
                     ])}}">{{$item->title}}</a></td>

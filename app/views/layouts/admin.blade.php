@@ -52,7 +52,7 @@
         <div class="panel panel-default">
             <div class="panel-body row">
 
-                <div class="col-sm-2">
+                <div class="col-sm-4">
                     <h4>
                         @if(!empty($pagetitle))
                             {{$pagetitle}}
@@ -61,7 +61,7 @@
                         @endif
                     </h4>
                 </div>
-                <div class="col-sm-10 text-right">
+                <div class="col-sm-8 text-right">
                     @if(isset($toolbaractions) && !empty($toolbaractions))
                         @foreach($toolbaractions as $action)
                             <a class="btn btn-default admin-action-{{$action['method']}}" type="button"
@@ -74,6 +74,24 @@
 
             </div>
         </div>
+
+        @if(Session::get('error'))
+            @define $msg = Session::pull('error')
+            @define $msgType = 'error'
+        @endif
+
+        @if(Session::get('success'))
+            @define $msg = Session::pull('success')
+            @define $msgType = 'success'
+        @endif
+
+        @if(isset($msg))
+            <div class="alert alert-{{$msgType}} alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
+                {{$msg}}
+            </div>
+        @endif
         @yield('content')
     </div>
 </div>

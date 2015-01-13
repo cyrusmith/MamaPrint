@@ -24,4 +24,7 @@ return [
     'admin.catitem.targets.help' => 'Что развиваем',
     'admin.catitem.level' => 'Уровень',
     'admin.catitem.level.help' => 'Легкий, средний, стожный, и т.п.',
+    'admin.pagetitle.addcatalogitem' => 'Новый товар',
+    'admin.addattachment' => 'Добавить файл',
+    'admin.removeattachment' => 'Удалить файл',
 ];

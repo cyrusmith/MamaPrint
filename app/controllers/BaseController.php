@@ -19,4 +19,8 @@ class BaseController extends Controller {
 		return $response->with('error', $msg);
 	}
 
+	protected function withSuccessMessage($response, $msg) {
+		return $response->with('success', $msg);
+	}
+
 }

@@ -1,5 +1,6 @@
 <?php
 return [
     'insufficient_amount' => 'Недостаточно средств',
-    'thankyou_registration' => 'Спасибо за регистрацию!'
+    'thankyou_registration' => 'Спасибо за регистрацию!',
+    'admin.catalogitemsaved' => 'Товар сохранен',
 ];
