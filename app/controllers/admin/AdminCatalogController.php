@@ -9,6 +9,7 @@
 namespace Admin;
 
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
@@ -51,11 +52,14 @@ class AdminCatalogController extends AdminController
             App::abort(404);
         }
 
+        $attachments = \Attachment::ofModel(\Attachment::MODEL_CATALOGITEM)->where('model_id', '=', $id)->get();
+
         $this->setPageTitle($item->title);
         $this->addToolbarAction('save', 'Сохранить', 'catalog/save', 'post');
         $this->addToolbarAction('cancel', 'Отмена', 'catalog');
         return $this->makeView("admin.catalog.save", [
-            'data' => $item->toArray()
+            'data' => $item->toArray(),
+            'attachments' => $attachments->toJSON()
         ]);
     }
 
@@ -63,6 +67,8 @@ class AdminCatalogController extends AdminController
     {
 
         $id = intval(Input::get('id'));
+
+        $isNew = $id > 0;
 
         $form = array(
             'id' => Input::get('id'),
@@ -122,6 +128,32 @@ class AdminCatalogController extends AdminController
             $item->save();
 
             $id = $item->id;
+
+            $files = Input::file();
+
+            if (array_key_exists('attachment', $files)) {
+
+                for ($i = 0; $i < count($files['attachment']); $i++) {
+                    $file = $files['attachment'][$i];
+                    $title = Input::get('attachment_title.' . $i);
+                    $description = Input::get('attachment_description.' . $i);
+
+                    $attachment = new \Attachment();
+                    $attachment->title = $title;
+                    $attachment->description = $description;
+                    $attachment->mime = is_string($file->getMimeType()) ? $file->getMimeType() : $file->getClientMimeType();
+                    $attachment->extension = is_string($file->guessExtension()) ? $file->guessExtension() : $file->getExtension();
+                    $attachment->size = $file->getClientSize();
+                    $attachment->model = \Attachment::MODEL_CATALOGITEM;
+                    $attachment->model_id = $id;
+
+                    $attachment->save();
+
+                    App::make('AttachmentService')->saveUploadedFile($file, $attachment);
+
+                }
+
+            }
 
             DB::commit();
         } catch (Exception $e) {

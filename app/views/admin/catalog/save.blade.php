@@ -11,7 +11,8 @@
 @stop
 
 @section('content')
-    <form role="form" action="{{URL::action('Admin\AdminCatalogController@save')}}" method="post">
+    <form role="form" action="{{URL::action('Admin\AdminCatalogController@save')}}" method="post"
+          enctype="multipart/form-data">
         <div class="form-group {{$errors->has('title')?'has-error':''}}">
             <label for="catitemtitle" class="control-label">{{Lang::get('static.admin.catitem.title')}}</label>
             <input type="text" class="form-control" id="catitemtitle"
@@ -156,6 +157,11 @@
     </form>
 
 
+
+    <script type="x-tpl" id="attachment-item-models-json">
+        {{$attachments or '[]'}}
+    </script>
+
     <script type="x-tpl" id="attachment-item-tpl">
         <li class="panel panel-default">
                         <div class="panel-heading">
@@ -173,34 +179,35 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="attachment1title"
+                                <label for="attachment<%= id %>title"
                                        class="control-label">{{Lang::get('static.admin.catitem.attachmenttitle')}}</label>
-                                <input type="text" class="form-control" id="attachment1title">
+                                <input type="text" class="form-control" id="attachment<%= id %>title" name="attachment_title[]" value="<%= title %>">
                             </div>
                             <div class="form-group">
-                                <label for="attachment1description"
+                                <label for="attachment<%= id %>description"
                                        class="control-label">{{Lang::get('static.admin.catitem.attachmentdescription')}}</label>
-                                <textarea id="attachment1description" name="attachment1description"
-                                          class="form-control"></textarea>
+                                <textarea id="attachment<%= id %>description"
+                                          class="form-control" name="attachment_description[]"><%= description %></textarea>
                             </div>
                             <div class="form-group">
                                 <label for="attachment1"
                                        class="control-label">{{Lang::get('static.admin.catitem.choosefile')}}</label>
-                                <input type="file" id="attachment1">
+                                <input type="file" name="attachment[]" id="attachment<%= id %>" required>
                             </div>
                             <dl>
                                 <dl>
                                     <dt>{{Lang::get('static.admin.catitem.attachment.extension')}}</dt>
-                                    <dd>pdf</dd>
+                                    <dd><%= extension %></dd>
                                     <dt>{{Lang::get('static.admin.catitem.attachment.mime')}}</dt>
-                                    <dd>application/pdf</dd>
+                                    <dd><%= mime %></dd>
                                     <dt>{{Lang::get('static.admin.catitem.attachment.size')}}</dt>
-                                    <dd>123456</dd>
+                                    <dd><%= size %></dd>
                                 </dl>
                             </dl>
                         </div>
 
                     </li>
+
 
     </script>
 

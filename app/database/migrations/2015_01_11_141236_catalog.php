@@ -43,6 +43,8 @@ class Catalog extends Migration
             $table->string('mime');
             $table->string('extension');
             $table->bigInteger('size');
+            $table->dateTime('updated_at');
+            $table->dateTime('created_at');
         });
 
     }
