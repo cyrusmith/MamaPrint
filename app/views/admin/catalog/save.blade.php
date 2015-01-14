@@ -13,6 +13,14 @@
 @section('content')
     <form role="form" action="{{URL::action('Admin\AdminCatalogController@save')}}" method="post"
           enctype="multipart/form-data">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"
+                @if($data['active'])
+                       checked="checked"
+                @endif value="1" name="active"> Active
+            </label>
+        </div>
         <div class="form-group {{$errors->has('title')?'has-error':''}}">
             <label for="catitemtitle" class="control-label">{{Lang::get('static.admin.catitem.title')}}</label>
             <input type="text" class="form-control" id="catitemtitle"
@@ -99,6 +107,7 @@
         <div class="form-group {{$errors->has('tags')?'has-error':''}}">
             <label for="catitemtags" class="control-label">{{Lang::get('static.admin.catitem.tags')}}</label>
             <input type="text" class="form-control" id="catitemtags"
+                   name="tags"
                    placeholder="{{Lang::get('static.admin.catitem.tags.help')}}" value="{{$data['tags'] or ''}}">
             @if($errors->has('tags'))
                 <p class="text-danger">{{$errors->first('tags')}}</p>
@@ -125,7 +134,9 @@
             <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
                 <label for="catitemage" class="control-label">{{Lang::get('static.admin.catitem.age')}}</label>
                 <input type="text" class="form-control" id="catitemage"
-                       placeholder="{{Lang::get('static.admin.catitem.age.help')}}" value="{{$data['info_age'] or ''}}">
+                       placeholder="{{Lang::get('static.admin.catitem.age.help')}}"
+                       name="info_age"
+                       value="{{$data['info_age'] or ''}}">
                 @if($errors->has('info_age'))
                     <p class="text-danger">{{$errors->first('info_age')}}</p>
                 @endif
@@ -135,6 +146,7 @@
                 <label for="catitemtargets" class="control-label">{{Lang::get('static.admin.catitem.targets')}}</label>
                 <input type="text" class="form-control" id="catitemtargets"
                        placeholder="{{Lang::get('static.admin.catitem.targets.help')}}"
+                       name="info_targets"
                        value="{{$data['info_targets'] or ''}}">
                 @if($errors->has('info_targets'))
                     <p class="text-danger">{{$errors->first('info_targets')}}</p>
@@ -144,6 +156,7 @@
             <div class="form-group {{$errors->has('info_level')?'has-error':''}}">
                 <label for="catitemlevel" class="control-label">{{Lang::get('static.admin.catitem.level')}}</label>
                 <input type="text" class="form-control" id="catitemlevel"
+                       name="info_level"
                        placeholder="{{Lang::get('static.admin.catitem.level.help')}}"
                        value="{{$data['info_level'] or ''}}">
                 @if($errors->has('info_level'))
@@ -160,6 +173,9 @@
 
     <script type="x-tpl" id="attachment-item-models-json">
         {{$attachments or '[]'}}
+
+
+
     </script>
 
     <script type="x-tpl" id="attachment-item-tpl">
@@ -181,19 +197,26 @@
                             <div class="form-group">
                                 <label for="attachment<%= id %>title"
                                        class="control-label">{{Lang::get('static.admin.catitem.attachmenttitle')}}</label>
-                                <input type="text" class="form-control" id="attachment<%= id %>title" name="attachment_title[]" value="<%= title %>">
+                                <input data-field="title" type="text" class="form-control" id="attachment<%= id %>
+        title" name="attachment_title[]" value="<%= title %>">
                             </div>
                             <div class="form-group">
                                 <label for="attachment<%= id %>description"
                                        class="control-label">{{Lang::get('static.admin.catitem.attachmentdescription')}}</label>
-                                <textarea id="attachment<%= id %>description"
+                                <textarea data-field="description" id="attachment<%= id %>description"
                                           class="form-control" name="attachment_description[]"><%= description %></textarea>
                             </div>
+                            <% if (!id) { %>
                             <div class="form-group">
                                 <label for="attachment1"
                                        class="control-label">{{Lang::get('static.admin.catitem.choosefile')}}</label>
                                 <input type="file" name="attachment[]" id="attachment<%= id %>" required>
                             </div>
+                            <% } else { %>
+                                <div class="downloadlink">
+                                    <span class="glyphicon glyphicon-download"></span><a href="/admin/attachments/<%= id %>/download">Скачать</a>
+                                </div>
+                            <% }  %>
                             <dl>
                                 <dl>
                                     <dt>{{Lang::get('static.admin.catitem.attachment.extension')}}</dt>
@@ -205,8 +228,22 @@
                                 </dl>
                             </dl>
                         </div>
-
+                         <% if (!!id) { %>
+                        <div class="savecontrols text-right">
+                                        <a class="btn btn-primary btn-xs" data-control="savefile"><span
+                                                    class="glyphicon glyphicon-check"></span> {{Lang::get('static.admin.saveattachment')}}
+                                        </a>
+                               <div class="progress">
+                                  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                    <span class="sr-only">In progress</span>
+                                  </div>
+                               </div>
+                        </div>
+                         <% }  %>
                     </li>
+
+
+
 
 
     </script>

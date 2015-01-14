@@ -3,6 +3,7 @@ return [
     'admin.save' => 'Сохранить',
     'admin.currency.rub' => 'руб.',
     'admin.addattachment' => 'Добавить файл',
+    'admin.saveattachment' => 'Сохранить информацию о файле',
     'admin.removeattachment' => 'Удалить файл',
     'admin.pagetitle.addcatalogitem' => 'Новый товар',
     'admin.catitem.title' => 'Название',
@@ -35,4 +36,6 @@ return [
     'admin.catitem.attachment.extension' => 'Расширение',
     'admin.catitem.attachment.mime' => 'Mime-тип',
     'admin.catitem.attachment.size' => 'Размер',
+    'admin.catitem.active' => 'Активный',
+    'admin.catitem.inactive' => 'Неактивный',
 ];

@@ -11,6 +11,7 @@ namespace Catalog;
 
 use Eloquent;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class CatalogItem extends Eloquent
 {
@@ -47,6 +48,31 @@ class CatalogItem extends Eloquent
             $names[] = $tag->tag;
         }
         return implode($separator, $names);
+    }
+
+    public function updateTags($tagTags)
+    {
+        try {
+            DB::beginTransaction();
+            $this->tags()->detach();;
+            $tags = [];
+            foreach ($tagTags as $tagTag) {
+                $tag = Tag::whereTag($tagTag)->first();
+                if (empty($tag)) {
+                    $tag = new Tag;
+                    $tag->tag = $tagTag;
+                    $tag->save();
+                }
+                $tags[] = $tag;
+            }
+
+            $this->tags()->saveMany($tags);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+
     }
 
 }

@@ -7,6 +7,25 @@
     padding-left: 0;
     li {
       list-style-type: none;
+
+      .savecontrols {
+        padding: 1em;
+        .progress {
+          display: none;
+        }
+        &.inprogress {
+          .progress {
+            display: inherit;
+          }
+          .btn {
+            display: none;
+          }
+        }
+      }
+
+      .downloadlink {
+        padding: 1em 0 .5em;
+      }
     }
   }
 }
@@ -15,4 +34,3 @@ fieldset.attachments {
   margin-top: 2em;
   padding-bottom: 2em;
 }
-

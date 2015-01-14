@@ -13,9 +13,12 @@ define([
 
     function init(el) {
 
-        var files = new Backbone.Collection([], {
+        var FilesCollection = Backbone.Collection.extend({
+            url: '/admin/api/v1/attachments',
             model: File
         });
+
+        var files = new FilesCollection;
 
         var attachmentsView = new AttachmentsListView({
             el: el,

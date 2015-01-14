@@ -30,6 +30,14 @@ class AttachmentService
 
     }
 
+    public function getFilePath($id)
+    {
+        $attachment = Attachment::find($id);
+        $DS = DIRECTORY_SEPARATOR;
+        $path = Config::get('mamaprint.attachments_path') . $DS . $attachment->model . $DS . $attachment->model_id . $DS . $attachment->id . $DS . 'original.' . $attachment->extension;
+        return file_exists($path) ? $path : null;
+    }
+
     public function deleteAttachment($id)
     {
         try {

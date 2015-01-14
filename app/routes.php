@@ -54,16 +54,16 @@ Route::get('/orders/{orderId}/download', 'OrdersController@download')->where(['o
 
 Route::get('/user', array('before' => 'auth', 'uses' => 'UserController@downloads'));
 
-Route::get('/about', function() {
+Route::get('/about', function () {
     return View::make('statics.about');
 });
-Route::get('/public_offer', function() {
+Route::get('/public_offer', function () {
     return View::make('statics.public_offer');
 });
-Route::get('/howto', function() {
+Route::get('/howto', function () {
     return View::make('statics.howto');
 });
-Route::get('/contacts', function() {
+Route::get('/contacts', function () {
     return View::make('statics.contacts');
 });
 
@@ -72,3 +72,9 @@ Route::get('/admin/catalog', 'Admin\AdminCatalogController@index');
 Route::get('/admin/catalog/add', 'Admin\AdminCatalogController@add');
 Route::get('/admin/catalog/edit/{id}', 'Admin\AdminCatalogController@edit');
 Route::post('/admin/catalog/save', 'Admin\AdminCatalogController@save');
+
+Route::get('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@view');
+Route::put('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@update');
+Route::delete('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@delete');
+
+Route::get('/admin/attachments/{id}/download', 'Admin\AdminAttachmentController@download');

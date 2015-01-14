@@ -1,3 +1,7 @@
+<?php
+use Illuminate\Support\Facades\Lang;
+?>
+
 @extends('layouts.admin')
 
 @section('pagetitle')
@@ -23,6 +27,14 @@
                         @if($item->old_price > 0)
                             <strike>{{$item->old_price/100}}</strike>
                         @endif</td>
+                    <td>
+                        @if($item->active)
+                            {{Lang::get('static.admin.catitem.active')}}
+                        @else
+                            {{Lang::get('static.admin.catitem.inactive')}}
+                        @endif
+
+                    </td>
                     <td>{{$item->getTagsAsString()}}</td>
                 </tr>
             @endforeach

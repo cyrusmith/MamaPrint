@@ -38,7 +38,9 @@ class AdminCatalogController extends AdminController
         $this->addToolbarAction('save', 'Сохранить', 'catalog/save', 'post');
         $this->addToolbarAction('cancel', 'Отмена', 'catalog');
         return $this->makeView("admin.catalog.save", [
-                'data' => $item->toArray()
+                'data' => array_merge($item->toArray(), [
+                    'tags' => $item->getTagsAsString()
+                ])
             ]
         );
     }
@@ -58,7 +60,9 @@ class AdminCatalogController extends AdminController
         $this->addToolbarAction('save', 'Сохранить', 'catalog/save', 'post');
         $this->addToolbarAction('cancel', 'Отмена', 'catalog');
         return $this->makeView("admin.catalog.save", [
-            'data' => $item->toArray(),
+            'data' => array_merge($item->toArray(), [
+                'tags' => $item->getTagsAsString()
+            ]),
             'attachments' => $attachments->toJSON()
         ]);
     }
@@ -73,6 +77,7 @@ class AdminCatalogController extends AdminController
         $form = array(
             'id' => Input::get('id'),
             'title' => Input::get('title'),
+            'active' => Input::get('active'),
             'slug' => Input::get('slug'),
             'short_description' => mb_strtolower(Input::get('short_description')),
             'long_description' => Input::get('long_description'),
@@ -102,6 +107,16 @@ class AdminCatalogController extends AdminController
             ] : [])->withErrors($validator)->with('data', $form);
         }
 
+        $tags = array_filter(array_map(function ($tag) {
+            return trim($tag);
+        }, explode(",", Input::get('tags'))), function($tag) {
+            return !empty($tag);
+        });
+
+        if (empty($tags)) {
+            $tags = [];
+        }
+
         try {
             DB::beginTransaction();
             $item = null;
@@ -114,6 +129,7 @@ class AdminCatalogController extends AdminController
                 $item = new CatalogItem();
             }
 
+            $item->active = $form['active'];
             $item->title = $form['title'];
             $item->slug = $form['slug'];
             $item->short_description = $form['short_description'];
@@ -154,6 +170,8 @@ class AdminCatalogController extends AdminController
                 }
 
             }
+
+            $item->updateTags($tags);
 
             DB::commit();
         } catch (Exception $e) {
