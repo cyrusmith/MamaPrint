@@ -39,7 +39,8 @@ class DatabaseSeeder extends Seeder
 
             $gallery = new \Gallery\Gallery();
             $gallery->save();
-            \Gallery\GalleryRelation::createRelation($winterBook, $gallery);
+
+            $winterBook->galleries()->save($gallery);
 
             // $this->call('UserTableSeeder');
         });

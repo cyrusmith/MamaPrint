@@ -14,6 +14,7 @@ define([
     function init(el) {
 
         var ImagesCollection = Backbone.Collection.extend({
+            url: '/admin/gallery',
             model: Image
         });
 
@@ -24,8 +25,8 @@ define([
             model: images
         });
 
-        /*
-        var modelsJson = $('#attachment-item-models-json').text();
+
+        var modelsJson = $('#gallery-images-json').text();
 
         var modelsData = JSON.parse(modelsJson);
 
@@ -34,7 +35,7 @@ define([
                 images.add(modelsData[i]);
             }
         }
-        */
+
 
     }
 

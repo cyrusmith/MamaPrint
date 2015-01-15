@@ -77,7 +77,7 @@
 
         @if(Session::get('error'))
             @define $msg = Session::pull('error')
-            @define $msgType = 'error'
+            @define $msgType = 'danger'
         @endif
 
         @if(Session::get('success'))

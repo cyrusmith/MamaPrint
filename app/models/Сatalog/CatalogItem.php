@@ -75,4 +75,9 @@ class CatalogItem extends Eloquent
 
     }
 
+    public function galleries()
+    {
+        return $this->morphToMany('Gallery\Gallery', 'gallery_relation');
+    }
+
 }

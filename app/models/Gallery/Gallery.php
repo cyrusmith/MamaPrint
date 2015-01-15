@@ -16,4 +16,9 @@ class Gallery extends Eloquent
 
     protected $table = 'galleries';
 
+    public function images()
+    {
+        return $this->hasMany('Gallery\GalleryImage');
+    }
+
 }

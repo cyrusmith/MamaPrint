@@ -11,12 +11,13 @@
 @stop
 
 @section('content')
+
     <form role="form" action="{{URL::action('Admin\AdminCatalogController@save')}}" method="post"
           enctype="multipart/form-data">
         <div class="checkbox">
             <label>
                 <input type="checkbox"
-                @if($data['active'])
+                       @if(!isset($data['active']) || $data['active']))
                        checked="checked"
                        @endif value="1" name="active"> Active
             </label>
@@ -191,24 +192,17 @@
 
     <script type="x-tpl" id="attachment-item-models-json">
         {{$attachments or '[]'}}
+    </script>
 
-
-
-
-
-
-
-
-
-
-
+    <script type="x-tpl" id="gallery-images-json">
+        {{$images or '[]'}}
     </script>
 
     <script type="x-tpl" id="gallery-item-tpl">
         <li>
-            <a href="<%= path %>"
+            <a href="/images/<%= id %>"
                class="img-rounded"
-               style="background:url(<%= pathThumb %>) no-repeat 50% 50%;background-size: auto 100%;"
+               style="background:url(/images/<%= id %>?width=200&height=220&crop=1) no-repeat 50% 50%;background-size: auto 100%;"
                target="_blank">
                <% if(!id) { %>
 
@@ -220,6 +214,8 @@
                 <span class="control-delete btn btn-xs btn-danger glyphicon glyphicon-trash"></span>
             </a>
         </li>
+
+
 
     </script>
     <script type="x-tpl" id="attachment-item-tpl">
@@ -285,6 +281,8 @@
                         </div>
                          <% }  %>
                     </li>
+
+
 
 
 

@@ -93,7 +93,11 @@ App::singleton('AttachmentService', function ($app) {
     return new AttachmentService();
 });
 
-Blade::extend(function($value) {
+App::singleton('GalleryService', function ($app) {
+    return new GalleryService();
+});
+
+Blade::extend(function ($value) {
     return preg_replace('/\@define(.+)/', '<?php ${1}; ?>', $value);
 });
 

@@ -78,3 +78,7 @@ Route::put('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@up
 Route::delete('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@delete');
 
 Route::get('/admin/attachments/{id}/download', 'Admin\AdminAttachmentController@download');
+
+Route::delete('/admin/gallery/{id}', 'GalleryController@deleteImage');
+
+Route::get('/images/{id}', 'GalleryController@view');

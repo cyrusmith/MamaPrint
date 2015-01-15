@@ -57,9 +57,9 @@ class Catalog extends Migration
 
         Schema::create('gallery_relations', function ($table) {
             $table->increments('id');
-            $table->enum('model', array(Attachment::MODEL_ARTICLE, Attachment::MODEL_CATALOGITEM));
-            $table->bigInteger('model_id');
             $table->bigInteger('gallery_id');
+            $table->string('gallery_relation_type');
+            $table->bigInteger('gallery_relation_id');
         });
 
         Schema::create('gallery_images', function ($table) {
@@ -67,6 +67,10 @@ class Catalog extends Migration
             $table->bigInteger('gallery_id');
             $table->string('title')->nullable();
             $table->text('description')->nullable();
+            $table->integer('width');
+            $table->integer('height');
+            $table->string('mime');
+            $table->string('extension');
             $table->dateTime('updated_at');
             $table->dateTime('created_at');
         });

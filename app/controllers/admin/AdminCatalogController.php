@@ -10,6 +10,7 @@ namespace Admin;
 
 
 use Gallery\Gallery;
+use Gallery\GalleryImage;
 use Gallery\GalleryRelation;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +19,8 @@ use Illuminate\Support\Facades\Lang;
 use Catalog\CatalogItem;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use \Exception;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminCatalogController extends AdminController
 {
@@ -58,6 +61,8 @@ class AdminCatalogController extends AdminController
 
         $attachments = \Attachment::ofModel(\Attachment::MODEL_CATALOGITEM)->where('model_id', '=', $id)->get();
 
+        $gallery = $item->galleries()->first();
+
         $this->setPageTitle($item->title);
         $this->addToolbarAction('save', 'Сохранить', 'catalog/save', 'post');
         $this->addToolbarAction('cancel', 'Отмена', 'catalog');
@@ -65,7 +70,8 @@ class AdminCatalogController extends AdminController
             'data' => array_merge($item->toArray(), [
                 'tags' => $item->getTagsAsString()
             ]),
-            'attachments' => $attachments->toJSON()
+            'attachments' => $attachments->toJSON(),
+            'images' => $gallery->images->toJSON()
         ]);
     }
 
@@ -74,7 +80,7 @@ class AdminCatalogController extends AdminController
 
         $id = intval(Input::get('id'));
 
-        $isNew = $id > 0;
+        $isNew = $id === 0;
 
         $form = array(
             'id' => Input::get('id'),
@@ -118,6 +124,8 @@ class AdminCatalogController extends AdminController
         if (empty($tags)) {
             $tags = [];
         }
+
+        $messages = [];
 
         try {
             DB::beginTransaction();
@@ -176,21 +184,43 @@ class AdminCatalogController extends AdminController
             $item->updateTags($tags);
 
             if ($isNew) {
+
                 $gallery = new Gallery();
                 $gallery->save();
-                GalleryRelation::createRelation($item, $gallery);
+                $item->galleries()->save($gallery);
+
+                $image = new GalleryImage();
+                $image->save();
+                $gallery->images()->save($image);
+
+            }
+
+            if (array_key_exists('gallery_image', $files)) {
+
+                $gallery = $item->galleries()->first();
+
+                for ($i = 0; $i < count($files['gallery_image']); $i++) {
+                    try {
+                        App::make('GalleryService')->saveImage($gallery, $files['gallery_image'][$i]);
+                    } catch (Exception $e) {
+                        $messages[] = $e->getMessage();
+                    }
+                }
+
             }
 
             DB::commit();
 
         } catch (Exception $e) {
             DB::rollback();
-            return $this->withErrorMessage(Redirect::action('Admin\AdminCatalogController@' . ($form['id'] ? 'edit' . $form['id'] : 'add')), $e->getMessage());
+            return $this->withErrorMessage(Redirect::action('Admin\AdminCatalogController@' . ($form['id'] ? 'edit' : 'add'), [
+                'id' => $id
+            ]), $e->getMessage());
         }
 
         return $this->withSuccessMessage(Redirect::action('Admin\AdminCatalogController@edit', [
             'id' => $id
-        ]), Lang::get('messages.admin.catalogitemsaved'));
+        ]), empty($messages) ? Lang::get('messages.admin.catalogitemsaved') : implode('<br>', $messages));
     }
 
 }
