@@ -9,6 +9,8 @@
 namespace Admin;
 
 
+use Gallery\Gallery;
+use Gallery\GalleryRelation;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
@@ -109,7 +111,7 @@ class AdminCatalogController extends AdminController
 
         $tags = array_filter(array_map(function ($tag) {
             return trim($tag);
-        }, explode(",", Input::get('tags'))), function($tag) {
+        }, explode(",", Input::get('tags'))), function ($tag) {
             return !empty($tag);
         });
 
@@ -173,7 +175,14 @@ class AdminCatalogController extends AdminController
 
             $item->updateTags($tags);
 
+            if ($isNew) {
+                $gallery = new Gallery();
+                $gallery->save();
+                GalleryRelation::createRelation($item, $gallery);
+            }
+
             DB::commit();
+
         } catch (Exception $e) {
             DB::rollback();
             return $this->withErrorMessage(Redirect::action('Admin\AdminCatalogController@' . ($form['id'] ? 'edit' . $form['id'] : 'add')), $e->getMessage());

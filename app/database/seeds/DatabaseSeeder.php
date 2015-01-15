@@ -15,31 +15,38 @@ class DatabaseSeeder extends Seeder
     {
         Eloquent::unguard();
 
-        self::seedRoles();
+        DB::transaction(function () {
+            self::seedRoles();
 
-        $user = new User;
-        $user->email = Config::get('mamaprint.adminemail');
-        $user->name = 'admin';
-        $user->password = Hash::make('admin');
-        $user->save();
+            $user = new User;
+            $user->email = Config::get('mamaprint.adminemail');
+            $user->name = 'admin';
+            $user->password = Hash::make('admin');
+            $user->save();
 
-        $user->roles()->save(Role::getByName(Role::ROLE_ADMIN));
-        $user->roles()->save(Role::getByName(Role::ROLE_USER));
-        $user->save();
+            $user->roles()->save(Role::getByName(Role::ROLE_ADMIN));
+            $user->roles()->save(Role::getByName(Role::ROLE_USER));
+            $user->save();
 
-        $winterBook = new CatalogItem();
+            $winterBook = new CatalogItem();
 
-        $winterBook->title = 'Зимняя тетрадка';
-        $winterBook->price = 9900;
-        $winterBook->short_description = 'Тридцать творческих уроков на тему: «Новый год и зима» для детей дошкольного возраста';
-        $winterBook->registered_price = 3900;
-        $winterBook->slug = 'winterbook';
-        $winterBook->save();
+            $winterBook->title = 'Зимняя тетрадка';
+            $winterBook->price = 9900;
+            $winterBook->short_description = 'Тридцать творческих уроков на тему: «Новый год и зима» для детей дошкольного возраста';
+            $winterBook->registered_price = 3900;
+            $winterBook->slug = 'winterbook';
+            $winterBook->save();
 
-        // $this->call('UserTableSeeder');
+            $gallery = new \Gallery\Gallery();
+            $gallery->save();
+            \Gallery\GalleryRelation::createRelation($winterBook, $gallery);
+
+            // $this->call('UserTableSeeder');
+        });
     }
 
-    public static function seedRoles() {
+    public static function seedRoles()
+    {
 
         Eloquent::unguard();
 

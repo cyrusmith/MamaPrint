@@ -30,6 +30,43 @@
   }
 }
 
+.galleryimages {
+  .list {
+    padding: 0;
+    .clearfix();
+    li {
+      margin-bottom: 1em;
+      margin-right: 1em;
+      list-style-type: none;
+      float: left;
+      width: 200px;
+      height: 220px;
+      a {
+        border: 1px solid #ccc;
+        display: block;
+        width: 100%;
+        height: 220px;
+        position: relative;
+        .control-delete {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+        }
+
+        .file {
+          font-size: .86em;
+          margin-top: 80px;
+          padding: 1em;
+        }
+      }
+    }
+  }
+}
+
+.gallery {
+  padding: 1em 0;
+}
+
 fieldset.attachments {
   margin-top: 2em;
   padding-bottom: 2em;

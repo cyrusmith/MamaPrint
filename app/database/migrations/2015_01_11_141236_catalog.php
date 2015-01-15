@@ -47,6 +47,30 @@ class Catalog extends Migration
             $table->dateTime('created_at');
         });
 
+        Schema::create('galleries', function ($table) {
+            $table->increments('id');
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->dateTime('updated_at');
+            $table->dateTime('created_at');
+        });
+
+        Schema::create('gallery_relations', function ($table) {
+            $table->increments('id');
+            $table->enum('model', array(Attachment::MODEL_ARTICLE, Attachment::MODEL_CATALOGITEM));
+            $table->bigInteger('model_id');
+            $table->bigInteger('gallery_id');
+        });
+
+        Schema::create('gallery_images', function ($table) {
+            $table->increments('id');
+            $table->bigInteger('gallery_id');
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->dateTime('updated_at');
+            $table->dateTime('created_at');
+        });
+
     }
 
     /**

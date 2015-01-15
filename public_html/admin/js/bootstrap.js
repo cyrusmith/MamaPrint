@@ -7,14 +7,15 @@ require([
     'use strict';
 
     require([
-        'attachments/attachments.widget'
+        'attachments/attachments.widget',
+        'gallery/gallery.widget'
     ], function () {
         var args = Array.prototype.slice.call(arguments, 0);
 
         for (var i = 0; i < args.length; i++) {
             if (typeof args[i].init === "function" && !!args[i].name) {
                 var parentNode = $('[data-widget="' + args[i].name + '"]');
-                if(parentNode.length > 0) {
+                if (parentNode.length > 0) {
                     args[i].init(parentNode);
                 }
             }

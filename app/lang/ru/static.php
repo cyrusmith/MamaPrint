@@ -38,4 +38,6 @@ return [
     'admin.catitem.attachment.size' => 'Размер',
     'admin.catitem.active' => 'Активный',
     'admin.catitem.inactive' => 'Неактивный',
+    'admin.catitem.gallery' => 'Галерея',
+    'admin.catitem.addimage' => 'Добавить картинку',
 ];

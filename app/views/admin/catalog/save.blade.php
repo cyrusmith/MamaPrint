@@ -18,7 +18,7 @@
                 <input type="checkbox"
                 @if($data['active'])
                        checked="checked"
-                @endif value="1" name="active"> Active
+                       @endif value="1" name="active"> Active
             </label>
         </div>
         <div class="form-group {{$errors->has('title')?'has-error':''}}">
@@ -96,24 +96,6 @@
 
         </div>
 
-        <div class="form-group {{$errors->has('long_description')?'has-error':''}}">
-            <label for="article" class="control-label">{{Lang::get('static.admin.catitem.descr')}}</label>
-            <textarea class="wysiwyg" name="long_description"
-                      class="form-control">{{$data['long_description'] or ''}}</textarea>
-            @if($errors->has('long_description'))
-                <p class="text-danger">{{$errors->first('long_description')}}</p>
-            @endif
-        </div>
-        <div class="form-group {{$errors->has('tags')?'has-error':''}}">
-            <label for="catitemtags" class="control-label">{{Lang::get('static.admin.catitem.tags')}}</label>
-            <input type="text" class="form-control" id="catitemtags"
-                   name="tags"
-                   placeholder="{{Lang::get('static.admin.catitem.tags.help')}}" value="{{$data['tags'] or ''}}">
-            @if($errors->has('tags'))
-                <p class="text-danger">{{$errors->first('tags')}}</p>
-            @endif
-        </div>
-
         <fieldset class="attachments">
             <legend><span class="glyphicon glyphicon-file"></span> Файлы</legend>
 
@@ -128,6 +110,42 @@
             </div>
 
         </fieldset>
+
+        <fieldset class="gallery">
+            <legend><span class="glyphicon glyphicon-file"></span> {{Lang::get('static.admin.catitem.gallery')}}
+            </legend>
+
+            <div class="galleryimages" data-widget="gallery">
+
+                <ul class="list" data-container="images">
+                </ul>
+
+                <a class="btn btn-default btn-primary btn-sm" data-control="addimage"><span
+                            class="glyphicon glyphicon-plus"></span> {{Lang::get('static.admin.catitem.addimage')}}</a>
+
+            </div>
+
+        </fieldset>
+
+        <div class="form-group {{$errors->has('long_description')?'has-error':''}}">
+            <label for="article" class="control-label">{{Lang::get('static.admin.catitem.descr')}}</label>
+            <textarea class="wysiwyg" name="long_description"
+                      class="form-control">{{$data['long_description'] or ''}}</textarea>
+            @if($errors->has('long_description'))
+                <p class="text-danger">{{$errors->first('long_description')}}</p>
+            @endif
+        </div>
+
+
+        <div class="form-group {{$errors->has('tags')?'has-error':''}}">
+            <label for="catitemtags" class="control-label">{{Lang::get('static.admin.catitem.tags')}}</label>
+            <input type="text" class="form-control" id="catitemtags"
+                   name="tags"
+                   placeholder="{{Lang::get('static.admin.catitem.tags.help')}}" value="{{$data['tags'] or ''}}">
+            @if($errors->has('tags'))
+                <p class="text-danger">{{$errors->first('tags')}}</p>
+            @endif
+        </div>
 
         <fieldset>
             <legend><span class="glyphicon glyphicon-info-sign"></span> Доп. информация</legend>
@@ -176,8 +194,34 @@
 
 
 
+
+
+
+
+
+
+
+
     </script>
 
+    <script type="x-tpl" id="gallery-item-tpl">
+        <li>
+            <a href="<%= path %>"
+               class="img-rounded"
+               style="background:url(<%= pathThumb %>) no-repeat 50% 50%;background-size: auto 100%;"
+               target="_blank">
+               <% if(!id) { %>
+
+               <div class="text-center file">
+                    <input type="file" name="gallery_image[]">
+               </div>
+
+               <% } %>
+                <span class="control-delete btn btn-xs btn-danger glyphicon glyphicon-trash"></span>
+            </a>
+        </li>
+
+    </script>
     <script type="x-tpl" id="attachment-item-tpl">
         <li class="panel panel-default">
                         <div class="panel-heading">
@@ -241,6 +285,17 @@
                         </div>
                          <% }  %>
                     </li>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
