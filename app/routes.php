@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return View::make('main');
-});
+Route::get('/', 'CatalogController@index');
 
 Route::get('/workbook', function () {
     return View::make('workbook');

@@ -2,13 +2,14 @@
 
 <head>
 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Mama-print @yield('page_title')</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
     <link rel="stylesheet" type="text/css" href="/styles.css">
-
-    <meta name="description" content=""/>
-    <meta name="keywords" content=""/>
 
 </head>
 
@@ -92,7 +93,7 @@
     </div>
 
     <div class="footer row">
-        <div class="col-xs-3">info@mama-print.ru<br>
+        <div class="col-xs-3 contacts">info@mama-print.ru<br>
             +7(908)052-81-87
         </div>
         <div class="col-xs-6 text-center">

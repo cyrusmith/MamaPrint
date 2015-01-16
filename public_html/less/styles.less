@@ -4,7 +4,8 @@
 @import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import "../bower_components/bootstrap/less/bootstrap.less";
 @import (less) "../bower_components/magnific-popup/dist/magnific-popup.css";
-@import "_mainpage.less";
+
+@icon-font-path: 'fonts/';
 
 @font-face {
   font-family: 'mon_amour_twomedium';
@@ -67,7 +68,7 @@ strong {
 
   .mainmenu {
     text-align: center;
-
+    font-size: .75em;
     a {
       display: inline-block;
       margin-right: .5em;
@@ -136,6 +137,9 @@ strong {
 .footer {
   padding: 1em 0;
   border-top: 1px solid #666;
+  .contacts {
+    white-space: nowrap;
+  }
 }
 
 h1, h2, h3 {
@@ -153,68 +157,103 @@ h4 {
   }
 }
 
+.catalog-items {
+  .catalog-item {
+    .img {
+      float: left;
+      width: 30%;
+      min-width: 30%;
+      display: block;
+      img {
+        width: 100%;
+      }
+    }
+
+    .info {
+      width: 70%;
+      float: left;
+      .title {
+        .clearfix();
+        h3 {
+          float: left;
+          width: 70%;
+          font-size: 1.2em;
+          text-align: left;
+          margin: 0;
+          font-weight: bold;
+          a {
+            display: block;
+            padding-top: 1em;
+            padding-left: 1.5em;
+          }
+        }
+        .addfav {
+          float: left;
+          width: 30%;
+          text-align: center;
+          padding-top: .4em;
+          a {
+            display: block;
+            width: 100%;
+            //            color: @gray-dark;
+            color: darken(@brand-warning, 40%);
+            .glyphicon {
+              display: block;
+              width: 100%;
+              margin-bottom: .2em;
+              color: darken(@brand-warning, 10%);
+            }
+            .note {
+              display: block;
+              font-size: .8em;
+              text-align: center;
+              line-height: 1em;
+            }
+          }
+        }
+      }
+      .short {
+        padding: .6em 1.75em .1em;
+        margin: 0;
+      }
+      .addtocart {
+        padding-top: 1em;
+        .clearfix();
+        .price {
+          float: left;
+          width: 70%;
+          span.old, span.new {
+            display: block;
+            padding: 0 1em;
+            font-size: 1.2em;
+            &.old {
+              text-decoration: line-through;
+              color: #777777;
+              text-indent: .6em;
+            }
+            &.new {
+              padding-top: .3em;
+              font-size: 1.8em;
+              span {
+                margin-left: -.5em;
+              }
+            }
+          }
+        }
+        .button {
+          float: left;
+          width: 30%;
+          padding-top: 1.9em;
+          text-align: center;
+        }
+      }
+
+    }
+  }
+}
+
 @media (min-width: @screen-sm-min) {
 
-  .page {
-    .preview {
-      width: 600px;
-    }
-  }
-
-  .white-popup {
-    width: 450px;
-    padding: 1em;
-    background: #FFF;
-  }
-
-  .header {
-    height: 18em;
-    padding: 0em inherit;
-    .logo {
-      text-align: left;
-      padding-top: 2em;
-      a {
-        img {
-          height: auto;
-        }
-      }
-    }
-    .contacts {
-      padding-top: 5em;
-      p {
-        font-size: 1.8em;
-        font-weight: bold;
-        &.email, &.phone {
-          a, span {
-            display: inline-block;
-            white-space: nowrap;
-            padding: .2em;
-            background: #FFF;
-            .border-bottom-radius(3px);
-          }
-          a {
-            color: #cd2447;
-          }
-        }
-
-        &.authcontrols {
-          font-size: .875em;
-          span {
-            display: inline-block;
-            padding: .2em;
-            background-color: #FFF;
-            margin-right: 1em;
-            border-radius: 3px;
-          }
-          a.btn-link {
-            display: inline-block;
-            padding: .2em;
-            background-color: #FFF;
-          }
-        }
-
-      }
-    }
-  }
+  @import '_media_sm.less';
 
 }
