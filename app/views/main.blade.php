@@ -20,7 +20,8 @@
                                 @if(empty($image))
                                     <img src="/assets/noimage.png" title="" alt=""/>
                                 @else
-                                    <img src="/images/{{$image->id}}?width=220&height=220&crop=1" title="" alt=""/>
+                                    <img src="/images/{{$image->id}}?width=220&height=220&crop=1" title="" alt=""
+                                         class="img-rounded"/>
                                 @endif
                             </a>
 
@@ -46,15 +47,19 @@
 
                                 <div class="addtocart">
                                     <div class="price">
-                                        <span class="old">99 Р.</span>
-                                        <span class="new"><span class="label label-primary">39 Р.</span></span>
+                                        @if(!empty($item->old_price))
+                                            <span class="old">{{floatval($item->old_price/100)}} Р.</span>
+                                        @else
+                                            <span class="old empty">&nbsp;</span>
+                                        @endif
+                                        <span class="new"><span class="label label-primary">{{floatval($item->price/100)}}
+                                                Р.</span></span>
                                     </div>
                                     <div class="button">
                                         <a class="btn btn-success btn-sm"><span
                                                     class="glyphicon glyphicon-shopping-cart"></span> В корзину</a>
                                     </div>
                                 </div>
-
 
 
                             </div>

@@ -86,8 +86,8 @@ class AdminCatalogController extends AdminController
             'id' => Input::get('id'),
             'title' => Input::get('title'),
             'active' => Input::get('active'),
-            'slug' => Input::get('slug'),
-            'short_description' => mb_strtolower(Input::get('short_description')),
+            'slug' => mb_strtolower(Input::get('slug')),
+            'short_description' => Input::get('short_description'),
             'long_description' => Input::get('long_description'),
             'price' => intval(floatval(Input::get('price')) * 100),
             'registered_price' => intval(floatval(Input::get('registered_price')) * 100),
@@ -184,15 +184,9 @@ class AdminCatalogController extends AdminController
             $item->updateTags($tags);
 
             if ($isNew) {
-
                 $gallery = new Gallery();
                 $gallery->save();
                 $item->galleries()->save($gallery);
-
-                $image = new GalleryImage();
-                $image->save();
-                $gallery->images()->save($image);
-
             }
 
             if (array_key_exists('gallery_image', $files)) {

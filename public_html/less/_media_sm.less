@@ -67,6 +67,11 @@
 }
 
 .catalog-items {
+
+  .row {
+    margin-bottom: 2em;
+  }
+
   .catalog-item {
 
     .img {
@@ -76,5 +81,43 @@
       margin: 0 auto;
       text-align: center;
     }
+
+    .info {
+      float: none;
+      width: 220px;
+      margin: 0 auto;
+      .title {
+        h3 {
+          a {
+            padding-left: 0;
+            padding-top: .75em;
+          }
+        }
+      }
+      .short {
+        padding: .6em 0 .1em
+      }
+
+      .addtocart {
+        .price {
+          span.new, span.old {
+            padding: 0 0 .2em;
+          }
+          span.old {
+            text-indent: .7em;
+          }
+          span.new {
+            span {
+              margin-left: 0em;
+            }
+          }
+        }
+
+        .button {
+          padding-top: 1.67em;
+        }
+      }
+    }
+
   }
 }
