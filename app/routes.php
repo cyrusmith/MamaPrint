@@ -81,4 +81,7 @@ Route::delete('/admin/gallery/{id}', 'GalleryController@deleteImage');
 
 Route::get('/images/{id}', 'GalleryController@view');
 
+Route::get('/api/v1/cart', 'CartController@items');
+Route::get('/api/v1/cart/{itemId}', 'CartController@viewItem');
 Route::post('/api/v1/cart', 'CartController@addItem');
+Route::delete('/api/v1/cart/{itemId}', 'CartController@deleteItem');

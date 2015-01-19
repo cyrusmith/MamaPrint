@@ -41,6 +41,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $this->belongsToMany('Role');
     }
 
+    public function cart()
+    {
+        return $this->hasOne('Cart\Cart');
+    }
+
     public function isGuest()
     {
         return !empty($this->guestid);
@@ -54,6 +59,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
         return Role::where('name', '=', Role::ROLE_USER);
 
+    }
+
+    public function getOrCreateCart()
+    {
+        $cart = $this->cart;
+        if (empty($cart)) {
+            $cart = new Cart;
+            $this->cart()->save($cart);
+        }
+        return $cart;
     }
 
 }

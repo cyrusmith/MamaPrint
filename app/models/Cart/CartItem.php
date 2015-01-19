@@ -13,4 +13,10 @@ use Eloquent;
 class CartItem extends Eloquent
 {
     protected $table = 'cart_items';
+
+    public function catalogItem()
+    {
+        return $this->belongsTo('Catalog\CatalogItem');
+    }
+
 }
