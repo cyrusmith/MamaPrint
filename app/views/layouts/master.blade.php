@@ -15,49 +15,49 @@
 
 <body>
 
+<div class="topbar">
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <div class="container">
+                <ul class="menu col-sm-8">
+                    <li><a href="/howto" class="{{Request::is('howto')?'active':''}}">Как оформить заказ</a></li>
+                    <li><a href="/public_offer" class="{{Request::is('public_offer')?'active':''}}">Публичная оферта</a></li>
+                    <li><a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a></li>
+                </ul>
+                <div class="cart col-sm-4">
+                    <a class="btn btn-info" href="javascript:void(0);"><span class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">Нет товаров</span>)</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
 <div class="container">
 
     <div class="row header">
 
-        <div class="col-sm-6 logo">
-            <a href="/">
-                <img src="/img/logobig.png"/>
-            </a>
+        <a href="/" class="logo">
+            <img src="/img/logobig.png"/>
+        </a>
 
-            <div class="authcontrols visible-xs">
-                @if(Auth::check())
-                    <a class="btn btn-sm btn-primary" href="/user" title="{{Auth::user()->name}}">Личный кабинет</a>
-                    <a class="btn btn-warning btn-sm" href="/logout">Выйти</a>
-                @else
-                    <a class="btn btn-primary btn-sm" href="/login">Войти</a> или <a class="btn btn-link register"
-                                                                                     href="/register">Зарегистрироваться</a>
-                    <br>
-                @endif
-            </div>
-        </div>
-
-        <div class="col-sm-6 text-right contacts hidden-xs">
-            <p class="email">
-                <a href="mailto:info@mamaprint.ru" class="email">info@mama-print.ru</a>
-            </p>
-
-            <p class="email">
-                <span class="phone">+7(908)052-81-87 </span>
-            </p>
-
-            <p class="authcontrols">
-                @if(Auth::check())
-                    <a class="btn btn-sm btn-primary" href="/user" title="{{Auth::user()->name}}">Личный кабинет</a>
-                    <a class="btn btn-sm btn-warning" href="/logout">Выйти</a>
-                @else
-                    <a class="btn btn-primary btn-sm" href="/login">Войти</a> или <a class="btn btn-link"
-                                                                                     href="/register">Зарегистрироваться</a>
-                    <br>
-                @endif
-            </p>
-
-            <a href="https://vk.com/mama_print" target="_blank" class="vk"></a>
-
+        <div class="authcontrols">
+            @if(Auth::check())
+                <a class="btn btn-sm btn-primary" href="/user" title="{{Auth::user()->name}}">Личный кабинет</a>
+                <a class="btn btn-warning btn-sm" href="/logout">Выйти</a>
+            @else
+                <a class="btn btn-primary btn-sm" href="/login">Войти</a> или <a class="btn btn-link register"
+                                                                                 href="/register">Зарегистрироваться</a>
+                <br>
+            @endif
         </div>
 
     </div>
@@ -68,11 +68,9 @@
             <span>/</span>
             <a href="/about" class="{{Request::is('about')?'active':''}}">О нас</a>
             <span>/</span>
-            <a href="/public_offer" class="{{Request::is('public_offer')?'active':''}}">Публичная оферта</a>
-            <span>/</span>
-            <a href="/howto" class="{{Request::is('howto')?'active':''}}">Как оформить заказ</a>
-            <span>/</span>
             <a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a>
+            <span>/</span>
+            <a href="/contacts" class="{{Request::is('contacts')?'active':''}}"><span class="glyphicon glyphicon-shopping-cart"></span>Корзина</a>
         </div>
 
         @if(Session::get('message'))
@@ -99,10 +97,6 @@
         <div class="col-xs-6 text-center">
             <div class="paygateways-links">
                 <a href="http://webmoney.ru"><img src="/img/onpay-logo.png" width="80"/></a>
-                <!--<a href="http://webmoney.ru"><img src="/img/ic-wm.png"/></a>
-                 begin WebMoney Transfer : attestation label
-                <a href="https://passport.webmoney.ru/asp/certview.asp?wmid=349969046743" target="_blank"><img src="/img/ic-wm-att.png" alt="Здесь находится аттестат нашего WM идентификатора 349969046743" border="0" /><br /><span style="font-size: 0.7em;">Проверить аттестат</span></a>
-                end WebMoney Transfer : attestation label -->
             </div>
         </div>
         <div class="col-xs-3 text-right">&copy; 2014</div>
@@ -125,11 +119,12 @@
 @else
     <script src="/all.js"></script>
     <!-- Yandex.Metrika counter -->
-    <script type="text/javascript">(function (d, w, c) {
+    <script type="text/javascript">
+        (function (d, w, c) {
             (w[c] = w[c] || []).push(function () {
                 try {
-                    w.yaCounter22980460 = new Ya.Metrika({
-                        id: 22980460,
+                    w.yaCounter27971118 = new Ya.Metrika({
+                        id: 27971118,
                         webvisor: true,
                         clickmap: true,
                         trackLinks: true,
@@ -138,21 +133,27 @@
                 } catch (e) {
                 }
             });
-            var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () {
-                n.parentNode.insertBefore(s, n);
-            };
+
+            var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () {
+                        n.parentNode.insertBefore(s, n);
+                    };
             s.type = "text/javascript";
             s.async = true;
             s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
             if (w.opera == "[object Opera]") {
                 d.addEventListener("DOMContentLoaded", f, false);
             } else {
                 f();
             }
-        })(document, window, "yandex_metrika_callbacks");</script>
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
     <noscript>
-        <div><img src="//mc.yandex.ru/watch/22980460" style="position:absolute; left:-9999px;" alt=""/></div>
-    </noscript><!-- /Yandex.Metrika counter -->
+        <div><img src="//mc.yandex.ru/watch/27971118" style="position:absolute; left:-9999px;" alt=""/></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
 
 @endif
 

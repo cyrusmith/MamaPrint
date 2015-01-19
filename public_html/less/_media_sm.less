@@ -1,3 +1,27 @@
+.topbar {
+  .menu {
+    min-height: 50px;
+    margin: 0;
+    li {
+      float: left;
+      min-height: 50px;
+      line-height: 48px;
+      margin-right: 2em;
+      padding: 0;
+    }
+  }
+
+  .cart {
+    min-height: 50px;
+    line-height: 48px;
+    text-align: right;
+    padding-top: .5em;
+    * {
+      color: #FFF;
+    }
+  }
+}
+
 .page {
 
   .mainmenu {
@@ -17,51 +41,9 @@
 }
 
 .header {
-  height: 18em;
-  padding: 0em inherit;
   .logo {
-    text-align: left;
-    padding-top: 2em;
-    a {
-      img {
-        height: auto;
-      }
-    }
-  }
-  .contacts {
-    padding-top: 5em;
-    p {
-      font-size: 1.8em;
-      font-weight: bold;
-      &.email, &.phone {
-        a, span {
-          display: inline-block;
-          white-space: nowrap;
-          padding: .2em;
-          background: #FFF;
-          .border-bottom-radius(3px);
-        }
-        a {
-          color: #cd2447;
-        }
-      }
-
-      &.authcontrols {
-        font-size: .875em;
-        span {
-          display: inline-block;
-          padding: .2em;
-          background-color: #FFF;
-          margin-right: 1em;
-          border-radius: 3px;
-        }
-        a.btn-link {
-          display: inline-block;
-          padding: .2em;
-          background-color: #FFF;
-        }
-      }
-
+    img {
+      width: auto;
     }
   }
 }

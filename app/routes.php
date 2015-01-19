@@ -80,3 +80,5 @@ Route::get('/admin/attachments/{id}/download', 'Admin\AdminAttachmentController@
 Route::delete('/admin/gallery/{id}', 'GalleryController@deleteImage');
 
 Route::get('/images/{id}', 'GalleryController@view');
+
+Route::post('/api/v1/cart', 'CartController@addItem');

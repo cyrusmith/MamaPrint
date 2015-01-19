@@ -75,6 +75,29 @@ class Catalog extends Migration
             $table->dateTime('created_at');
         });
 
+        Schema::create('carts', function ($table) {
+            $table->increments('id');
+            $table->bigInteger('user_id');
+            $table->dateTime('updated_at');
+            $table->dateTime('created_at');
+        });
+
+        Schema::create('cart_items', function ($table) {
+            $table->increments('id');
+            $table->bigInteger('catalog_item_id');
+            $table->dateTime('updated_at');
+            $table->dateTime('created_at');
+        });
+
+        Schema::create('user_catalog_items_access', function ($table) {
+            $table->increments('id');
+            $table->bigInteger('user_id');
+            $table->bigInteger('catalog_item_id');
+            $table->bigInteger('order_id');
+            $table->dateTime('updated_at');
+            $table->dateTime('created_at');
+        });
+
     }
 
     /**
