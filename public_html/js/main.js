@@ -7,43 +7,35 @@ require.config({
 
     paths: {
         '$': '../bower_components/jquery/dist/jquery',
+        'backbone': '../bower_components/backbone/backbone',
+        'underscore': '../bower_components/underscore/underscore',
         'magnific': '../bower_components/magnific-popup/dist/jquery.magnific-popup',
-        'bootstrap': '../bower_components/bootstrap/dist/js/bootstrap',
+        'twitterbootstrap': '../bower_components/bootstrap/dist/js/bootstrap',
         'headhesive': '../bower_components/headhesive.js/dist/headhesive',
         'requireLib': '../bower_components/requirejs/require'
     },
 
-    urlArgs: "bust=" + (new Date()).getTime(),
+    urlArgs: "bust=" + Date.now(),
 
     shim: {
         '$': {
             exports: 'jQuery'
         },
         magnific: ['$'],
-        bootstrap: ['$'],
+        twitterbootstrap: ['$'],
         headhesive: {
             exports: 'Headhesive'
+        },
+        backbone: {
+            deps: ['$', 'underscore'],
+            exports: 'Backbone'
+        },
+        underscore: {
+            exports: '_'
         }
     },
 
     include: ['requireLib', 'main']
 });
 
-require(['$', 'headhesive', 'magnific', 'bootstrap'], function ($, Headhesive) {
-
-    $(function () {
-        if ($('body').hasClass('page-main')) {
-
-            $.magnificPopup.open({
-                items: {
-                    src: '#workbook-popup'
-                },
-                type: 'inline'
-            }, 0);
-
-        }
-
-
-    });
-
-});
+require(['bootstrap']);

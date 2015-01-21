@@ -84,6 +84,7 @@ class Catalog extends Migration
 
         Schema::create('cart_items', function ($table) {
             $table->increments('id');
+            $table->bigInteger('cart_id');
             $table->bigInteger('catalog_item_id');
             $table->dateTime('updated_at');
             $table->dateTime('created_at');

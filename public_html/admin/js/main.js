@@ -12,7 +12,7 @@ require.config({
         'requireLib': '../../bower_components/requirejs/require',
         'tinymce': '../lib/tinymce/js/tinymce/tinymce.min'
     },
-    urlArgs: "bust=" + (new Date()).getTime(),
+    urlArgs: "bust=" + Date.now(),
     shim: {
         '$': {
             exports: 'jQuery'

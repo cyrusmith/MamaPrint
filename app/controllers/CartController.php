@@ -5,6 +5,7 @@ use \Illuminate\Support\Facades\Lang;
 use \Illuminate\Support\Facades\Input;
 use \Illuminate\Support\Facades\URL;
 use Catalog\CatalogItem;
+use Cart\Cart;
 
 class CartController extends BaseController
 {
@@ -94,7 +95,7 @@ class CartController extends BaseController
     {
 
         $data = Input::get();
-        $itemId = intval($data['item_id']);
+        $itemId = intval($data['id']);
 
         $item = CatalogItem::find($itemId);
         if (empty($item)) {

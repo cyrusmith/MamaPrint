@@ -14,7 +14,7 @@
                     @endif
 
                     <div class="col-sm-4">
-                        <div class="catalog-item">
+                        <div class="catalog-item" data-widget="catalogitem" data-id="{{$item->id}}">
 
                             <a href="/catalog/items/{{$item->slug}}" class="img">
                                 @if(empty($image))
@@ -56,8 +56,13 @@
                                                 Р.</span></span>
                                     </div>
                                     <div class="button">
-                                        <a class="btn btn-success btn-sm"><span
+
+                                        <a class="btn btn-success btn-sm catalogitem-addtocart"><span
                                                     class="glyphicon glyphicon-shopping-cart"></span> В корзину</a>
+
+                                        <a class="btn btn-xs catalogitem-removefromcart">Удалить<br>из
+                                            корзины</a>
+
                                     </div>
                                 </div>
 
