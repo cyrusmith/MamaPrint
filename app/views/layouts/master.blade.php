@@ -34,7 +34,7 @@
                     <li><a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a></li>
                 </ul>
                 <div class="cart col-sm-4" data-widget="cartlink">
-                    <a class="btn btn-info" href="javascript:void(0);"><span class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">Нет товаров</span>)</a>
+                    <a class="btn btn-info" href="{{URL::action('CartController@userCart')}}"><span class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">Нет товаров</span>)</a>
                 </div>
             </div>
         </div>

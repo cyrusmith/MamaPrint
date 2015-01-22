@@ -88,4 +88,8 @@
 
     </div>
 
+    <script type="x-tpl" id="cart-json">
+        {{json_encode($cart)}}
+    </script>
+
 @stop

@@ -6,9 +6,41 @@ use \Illuminate\Support\Facades\Input;
 use \Illuminate\Support\Facades\URL;
 use Catalog\CatalogItem;
 use Cart\Cart;
+use Cart\CartItem;
 
 class CartController extends BaseController
 {
+
+    public function userCart()
+    {
+        $user = App::make("UsersService")->getUser();
+        if (empty($user)) {
+            App::abort(400);
+        }
+
+        $cart = $user->getOrCreateCart();
+
+        $items = [];
+        $total = 0;
+        foreach ($cart->items as $item) {
+            $gallery = $item->catalogItem->galleries()->first();
+            $price = $item->catalogItem->getOrderPrice();
+            $items[] = [
+                'id' => $item->id,
+                'title' => $item->catalogItem->title,
+                'slug' => $item->catalogItem->slug,
+                'price' => $price,
+                'thumb' => '/images/' . $gallery->images()->first()->id
+            ];
+            $total += $price;
+        }
+
+        return View::make('user.cart', [
+            'items' => $items,
+            'total' => $total
+        ]);
+
+    }
 
     public function items()
     {
@@ -138,6 +170,47 @@ class CartController extends BaseController
 
     public function deleteItem($itemId)
     {
+
+        $user = App::make("UsersService")->getUser();
+        if (empty($user)) {
+            return Response::json([
+                'message' => Lang::get('messages.error.usernotfound'),
+                '_links' => [
+                    'self' => URL::action('CartController@addItem')
+                ]
+            ], 400);
+        }
+
+        try {
+            $cart = $user->cart;
+            if (!empty($cart)) {
+                $cartItem = $cart->items()->where('catalog_item_id', '=', $itemId);
+                if (!empty($cartItem)) {
+                    $cartItem->delete();
+                    return Response::json([
+                        '_links' => [
+                            'self' => URL::action('CartController@addItem')
+                        ]
+                    ], 200);
+                }
+            }
+            exit;
+
+        } catch (Exception $e) {
+            return Response::json([
+                'message' => $e->getMessage(),
+                '_links' => [
+                    'self' => URL::action('CartController@addItem')
+                ]
+            ], 500);
+        }
+        return Response::json([
+            'message' => Lang::get('messages.error.could_not_delete_cart_item'),
+            '_links' => [
+                'self' => URL::action('CartController@addItem')
+            ]
+        ], 400);
+
 
     }
 

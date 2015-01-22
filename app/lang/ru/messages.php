@@ -12,6 +12,7 @@ return [
     'error.catalogitemnotfound' => 'Нет такого товара',
     'error.cart.itemnotfound' => 'Позиция в корзине не найдена',
     'error.attachment_not_found' => 'Файл не найден',
+    'error.could_not_delete_cart_item' => 'Не удалось удалить товар из корзины',
     'gallery.filenotallowed' => 'Файл с типом :type не разрешен',
     'gallery.notanimage' => 'Файл не :file является изображением',
 ];

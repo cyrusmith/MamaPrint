@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'CatalogController@index');
+Route::get('/catalog/{path}', 'CatalogController@item')->where('path', '(.*)');
 
 Route::get('/workbook', function () {
     return View::make('workbook');
@@ -81,6 +82,7 @@ Route::delete('/admin/gallery/{id}', 'GalleryController@deleteImage');
 
 Route::get('/images/{id}', 'GalleryController@view');
 
+Route::get('/cart', 'CartController@userCart');
 Route::post('/api/v1/cart', 'CartController@addItem');
 Route::get('/api/v1/cart', 'CartController@items');
 Route::get('/api/v1/cart/{itemId}', 'CartController@viewItem');

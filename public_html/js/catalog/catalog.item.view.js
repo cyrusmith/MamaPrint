@@ -17,7 +17,6 @@ define([
             this.listenTo(this.model, "change", this.onModelChange);
             this.$addToCartBtn = this.$el.find('.catalogitem-addtocart');
             this.$removeFromCartBtn = this.$el.find('.catalogitem-removefromcart');
-
             this.onModelChange();
         },
 
@@ -26,10 +25,10 @@ define([
             this.model.set('inCart', !!cartModel.find(_.bind(function (item) {
                 return item.id === this.model.id;
             }, this)));
-
         },
 
         onModelChange: function () {
+            console.log("onModelChange ", this.model.get('inCart'));
             if (this.model.get('inCart')) {
                 this.$addToCartBtn.hide();
                 this.$removeFromCartBtn.css({
