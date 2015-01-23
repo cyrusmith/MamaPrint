@@ -9,37 +9,6 @@
 class AuthController extends BaseController
 {
 
-    public function registerGuest($request, $response)
-    {
-
-        if (Auth::check()) {
-            return;
-        }
-
-        $guestid = Cookie::get('guestid', null);
-
-        $needToRegister = false;
-        if (empty($guestid)) {
-            $guestid = str_random(40);
-            $response->withCookie(Cookie::forever('guestid', str_random(40)));
-            $needToRegister = true;
-        } else {
-            $user = User::where('guestid', '=', $guestid)->first();
-            $needToRegister = empty($user);
-        }
-
-        Session::set('guiestid', $guestid);
-
-        if ($needToRegister) {
-            $user = new User;
-            $user->email = $guestid;
-            $user->name = $guestid;
-            $user->password = $guestid;
-            $user->guestid = $guestid;
-            $user->save();
-        }
-    }
-
     public function confirm()
     {
 

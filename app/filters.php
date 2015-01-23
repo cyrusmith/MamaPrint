@@ -58,8 +58,14 @@ Route::filter('auth.basic', function () {
 */
 
 Route::filter('guest', function () {
-   if (Auth::check()) return Redirect::to('/');
+    if (Auth::check()) return Redirect::to('/');
 });
+
+Route::filter('admin', function () {
+    if (!Auth::check()) return Redirect::to('/');
+    if (Auth::user()->id != 1) return Redirect::to('/');
+});
+
 
 /*
 |--------------------------------------------------------------------------
@@ -78,17 +84,17 @@ Route::filter('csrf', function () {
     }
 });
 
-App::after(function ($request, $response) {
+Route::filter('guest_create', function ($request, $response) {
 
-    if (($request->getPathInfo() === "/api/v1/payments/onpay") || Auth::check()) {
-        if (method_exists($response, 'withCookie')) {
-            $response->withCookie(Cookie::forever('guestid', null));
-        }
-        return;
+    if (Auth::check()) return;
+
+    $questId = Cookie::get('guestid');
+
+    $user = App::make('AuthService')->registerGuest($questId);
+    if (!empty($user)) {
+        Cookie::queue('guestid', $user->guestid, 2628000);
+    } else {
+        Log::error("Failed to create tmp user");
     }
-    $guestid = App::make('AuthService')->registerGuest(Cookie::get('guestid', null));
-    if (method_exists($response, 'withCookie')) {
-        $response->withCookie(Cookie::forever('guestid', $guestid));
-    }
-    Session::set('guestid', $guestid);
+
 });

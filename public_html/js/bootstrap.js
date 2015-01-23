@@ -1,7 +1,9 @@
 require([
     '$',
     'cart/cart.model',
-    'headhesive', 'magnific', 'twitterbootstrap'], function ($, cartModel) {
+    'auth/auth.service',
+    'auth/user.model',
+    'headhesive', 'magnific', 'twitterbootstrap'], function ($, authService, User, cartModel) {
 
     'use strict';
 
@@ -39,6 +41,11 @@ require([
             }
         });
 
+        var appConfig = JSON.parse($('#appconfig').text());
+        if (appConfig.user) {
+            authService.setUser(new User(appConfig.user));
+        }
+
         var modelsJson = $('#cart-json').text();
         var modelsData = JSON.parse(modelsJson);
         if (_.isArray(modelsData)) {
@@ -46,6 +53,7 @@ require([
                 cartModel.add(modelsData[i]);
             }
         }
+
 
     });
 

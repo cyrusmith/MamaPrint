@@ -13,24 +13,18 @@ class CatalogController extends BaseController
 
     public function index()
     {
-        $user = App::make("UsersService")->getUser();
-        if (empty($user)) {
-            return Response::json([
-                'message' => Lang::get('messages.error.usernotfound'),
-                '_links' => [
-                ]
-            ], 400);
-        }
-
-        $cart = $user->getOrCreateCart();
 
         $cartItems = [];
-        foreach ($cart->items as $item) {
-            $cartItems[] = [
-                'id' => $item->catalogItem->id . "",
-                'title' => $item->catalogItem->title,
-                'price' => $item->catalogItem->getOrderPrice()
-            ];
+        $user = App::make("UsersService")->getUser();
+        if (!empty($user)) {
+            $cart = $user->getOrCreateCart();
+            foreach ($cart->items as $item) {
+                $cartItems[] = [
+                    'id' => $item->catalogItem->id . "",
+                    'title' => $item->catalogItem->title,
+                    'price' => $item->catalogItem->getOrderPrice()
+                ];
+            }
         }
 
         $items = CatalogItem::where('active', '=', true)->get();
@@ -39,6 +33,7 @@ class CatalogController extends BaseController
             'items' => $items,
             'cart' => $cartItems
         ]);
+
     }
 
     public function item($path)

@@ -1,7 +1,6 @@
-<html>
-
-<head>
-
+<?php
+use \Illuminate\Support\Facades\App;
+?><html><head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Mama-print @yield('page_title')</title>
@@ -10,7 +9,6 @@
 
     <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
     <link rel="stylesheet" type="text/css" href="/styles.css">
-
 </head>
 
 <body>
@@ -30,11 +28,13 @@
             <div class="container">
                 <ul class="menu col-sm-8">
                     <li><a href="/howto" class="{{Request::is('howto')?'active':''}}">Как оформить заказ</a></li>
-                    <li><a href="/public_offer" class="{{Request::is('public_offer')?'active':''}}">Публичная оферта</a></li>
+                    <li><a href="/public_offer" class="{{Request::is('public_offer')?'active':''}}">Публичная оферта</a>
+                    </li>
                     <li><a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a></li>
                 </ul>
                 <div class="cart col-sm-4" data-widget="cartlink">
-                    <a class="btn btn-info" href="{{URL::action('CartController@userCart')}}"><span class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">Нет товаров</span>)</a>
+                    <a class="btn btn-info" href="{{URL::action('CartController@userCart')}}"><span
+                                class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">Нет товаров</span>)</a>
                 </div>
             </div>
         </div>
@@ -70,7 +70,8 @@
             <span>/</span>
             <a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a>
             <span>/</span>
-            <a href="/contacts" class="{{Request::is('contacts')?'active':''}}"><span class="glyphicon glyphicon-shopping-cart"></span>Корзина</a>
+            <a href="/contacts" class="{{Request::is('contacts')?'active':''}}"><span
+                        class="glyphicon glyphicon-shopping-cart"></span>Корзина</a>
         </div>
 
         @if(Session::get('message'))
@@ -104,14 +105,8 @@
 
 </div>
 
-<script>
-    (function (scope) {
-        var user = <?php echo Auth::user()?Auth::user()->toJson():'null'?>, token = '<?php echo csrf_token(); ?>';
-        scope.mamaprint = {
-            user: user,
-            token: token
-        }
-    })(this);
+<script type="x-tpl" id="appconfig">
+    {"user": <?php $user = App::make("UsersService")->getUser(); echo !empty($user) ? $user->toJson() : 'null' ?>, "token": "<?php echo csrf_token(); ?>"}
 </script>
 
 @if (Config::get('app.debug'))

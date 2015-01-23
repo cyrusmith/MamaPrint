@@ -133,9 +133,7 @@ class CartController extends BaseController
         if (empty($item)) {
             return Response::json([
                 'message' => Lang::get('messages.error.catalogitemnotfound'),
-                '_links' => [
-                    'self' => URL::action('CartController@addItem')
-                ]
+                '_links' => []
             ], 400);
         }
 
@@ -144,7 +142,7 @@ class CartController extends BaseController
             return Response::json([
                 'message' => Lang::get('messages.error.usernotfound'),
                 '_links' => [
-                    'self' => URL::action('CartController@addItem')
+                    'app.login' => URL::to('/login')
                 ]
             ], 400);
         }

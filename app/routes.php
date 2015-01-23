@@ -11,36 +11,77 @@
 |
 */
 
-Route::get('/', 'CatalogController@index');
-Route::get('/catalog/{path}', 'CatalogController@item')->where('path', '(.*)');
+Route::group(array('before' => 'guest_create', 'after' => 'guest_cookie'), function () {
 
-Route::get('/workbook', function () {
-    return View::make('workbook');
+    Route::get('/', 'CatalogController@index');
+    Route::get('/catalog/{path}', 'CatalogController@item')->where('path', '(.*)');
+
+    Route::get('/about', function () {
+        return View::make('statics.about');
+    });
+
+    Route::get('/public_offer', function () {
+        return View::make('statics.public_offer');
+    });
+
+    Route::get('/howto', function () {
+        return View::make('statics.howto');
+    });
+
+    Route::get('/contacts', function () {
+        return View::make('statics.contacts');
+    });
+
+    Route::get('/cart', 'CartController@userCart');
+
 });
 
-Route::get('/login', array('before' => 'guest', function () {
-    return View::make('auth.login');
-}));
-Route::get('/logout', 'AuthController@logout');
+Route::group(array('before' => 'auth'), function () {
 
-Route::get('/register', array('before' => 'guest', function () {
-    return View::make('auth.register');
-}));
+    Route::get('/user', 'UserController@downloads');
+    Route::get('/logout', 'AuthController@logout');
 
-Route::get('/register/confirm', 'AuthController@confirm');
-Route::get('/register/regcomplete', function () {
-    return View::make('auth.regcomplete');
 });
 
-Route::post('/login', 'AuthController@login');
-Route::post('/register', 'AuthController@register');
-Route::post('/register_guest', 'AuthController@registerGuest');
+Route::group(array('before' => 'guest'), function () {
+
+    Route::get('/login', function () {
+        return View::make('auth.login');
+    });
+
+    Route::get('/register', function () {
+        return View::make('auth.register');
+    });
+
+    Route::get('/register/confirm', 'AuthController@confirm');
+
+    Route::get('/register/regcomplete', function () {
+        return View::make('auth.regcomplete');
+    });
+
+    Route::post('/login', 'AuthController@login');
+    Route::post('/register', 'AuthController@register');
+
+});
+
+Route::group(array('before' => 'admin'), function () {
+    Route::get('/admin/catalog', 'Admin\AdminCatalogController@index');
+    Route::get('/admin/catalog/add', 'Admin\AdminCatalogController@add');
+    Route::get('/admin/catalog/edit/{id}', 'Admin\AdminCatalogController@edit');
+    Route::post('/admin/catalog/save', 'Admin\AdminCatalogController@save');
+
+    Route::get('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@view');
+    Route::put('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@update');
+    Route::delete('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@delete');
+
+    Route::get('/admin/attachments/{id}/download', 'Admin\AdminAttachmentController@download');
+
+    Route::delete('/admin/gallery/{id}', 'GalleryController@deleteImage');
+});
+
+Route::post('/buyitem/{itemId}', array('before' => 'csrf', 'uses' => 'OrdersController@buyitem')); //TODO remove it
 
 Route::post('/subscribe/getcards', 'SubscribeController@getCards');
-
-Route::post('/buyitem/{itemId}', array('before' => 'csrf', 'uses' => 'OrdersController@buyitem'));
-
-Route::post('/api/v1/payments/onpay', 'PaymentsController@onpayApi');
 
 Route::get('/pay/success/{orderId}', 'PaymentsController@paymentSuccess');
 
@@ -51,39 +92,10 @@ Route::get('/pay/fail', function () {
 Route::get('/pay/{orderId}', 'PaymentsController@pay');
 Route::get('/orders/{orderId}/download', 'OrdersController@download')->where(['orderId' => '[0-9]+']);
 
-Route::get('/user', array('before' => 'auth', 'uses' => 'UserController@downloads'));
-
-Route::get('/about', function () {
-    return View::make('statics.about');
-});
-Route::get('/public_offer', function () {
-    return View::make('statics.public_offer');
-});
-Route::get('/howto', function () {
-    return View::make('statics.howto');
-});
-Route::get('/contacts', function () {
-    return View::make('statics.contacts');
-});
-
-//admin
-Route::get('/admin/catalog', 'Admin\AdminCatalogController@index');
-Route::get('/admin/catalog/add', 'Admin\AdminCatalogController@add');
-Route::get('/admin/catalog/edit/{id}', 'Admin\AdminCatalogController@edit');
-Route::post('/admin/catalog/save', 'Admin\AdminCatalogController@save');
-
-Route::get('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@view');
-Route::put('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@update');
-Route::delete('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@delete');
-
-Route::get('/admin/attachments/{id}/download', 'Admin\AdminAttachmentController@download');
-
-Route::delete('/admin/gallery/{id}', 'GalleryController@deleteImage');
-
-Route::get('/images/{id}', 'GalleryController@view');
-
-Route::get('/cart', 'CartController@userCart');
+Route::post('/api/v1/payments/onpay', 'PaymentsController@onpayApi');
 Route::post('/api/v1/cart', 'CartController@addItem');
 Route::get('/api/v1/cart', 'CartController@items');
 Route::get('/api/v1/cart/{itemId}', 'CartController@viewItem');
 Route::delete('/api/v1/cart/{itemId}', 'CartController@deleteItem');
+
+Route::get('/images/{id}', 'GalleryController@view');
