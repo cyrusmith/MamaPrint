@@ -1,6 +1,8 @@
 <?php
 use \Illuminate\Support\Facades\App;
-?><html><head>
+?>
+<html>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Mama-print @yield('page_title')</title>
@@ -34,7 +36,7 @@ use \Illuminate\Support\Facades\App;
                 </ul>
                 <div class="cart col-sm-4" data-widget="cartlink">
                     <a class="btn btn-info" href="{{URL::action('CartController@userCart')}}"><span
-                                class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">Нет товаров</span>)</a>
+                                class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">@if(empty($cart))Нет товаров@else{{count($cart)}} ед.@endif</span>)</a>
                 </div>
             </div>
         </div>
@@ -103,14 +105,20 @@ use \Illuminate\Support\Facades\App;
         <div class="col-xs-3 text-right">&copy; 2014</div>
     </div>
 
-    <div id="auth-prompt-popup" class="white-popup mfp-hide">
+    <div id="cart-prompt-popup" class="white-popup mfp-with-anim mfp-hide">
+        Перейти в корзину
+    </div>
+
+    <div id="auth-prompt-popup" class="white-popup mfp-with-anim mfp-hide">
         Popup content
     </div>
 
 </div>
 
 <script type="x-tpl" id="appconfig">
-    {"user": <?php $user = App::make("UsersService")->getUser(); echo !empty($user) ? $user->toJson() : 'null' ?>, "token": "<?php echo csrf_token(); ?>"}
+    {"user": <?php $user = App::make("UsersService")->getUser(); echo !empty($user) ? $user->toJson() : 'null' ?>
+    , "token": "<?php echo csrf_token(); ?>"}
+
 </script>
 
 @if (Config::get('app.debug'))

@@ -8,6 +8,7 @@ define([
             this.listenTo(this.model, "add", this.onChange);
             this.listenTo(this.model, "remove", this.onChange);
             this.$title = this.$el.find('.btn-info .title');
+            this.onChange();
         },
 
         onChange: function () {

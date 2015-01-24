@@ -20,6 +20,7 @@ define([
             this.$addToCartBtn = this.$el.find('.catalogitem-addtocart');
             this.$removeFromCartBtn = this.$el.find('.catalogitem-removefromcart');
             this.onModelChange();
+            this.onCartModelChange();
         },
 
         onCartModelChange: function () {
@@ -49,20 +50,36 @@ define([
                 popup.showLoginPrompt();
             }
             else {
+                this.$addToCartBtn.removeClass('progress-hidden');
+                this.$addToCartBtn.attr('disabled', 'disabled');
                 Backbone.sync("create", this.model, {
                     url: "/api/v1/cart",
                     success: _.bind(function () {
                         cartModel.add(this.model);
+                        popup.showCartPrompt()
+                            .then(function () {
+
+                            });
+                    }, this),
+                    complete: _.bind(function () {
+                        this.$addToCartBtn.attr('disabled', null);
+                        this.$addToCartBtn.addClass('progress-hidden');
                     }, this)
                 });
             }
         },
 
         removeFromCart: function (e) {
+            this.$removeFromCartBtn.removeClass('progress-hidden');
+            this.$removeFromCartBtn.attr('disabled', 'disabled');
             cartModel.sync("delete", this.model, {
                 url: "/api/v1/cart/" + this.model.id,
                 success: _.bind(function () {
                     cartModel.remove(this.model);
+                }, this),
+                complete: _.bind(function() {
+                    this.$removeFromCartBtn.attr('disabled', null);
+                    this.$removeFromCartBtn.addClass('progress-hidden');
                 }, this)
             });
         }

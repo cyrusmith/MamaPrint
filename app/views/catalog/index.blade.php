@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-
+        {{$test1 or "No test :((("}}
     <div class="container catalog-items">
 
         @for($i=0; $i < $items->count(); $i++)
@@ -57,11 +57,11 @@
                                     </div>
                                     <div class="button">
 
-                                        <a class="btn btn-success btn-sm catalogitem-addtocart"><span
-                                                    class="glyphicon glyphicon-shopping-cart"></span> В корзину</a>
+                                        <a class="btn btn-success btn-sm catalogitem-addtocart progress-parent progress-hidden"@if(in_array($item->id, $cart_ids)) style="display:none;"@endif><span
+                                                    class="glyphicon glyphicon-shopping-cart"></span> В корзину <span class="progress-left"></span></a>
 
-                                        <a class="btn btn-xs catalogitem-removefromcart">Удалить<br>из
-                                            корзины</a>
+                                        <a class="btn btn-xs catalogitem-removefromcart progress-parent progress-hidden"@if(!in_array($item->id, $cart_ids)) style="display:none;"@endif>Удалить<br>из
+                                            корзины <span class="progress-left"></span></a>
 
                                     </div>
                                 </div>

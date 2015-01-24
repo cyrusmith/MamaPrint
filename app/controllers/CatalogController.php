@@ -13,27 +13,10 @@ class CatalogController extends BaseController
 
     public function index()
     {
-
-        $cartItems = [];
-        $user = App::make("UsersService")->getUser();
-        if (!empty($user)) {
-            $cart = $user->getOrCreateCart();
-            foreach ($cart->items as $item) {
-                $cartItems[] = [
-                    'id' => $item->catalogItem->id . "",
-                    'title' => $item->catalogItem->title,
-                    'price' => $item->catalogItem->getOrderPrice()
-                ];
-            }
-        }
-
         $items = CatalogItem::where('active', '=', true)->get();
-
         return View::make('catalog.index', [
-            'items' => $items,
-            'cart' => $cartItems
+            'items' => $items
         ]);
-
     }
 
     public function item($path)

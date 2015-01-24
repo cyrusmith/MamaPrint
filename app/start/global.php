@@ -105,4 +105,26 @@ App::missing(function ($exception) {
     return Response::view('errors.404', array('error' => $exception->getMessage()), 404);
 });
 
+View::composer('*', function ($view) {
+
+    $user = App::make("UsersService")->getUser();
+    $cartItems = [];
+    $cartIds = [];
+    if (!empty($user)) {
+        $cart = $user->getOrCreateCart();
+        foreach ($cart->items as $item) {
+            $catalogItem = $item->catalogItem;
+            $cartIds[] = $catalogItem->id;
+            $cartItems[] = [
+                'id' => $catalogItem->id . "",
+                'title' => $catalogItem->title,
+                'price' => $catalogItem->getOrderPrice()
+            ];
+        }
+    }
+
+    $view->with('cart', $cartItems);
+    $view->with('cart_ids', $cartIds);
+});
+
 require app_path() . '/filters.php';

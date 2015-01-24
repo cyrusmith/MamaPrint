@@ -18,6 +18,26 @@
   font-style: normal;
 }
 
+.progress-parent {
+  position: relative;
+  .progress-left {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: -24px;
+    top: 25%;
+    background-image: url(img/ajax-loader.gif);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+  }
+
+  &.progress-hidden {
+    .progress-left {
+      display: none;
+    }
+  }
+}
+
 .font-hanwritten {
   font-family: mon_amour_twomedium;
   font-weight: bold;
@@ -25,19 +45,6 @@
 
 strong {
   font-weight: bold;
-}
-
-.white-popup {
-  width: 90%;
-  padding: 1em;
-  background: #FFF;
-  margin: 20px auto;
-  position: relative;
-  .mfp-close {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-  }
 }
 
 .topbar {
@@ -284,7 +291,6 @@ h4 {
             text-align: center;
           }
           .catalogitem-removefromcart {
-            display: none;
             line-height: 1.2em;
           }
 
@@ -293,6 +299,58 @@ h4 {
 
     }
   }
+}
+
+.white-popup {
+  position: relative;
+  background: #FFF;
+  padding: 25px;
+  width: auto;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/*
+====== Zoom effect ======
+*/
+.mfp-zoom-in {
+
+  /* start state */
+  .mfp-with-anim {
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    transform: scale(0.8);
+  }
+
+  &.mfp-bg {
+    opacity: 0;
+    transition: all 0.3s ease-out;
+  }
+
+  /* animate in */
+  &.mfp-ready {
+    .mfp-with-anim {
+      opacity: 1;
+      transform: scale(1);
+    }
+    &.mfp-bg {
+      opacity: 0.8;
+    }
+  }
+
+  /* animate out */
+  &.mfp-removing {
+
+    .mfp-with-anim {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+    &.mfp-bg {
+      opacity: 0;
+    }
+
+  }
+
 }
 
 @media (min-width: @screen-sm-min) {
