@@ -14,3 +14,7 @@ all.js
 styles.css
 app/config/database.php
 downloads/
+attachments/
+galleries/
+public_html/assets/
+public_html/thumbs/
