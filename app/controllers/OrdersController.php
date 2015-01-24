@@ -60,17 +60,17 @@ class OrdersController extends BaseController
         $user = App::make('UsersService')->getUser();
 
         if (empty($user)) {
-            App::abort(400);
+            App::abort(404, 'Пользователь не найден. Авторизуйтесь на сайте.');
         }
 
         $order = $user->orders()->where('id', '=', $orderId)->first();
 
         if (empty($order)) {
-            App::abort(404);
+            App::abort(404, 'Заказ не найден. Авторизуйтесь на сайте.');
         }
 
         if (!$order->isComplete()) {
-            App::abort(404);
+            App::abort(404, 'Заказ еще не оплачен.');
         }
 
         $orderItem = $order->items()->first();

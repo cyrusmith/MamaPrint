@@ -1,8 +1,3 @@
-<?php
-$data = Session::get('data');
-$email = $data['email'];
-$error = $data['error'];
-?>
 @extends('layouts.master')
 
 @section('page_title')
@@ -11,6 +6,8 @@ $error = $data['error'];
 
 @section('content')
     <div class="col-sm-6 col-sm-offset-3 register">
-        <h2>{{$error or 'Ошибка!'}}}</h2>
+        <h2>404 - cтраница не найдена</h2>
+
+        <p>{{$error or ''}}</p>
     </div>
 @stop
