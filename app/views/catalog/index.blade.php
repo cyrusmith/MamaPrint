@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-        {{$test1 or "No test :((("}}
+
     <div class="container catalog-items">
 
         @for($i=0; $i < $items->count(); $i++)
@@ -87,9 +87,5 @@
 
 
     </div>
-
-    <script type="x-tpl" id="cart-json">
-        {{json_encode($cart)}}
-    </script>
 
 @stop

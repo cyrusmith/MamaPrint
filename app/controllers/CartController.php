@@ -25,12 +25,13 @@ class CartController extends BaseController
         foreach ($cart->items as $item) {
             $gallery = $item->catalogItem->galleries()->first();
             $price = $item->catalogItem->getOrderPrice();
+            $image = $gallery->images()->first();
             $items[] = [
-                'id' => $item->id,
+                'id' => $item->catalog_item_id,
                 'title' => $item->catalogItem->title,
                 'slug' => $item->catalogItem->slug,
                 'price' => $price,
-                'thumb' => '/images/' . $gallery->images()->first()->id
+                'thumb' => !empty($image) ? '/images/' . $image->id : null
             ];
             $total += $price;
         }

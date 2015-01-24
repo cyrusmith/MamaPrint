@@ -36,7 +36,8 @@ use \Illuminate\Support\Facades\App;
                 </ul>
                 <div class="cart col-sm-4" data-widget="cartlink">
                     <a class="btn btn-info" href="{{URL::action('CartController@userCart')}}"><span
-                                class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">@if(empty($cart))Нет товаров@else{{count($cart)}} ед.@endif</span>)</a>
+                                class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">@if(empty($cart))
+                                Нет товаров@else{{count($cart)}} ед.@endif</span>)</a>
                 </div>
             </div>
         </div>
@@ -106,7 +107,15 @@ use \Illuminate\Support\Facades\App;
     </div>
 
     <div id="cart-prompt-popup" class="white-popup mfp-with-anim mfp-hide">
-        Перейти в корзину
+        <div class="popup-content row">
+            <div class="col-xs-6 text-center">
+                <a href="/" class="btn btn-default">Продолжить покупки</a>
+            </div>
+            <div class="col-xs-6 text-center">
+                <a href="/cart" class="btn btn-success">Оформить заказ <span class="glyphicon glyphicon-chevron-right"></span></a>
+            </div>
+        </div>
+
     </div>
 
     <div id="auth-prompt-popup" class="white-popup mfp-with-anim mfp-hide">
@@ -115,9 +124,15 @@ use \Illuminate\Support\Facades\App;
 
 </div>
 
+<script type="x-tpl" id="cart-json">
+   {{json_encode($cart)}}
+
+</script>
+
 <script type="x-tpl" id="appconfig">
     {"user": <?php $user = App::make("UsersService")->getUser(); echo !empty($user) ? $user->toJson() : 'null' ?>
     , "token": "<?php echo csrf_token(); ?>"}
+
 
 </script>
 

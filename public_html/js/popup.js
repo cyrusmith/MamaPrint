@@ -13,6 +13,7 @@ define(['$', 'promise'], function ($, promise) {
 
         showCartPrompt: function () {
             return new promise.Promise(function (resolve, reject) {
+
                 $.magnificPopup.open({
                     items: {
                         src: '#cart-prompt-popup'
@@ -21,6 +22,13 @@ define(['$', 'promise'], function ($, promise) {
                     mainClass: 'mfp-zoom-in',
                     removalDelay: 500
                 }, 0);
+
+                $( "#cart-prompt-popup").find('.btn-default').one( "click", function(e) {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    $.magnificPopup.close();
+                });
+
                 resolve(true);
             });
         }

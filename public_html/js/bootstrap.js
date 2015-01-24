@@ -16,6 +16,7 @@ require(['domReady!'], function (doc) {
 
         require([
             'cart/cart.link.widget',
+            'cart/cart.items.widget',
             'catalog/catalog.item.widget'
         ], function () {
             var args = Array.prototype.slice.call(arguments, 0);
