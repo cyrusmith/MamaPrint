@@ -103,6 +103,10 @@ use \Illuminate\Support\Facades\App;
         <div class="col-xs-3 text-right">&copy; 2014</div>
     </div>
 
+    <div id="auth-prompt-popup" class="white-popup mfp-hide">
+        Popup content
+    </div>
+
 </div>
 
 <script type="x-tpl" id="appconfig">

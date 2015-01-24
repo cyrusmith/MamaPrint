@@ -1,8 +1,10 @@
 define([
     'backbone',
     'underscore',
-    'cart/cart.model'
-], function (Backbone, _, cartModel) {
+    'cart/cart.model',
+    'auth/auth.service',
+    'popup'
+], function (Backbone, _, cartModel, authService, popup) {
 
     return Backbone.View.extend({
 
@@ -28,7 +30,6 @@ define([
         },
 
         onModelChange: function () {
-            console.log("onModelChange ", this.model.get('inCart'));
             if (this.model.get('inCart')) {
                 this.$addToCartBtn.hide();
                 this.$removeFromCartBtn.css({
@@ -44,12 +45,17 @@ define([
         },
 
         addToCart: function (e) {
-            Backbone.sync("create", this.model, {
-                url: "/api/v1/cart",
-                success: _.bind(function () {
-                    cartModel.add(this.model);
-                }, this)
-            });
+            if (!authService.getUser()) {
+                popup.showLoginPrompt();
+            }
+            else {
+                Backbone.sync("create", this.model, {
+                    url: "/api/v1/cart",
+                    success: _.bind(function () {
+                        cartModel.add(this.model);
+                    }, this)
+                });
+            }
         },
 
         removeFromCart: function (e) {
