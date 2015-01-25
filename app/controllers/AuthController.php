@@ -6,6 +6,9 @@
  * Date: 21.12.2014
  * Time: 20:23
  */
+
+use Cart\CartItem;
+
 class AuthController extends BaseController
 {
 
@@ -124,12 +127,48 @@ class AuthController extends BaseController
 
     public function login()
     {
-
         $email = Input::get('email');
         $password = Input::get('password');
-
         if (Auth::attempt(array('email' => $email, 'password' => $password))) {
-            return Redirect::intended('/workbook');
+
+            $guestId = Session::get('guestid');
+            if (empty($guestId)) {
+                $guestId = Cookie::get('guestid');
+            }
+            if (!empty($guestId)) {
+
+                $authUser = Auth::user();
+
+                if (empty($authUser->cart) || $authUser->cart->items->isEmpty()) {
+
+                    $tmpUser = User::where('guestid', '=', $guestId)->first();
+                    if (!empty($tmpUser)) {
+                        $tmpCart = $tmpUser->cart;
+                        if (!empty($tmpCart) && !$tmpCart->items->isEmpty()) {
+                            try {
+                                DB::beginTransaction();
+                                $authUserCart = $authUser->getOrCreateCart();
+                                foreach ($tmpUser->cart->items as $tmpCartItem) {
+                                    $cartItem = new CartItem;
+                                    $cartItem->catalogItem()->associate($tmpCartItem->catalogItem);
+                                    $authUserCart->items()->save($cartItem);
+                                }
+                                $tmpUser->cart->delete();
+                                DB::commit();
+                            } catch (Exception $e) {
+                                \Illuminate\Support\Facades\Log::error($e);
+                                DB::rollback();
+                            }
+                        }
+                    }
+
+                }
+
+            }
+            Session::set('guestid', null);
+            Cookie::queue('guestid', null, 0);
+
+            return Redirect::intended('/');
         } else {
             return Redirect::to('/login')->with('data', array(
                 'error' => 'Неправильные емейл или пароль',
@@ -142,7 +181,7 @@ class AuthController extends BaseController
     public function logout()
     {
         Auth::logout();
-        return Redirect::to('/workbook');
+        return Redirect::to('/');
     }
 
 }

@@ -68,6 +68,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         if (empty($cart)) {
             $cart = new Cart;
             $this->cart()->save($cart);
+            $this->cart = $cart;
         }
         return $cart;
     }

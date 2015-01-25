@@ -33,4 +33,14 @@ class Cart extends Eloquent
         return $cartItem;
     }
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($cart) {
+            $cart->items()->delete();
+        });
+    }
+
+
 }
