@@ -1,5 +1,6 @@
 <?php
 use \Illuminate\Support\Facades\App;
+
 ?>
 <html>
 <head>
@@ -67,7 +68,7 @@ use \Illuminate\Support\Facades\App;
 
     <div class="page row">
         <div class="mainmenu">
-            <a href="/workbook" class="font-hanwritten {{Request::is('workbook')?'active':''}}">Зимняя-тетрадка</a>
+            <a href="/" class="{{Request::is('/')?'active':''}}">Каталог</a>
             <span>/</span>
             <a href="/about" class="{{Request::is('about')?'active':''}}">О нас</a>
             <span>/</span>
@@ -112,7 +113,8 @@ use \Illuminate\Support\Facades\App;
                 <a href="/" class="btn btn-default">Продолжить покупки</a>
             </div>
             <div class="col-xs-6 text-center">
-                <a href="/cart" class="btn btn-success">Оформить заказ <span class="glyphicon glyphicon-chevron-right"></span></a>
+                <a href="/cart" class="btn btn-success">Оформить заказ <span
+                            class="glyphicon glyphicon-chevron-right"></span></a>
             </div>
         </div>
 
@@ -126,14 +128,13 @@ use \Illuminate\Support\Facades\App;
 
 <script type="x-tpl" id="cart-json">
    {{json_encode($cart)}}
-
 </script>
 
+@define $user = App::make("UsersService")->getUser()
+
 <script type="x-tpl" id="appconfig">
-    {"user": <?php $user = App::make("UsersService")->getUser(); echo !empty($user) ? $user->toJson() : 'null' ?>
-    , "token": "<?php echo csrf_token(); ?>"}
-
-
+    {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
+     "token": "{{csrf_token()}}"}
 </script>
 
 @if (Config::get('app.debug'))

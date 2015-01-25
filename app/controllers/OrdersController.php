@@ -10,6 +10,7 @@
 use Order\Order;
 use Order\OrderItem;
 use Catalog\CatalogItem;
+use \Illuminate\Support\Facades\Log;
 
 class OrdersController extends BaseController
 {
@@ -55,6 +56,59 @@ class OrdersController extends BaseController
         App::abort(500, 'Could not create order');
     }
 
+    public function createOrder()
+    {
+
+        $user = App::make('UsersService')->getUser();
+        if (empty($user)) {
+            App::abort(400, Lang::get('messages.error.usernotfound'));
+        }
+
+        $cart = $user->cart;
+
+        if (empty($cart)) {
+            App::abort(400, Lang::get('messages.error.cart_is_empty'));
+        }
+
+        $cartItems = $cart->items;
+
+        if ($cartItems->isEmpty()) {
+            App::abort(400, Lang::get('messages.error.cart_is_empty'));
+        }
+
+        try {
+
+            DB::beginTransaction();
+            $total = 0;
+
+            $order = new Order;
+            $order->user()->associate($user);
+            $order->status = Order::STATUS_PENDING;
+
+            $orderItems = [];
+            foreach ($cart->items as $item) {
+                $price = $item->catalogItem->getOrderPrice();
+                $orderItem = new OrderItem;
+                $orderItem->price = $price;
+                $orderItem->catalogItem()->associate($item->catalogItem);
+                $orderItems[] = $orderItem;
+                $total += $price;
+            }
+            $order->total = $total;
+            $order->save();
+            $order->items()->saveMany($orderItems);
+            $cart->items()->delete();
+            DB::commit();
+            //TODO
+            return Redirect::to("https://secure.onpay.ru/pay/mamaprint_ru?price_final=true&ticker=RUR&pay_mode=fix&price=" . ((float)($order->total / 100.0)) . "&pay_for=" . $order->id . "&user_email=" . (Auth::check() ? Auth::user()->email : '') . "&url_success=" . URL::to('/pay/success/' . $order->id) . "&url_fail=" . URL::to('/pay/fail') . "&ln=ru");
+        } catch (Exception $e) {
+            Log::error($e);
+            DB::rollback();
+            App::abort(500, Lang::get('messages.error.could_not_create_order'));
+        }
+
+    }
+
     public function download($orderId)
     {
         $user = App::make('UsersService')->getUser();
@@ -79,7 +133,7 @@ class OrdersController extends BaseController
         $file = base_path() . DIRECTORY_SEPARATOR . 'downloads' . DIRECTORY_SEPARATOR . $catalogItem->id . '.' . $catalogItem->asset_extension;
 
         if (file_exists($file)) {
-            return Response::download($file, $catalogItem->asset_name.".".$catalogItem->asset_extension);
+            return Response::download($file, $catalogItem->asset_name . "." . $catalogItem->asset_extension);
         } else {
             Log::error($file . ' does not exists');
             App::abort(404);

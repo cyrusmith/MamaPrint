@@ -18,7 +18,7 @@ class UsersService
         if (Auth::check()) {
             return Auth::user();
         }
-        $guestId = Cookie::get('guestid');
+        $guestId = Session::get('guestid');
         if (!empty($guestId)) {
             return User::where('guestid', '=', $guestId)->first();
         } else {

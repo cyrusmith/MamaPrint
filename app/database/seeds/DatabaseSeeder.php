@@ -29,17 +29,25 @@ class DatabaseSeeder extends Seeder
             $user->save();
 
             $winterBook = new CatalogItem();
-
             $winterBook->title = 'Зимняя тетрадка';
             $winterBook->price = 9900;
             $winterBook->short_description = 'Тридцать творческих уроков на тему: «Новый год и зима» для детей дошкольного возраста';
             $winterBook->registered_price = 3900;
             $winterBook->slug = 'winterbook';
             $winterBook->save();
-
             $gallery = new \Gallery\Gallery();
             $gallery->save();
+            $winterBook->galleries()->save($gallery);
 
+            $winterBook = new CatalogItem();
+            $winterBook->title = 'Набор для рисования';
+            $winterBook->price = 14900;
+            $winterBook->short_description = 'Набор для рисования кистями и маслом для очень тлантливых детей';
+            $winterBook->registered_price = 7900;
+            $winterBook->slug = 'paintset';
+            $winterBook->save();
+            $gallery = new \Gallery\Gallery();
+            $gallery->save();
             $winterBook->galleries()->save($gallery);
 
             // $this->call('UserTableSeeder');

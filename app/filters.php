@@ -86,15 +86,21 @@ Route::filter('csrf', function () {
 
 Route::filter('guest_create', function ($request, $response) {
 
-    if (Auth::check()) return;
+    if (Auth::check())  {
+        Session::set('guestid', null);
+        return;
+    }
 
     $questId = Cookie::get('guestid');
 
     $user = App::make('AuthService')->registerGuest($questId);
     if (!empty($user)) {
+        $questId = $user->guestid;
         Cookie::queue('guestid', $user->guestid, 2628000);
     } else {
         Log::error("Failed to create tmp user");
     }
+
+    Session::set('guestid', $questId);
 
 });

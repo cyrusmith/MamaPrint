@@ -49,6 +49,9 @@ Log::useFiles(storage_path() . '/logs/laravel.log');
 
 App::error(function (Exception $exception, $code) {
     Log::error($exception);
+    if ($code == 400 || $code === 500) {
+        return Response::view('errors.' . $code, array('error' => $exception->getMessage()), $code);
+    }
 });
 
 /*
@@ -122,9 +125,9 @@ View::composer('*', function ($view) {
             ];
         }
     }
-
     $view->with('cart', $cartItems);
     $view->with('cart_ids', $cartIds);
+    $view->with('user', $user);
 });
 
 require app_path() . '/filters.php';

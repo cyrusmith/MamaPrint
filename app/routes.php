@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(array('before' => 'guest_create', 'after' => 'guest_cookie'), function () {
+Route::group(array('before' => 'guest_create'), function () {
 
     Route::get('/', 'CatalogController@index');
     Route::get('/catalog/{path}', 'CatalogController@item')->where('path', '(.*)');
@@ -79,7 +79,8 @@ Route::group(array('before' => 'admin'), function () {
     Route::delete('/admin/gallery/{id}', 'GalleryController@deleteImage');
 });
 
-Route::post('/buyitem/{itemId}', array('before' => 'csrf', 'uses' => 'OrdersController@buyitem')); //TODO remove it
+Route::post('/buyitem/{itemId}', array('before' => 'csrf', 'uses' => 'OrdersController@buyitem'));
+Route::post('/createorder/', array('before' => 'csrf', 'uses' => 'OrdersController@createOrder'));
 
 Route::post('/subscribe/getcards', 'SubscribeController@getCards');
 
