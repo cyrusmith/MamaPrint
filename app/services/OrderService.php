@@ -16,18 +16,18 @@ class OrderService
 
             $order = \Order\Order::find($orderId);
 
-            Log::debug($order);
-
             if (empty($order)) {
                 throw new InvalidArgumentException("Order #$orderId not found");
+            }
+
+            if ($order->status !== \Order\Order::STATUS_PENDING) {
+                throw new InvalidArgumentException("Order #$orderId already payed");
             }
 
             $sum = intval($order->total);
 
             $user = User::find($order->user->id);
             $account = $user->accounts()->first();
-
-            Log::debug($account);
 
             $purchase = new \Account\OperationPurchase();
             $purchase->amount = $sum;
@@ -37,7 +37,12 @@ class OrderService
             $account->save();
             $order->save();
 
-            Log::debug("About to commit");
+            $catalogItems = [];
+            foreach ($order->items as $item) {
+                $catalogItems[] = $item->catalogItem;
+            }
+
+            $user->catalogItems()->saveMany($catalogItems);
 
             DB::commit();
 

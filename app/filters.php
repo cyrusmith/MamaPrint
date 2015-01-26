@@ -104,3 +104,9 @@ Route::filter('guest_create', function ($request, $response) {
     Session::set('guestid', $questId);
 
 });
+
+Route::filter('test', function () {
+    if (!Config::get('app.debug')) {
+        throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+    }
+});

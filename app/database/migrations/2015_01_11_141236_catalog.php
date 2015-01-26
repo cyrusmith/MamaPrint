@@ -94,7 +94,6 @@ class Catalog extends Migration
             $table->increments('id');
             $table->bigInteger('user_id');
             $table->bigInteger('catalog_item_id');
-            $table->bigInteger('order_id');
             $table->dateTime('updated_at');
             $table->dateTime('created_at');
         });

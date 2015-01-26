@@ -100,3 +100,13 @@ Route::get('/api/v1/cart/{itemId}', 'CartController@viewItem');
 Route::delete('/api/v1/cart/{itemId}', 'CartController@deleteItem');
 
 Route::get('/images/{id}', 'GalleryController@view');
+
+Route::group(array('before' => 'test'), function () {
+
+    Route::get('/test', function () {
+        return View::make('test.index');
+    });
+
+    Route::post('/test/orders/payorder', 'Test\OrdersTestController@testPayOrder');
+
+});
