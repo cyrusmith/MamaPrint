@@ -16,7 +16,7 @@
                     <div class="col-sm-4">
                         <div class="catalog-item" data-widget="catalogitem" data-id="{{$item->id}}">
 
-                            <a href="/catalog/items/{{$item->slug}}" class="img">
+                            <a href="/catalog/{{$item->slug}}" class="img">
                                 @if(empty($image))
                                     <img src="/assets/noimage.png" title="" alt=""/>
                                 @else
@@ -28,7 +28,7 @@
                             <div class="info">
 
                                 <div class="title">
-                                    <h3><a href="/catalog/items/{{$item->slug}}">{{$item->title}}</a></h3>
+                                    <h3><a href="/catalog/{{$item->slug}}">{{$item->title}}</a></h3>
 
                                     <div class="addfav">
                                         <a class="btn btn-inverse" href="javascript:void(0)"><span

@@ -34,12 +34,20 @@ class CatalogController extends BaseController
         $slug = $parts[count($parts) - 1];
 
         $item = CatalogItem::where('slug', '=', $slug)->where('active', '=', true)->first();
+        $gallery = $item->galleries()->first();
+        $images = [];
+        if (!empty($gallery) && !$gallery->images->isEmpty()) {
+            $images = $gallery->images->toArray();
+        }
+
         if (empty($item)) {
             App::abort(404);
         }
         return View::make('catalog.item', [
-            'item' => $item
+            'item' => $item,
+            'images' => $images
         ]);
+
     }
 
 }
