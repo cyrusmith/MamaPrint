@@ -98,6 +98,11 @@ class Catalog extends Migration
             $table->dateTime('created_at');
         });
 
+        Schema::create('site_config', function ($table) {
+            $table->string('name');
+            $table->text('value');
+        });
+
     }
 
     /**

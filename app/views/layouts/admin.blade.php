@@ -25,8 +25,9 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/admin/catalog">Каталог <span class="sr-only">(current)</span></a></li>
-                    <li><a href="/admin/users">Пользователи</a></li>
+                    <li><a href="/admin/settings"><span class="glyphicon glyphicon-wrench"></span>Настройки <span class="sr-only">(current)</span></a></li>
+                    <li><a href="/admin/catalog"><span class="glyphicon glyphicon-list"></span> Каталог <span class="sr-only">(current)</span></a></li>
+                    <li><a href="/admin/users"><span class="glyphicon glyphicon-user"></span>Пользователи</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Статистика
                             <span class="caret"></span></a>

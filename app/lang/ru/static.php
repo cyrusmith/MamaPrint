@@ -40,4 +40,7 @@ return [
     'admin.catitem.inactive' => 'Неактивный',
     'admin.catitem.gallery' => 'Галерея',
     'admin.catitem.addimage' => 'Добавить картинку',
+    'admin.settings' => 'Настройки сайта',
+    'admin.settings.min_order_price' => 'Минимальная сумма заказа, руб.',
+    'admin.settings.min_order_price.help' => 'Сумма, ниже которой нельзя оформить заказ',
 ];

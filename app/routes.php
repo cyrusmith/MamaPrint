@@ -65,6 +65,7 @@ Route::group(array('before' => 'guest'), function () {
 });
 
 Route::group(array('before' => 'admin'), function () {
+
     Route::get('/admin/catalog', 'Admin\AdminCatalogController@index');
     Route::get('/admin/catalog/add', 'Admin\AdminCatalogController@add');
     Route::get('/admin/catalog/edit/{id}', 'Admin\AdminCatalogController@edit');
@@ -77,6 +78,10 @@ Route::group(array('before' => 'admin'), function () {
     Route::get('/admin/attachments/{id}/download', 'Admin\AdminAttachmentController@download');
 
     Route::delete('/admin/gallery/{id}', 'GalleryController@deleteImage');
+
+    Route::get('/admin/settings', 'Admin\AdminSettingsController@edit');
+    Route::post('/admin/settings', 'Admin\AdminSettingsController@edit');
+
 });
 
 Route::post('/buyitem/{itemId}', array('before' => 'csrf', 'uses' => 'OrdersController@buyitem'));
