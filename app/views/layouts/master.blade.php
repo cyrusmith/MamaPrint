@@ -7,7 +7,7 @@ use \Illuminate\Support\Facades\App;
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Mama-print @yield('page_title')</title>
-    <meta name="description" content="">
+    <meta name="description" content="@yield('description')">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
@@ -74,8 +74,8 @@ use \Illuminate\Support\Facades\App;
             <span>/</span>
             <a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a>
             <span>/</span>
-            <a href="/contacts" class="{{Request::is('contacts')?'active':''}}"><span
-                        class="glyphicon glyphicon-shopping-cart"></span>Корзина</a>
+            <a href="/cart" class="{{Request::is('contacts')?'active':''}}"><span
+                        class="glyphicon glyphicon-shopping-cart text-primary"></span>Корзина</a>
         </div>
 
         @if(Session::get('message'))
@@ -108,26 +108,23 @@ use \Illuminate\Support\Facades\App;
     </div>
 
     <div id="cart-prompt-popup" class="white-popup mfp-with-anim mfp-hide">
-        <div class="popup-content row">
-            <div class="col-xs-6 text-center">
-                <a href="/" class="btn btn-default">Продолжить покупки</a>
-            </div>
-            <div class="col-xs-6 text-center">
-                <a href="/cart" class="btn btn-success">Оформить заказ <span
-                            class="glyphicon glyphicon-chevron-right"></span></a>
-            </div>
+        <div class="popup-content">
+            <a href="/" class="btn btn-default btn-sm">Продолжить покупки</a>
+            <a href="/cart" class="btn btn-success btn-sm">Оформить заказ <span
+                        class="glyphicon glyphicon-chevron-right"></span></a>
         </div>
 
     </div>
 
     <div id="auth-prompt-popup" class="white-popup mfp-with-anim mfp-hide">
-        Popup content
+        <a href="{{URL::to('/login')}}">Войдите</a> или <a href="{{URL::to('/register')}}">зарегистрируйтесь</a>
     </div>
 
 </div>
 
 <script type="x-tpl" id="cart-json">
    {{json_encode($cart)}}
+
 </script>
 
 @define $user = App::make("UsersService")->getUser()
@@ -135,6 +132,7 @@ use \Illuminate\Support\Facades\App;
 <script type="x-tpl" id="appconfig">
     {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
      "token": "{{csrf_token()}}"}
+
 </script>
 
 @if (Config::get('app.debug'))

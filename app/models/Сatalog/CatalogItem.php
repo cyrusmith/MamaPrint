@@ -26,7 +26,7 @@ class CatalogItem extends Eloquent
     {
         //TODO create price rules in orders package instead of do it here
         $user = Auth::user();
-        if (!empty($user) && empty($user->guestid) && !empty($this->registered_price)) {
+        if (!empty($user) && !$user->isGuest() && !empty($this->registered_price)) {
             return (int)$this->registered_price;
         }
         return (int)$this->price;

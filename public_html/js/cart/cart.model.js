@@ -10,6 +10,12 @@ define(['backbone', './cart.item.model'], function (Backbone, CartItem) {
             return this.reduce(function (memo, item) {
                 return memo + item.get('price');
             }, 0);
+        },
+
+        isInCart: function (model) {
+            return !!this.find(function (item) {
+                return item.id === model.id;
+            });
         }
 
     });

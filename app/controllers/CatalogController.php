@@ -37,7 +37,7 @@ class CatalogController extends BaseController
         $gallery = $item->galleries()->first();
         $images = [];
         if (!empty($gallery) && !$gallery->images->isEmpty()) {
-            $images = $gallery->images->toArray();
+            $images = $gallery->images->all();
         }
 
         if (empty($item)) {
