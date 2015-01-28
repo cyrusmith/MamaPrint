@@ -78,19 +78,19 @@ use \Illuminate\Support\Facades\App;
                         class="glyphicon glyphicon-shopping-cart text-primary"></span>Корзина</a>
         </div>
 
-        @if(Session::get('message'))
+        @define $msg = null
+        @if(Session::get('success'))
+            @define $msg = Session::get('success')
             @define $msgType = 'success'
-            @if(Session::get('message_type'))
-                @define $msgType = Session::get('message_type')
-            @endif
+        @endif
 
+        @if(!empty($msg))
             <div class="alert alert-{{$msgType}} alert-dismissible fade in" role="alert">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                             aria-hidden="true">×</span></button>
-                {{Session::get('message')}}
+                {{$msg}}
             </div>
         @endif
-
 
         @yield('content')
     </div>
@@ -125,6 +125,8 @@ use \Illuminate\Support\Facades\App;
 <script type="x-tpl" id="cart-json">
    {{json_encode($cart)}}
 
+
+
 </script>
 
 @define $user = App::make("UsersService")->getUser()
@@ -133,6 +135,8 @@ use \Illuminate\Support\Facades\App;
     {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
      "siteConfig": {{$site_config->toJSON()}},
      "token": "{{csrf_token()}}"}
+
+
 
 </script>
 

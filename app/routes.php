@@ -38,8 +38,13 @@ Route::group(array('before' => 'guest_create'), function () {
 
 Route::group(array('before' => 'auth'), function () {
 
-    Route::get('/user', 'UserController@downloads');
+    Route::get('/user', 'UserController@viewCatalogItems');
+    Route::get('/user/settings', function () {
+        return View::make('user.settings');
+    });
     Route::get('/logout', 'AuthController@logout');
+    Route::post('/user/settings/name', array('before' => 'csrf', 'uses' => 'UserController@saveName'));
+    Route::post('/user/settings/password', array('before' => 'csrf', 'uses' => 'UserController@savePassword'));
 
 });
 
