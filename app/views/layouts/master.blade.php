@@ -131,6 +131,7 @@ use \Illuminate\Support\Facades\App;
 
 <script type="x-tpl" id="appconfig">
     {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
+     "siteConfig": {{$site_config->toJSON()}},
      "token": "{{csrf_token()}}"}
 
 </script>

@@ -68,15 +68,18 @@
                 @endif
 
                 <div class="buttons" data-widget="itemcartbuttons" data-id="{{$item->id}}">
-                    <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
+                    @if($item->canBuyInOneClick())
+                        <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
                         'itemId' => $item->id
                     ])}}" method="post">
-                        <input type="hidden" name="_token" value="{{csrf_token()}}"/>
-                        <button type="submit" class="btn btn-default btn-sm">Заказать в один клик</button>
-                    </form>
+                            <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+                            <button type="submit" class="btn btn-default btn-sm">Купить в один клик</button>
+                        </form>
+                    @endif
                     <a data-addtocart
                        class="btn btn-success progress-parent progress-hidden" @if(in_array($item->id, $cart_ids))
-                       style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span> Добавить
+                       style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
+                        Добавить
                         в корзину <span class="progress-left"></span></a>
                     <a data-removefromcart
                        class="btn progress-parent progress-hidden" @if(!in_array($item->id, $cart_ids))

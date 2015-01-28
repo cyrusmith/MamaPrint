@@ -1,11 +1,12 @@
 define([
     '$',
     'backbone',
-    './cart.item.model',
+    'catalog/catalog.item.model',
     'auth/auth.service',
     './cart.model',
-    'popup'
-], function ($, Backbone, CartItemModel, authService, cartModel, popup) {
+    'popup',
+    'siteconfig'
+], function ($, Backbone, CatalogItemModel, authService, cartModel, popup, siteConfig) {
 
     'use strict';
 
@@ -49,10 +50,13 @@ define([
                     url: "/api/v1/cart",
                     success: _.bind(function () {
                         cartModel.add(this.model);
-                        popup.showCartPrompt()
-                            .then(function () {
 
-                            });
+                        if (cartModel.getTotal() >= siteConfig.getMinOrderPrice() * 100) {
+                            popup.showCartPrompt()
+                                .then(function () {
+
+                                });
+                        }
                     }, this),
                     complete: _.bind(function () {
                         this.$addToCartBtn.attr('disabled', null);
@@ -87,7 +91,7 @@ define([
     function init(el) {
         new ItemCartButtonsView({
             el: el,
-            model: new CartItemModel({
+            model: new CatalogItemModel({
                 id: el.attr('data-id')
             })
         });

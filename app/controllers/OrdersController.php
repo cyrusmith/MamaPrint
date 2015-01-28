@@ -20,15 +20,17 @@ class OrdersController extends BaseController
 
         $item = CatalogItem::find($itemId);
         if (empty($item)) {
-            return Response::view('errors.404', array(
-                "error" => "Товар не найден"
-            ), 404);
+            App::abort(404, "Товар не найден");
+        }
+
+        if (!$item->canBuyInOneClick()) {
+            App::abort(400, "Минимальная сумма покупки - " . \Illuminate\Support\Facades\App::make("SiteConfigProvider")->getSiteConfig()->getMinOrderPrice() . " Р.");
         }
 
         $user = App::make('UsersService')->getUser();
 
         if (empty($user)) {
-            App::abort(500, 'user not set');
+            App::abort(500, 'Пользователь не задан. Войдите или зарегистрируйтесь.');
         }
 
         $order = new Order;
@@ -76,6 +78,8 @@ class OrdersController extends BaseController
             App::abort(400, Lang::get('messages.error.cart_is_empty'));
         }
 
+        $siteConfig = \Illuminate\Support\Facades\App::make("SiteConfigProvider")->getSiteConfig();
+
         try {
 
             DB::beginTransaction();
@@ -94,6 +98,11 @@ class OrdersController extends BaseController
                 $orderItems[] = $orderItem;
                 $total += $price;
             }
+
+            if ($total < ($siteConfig->getMinOrderPrice() * 100)) {
+                throw new Exception("Минимальная сумма заказа - " . $siteConfig->getMinOrderPrice() . " P.");
+            }
+
             $order->total = $total;
             $order->save();
             $order->items()->saveMany($orderItems);
@@ -104,7 +113,7 @@ class OrdersController extends BaseController
         } catch (Exception $e) {
             Log::error($e);
             DB::rollback();
-            App::abort(500, Lang::get('messages.error.could_not_create_order'));
+            App::abort(500, Lang::get('messages.error.could_not_create_order') . ": " . $e->getMessage());
         }
 
     }

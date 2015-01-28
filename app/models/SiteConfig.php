@@ -58,4 +58,12 @@ class SiteConfig
         });
     }
 
+    public function toJSON()
+    {
+        $data = [
+            "min_order_price" => $this->getMinOrderPrice()
+        ];
+        return json_encode($data);
+    }
+
 }

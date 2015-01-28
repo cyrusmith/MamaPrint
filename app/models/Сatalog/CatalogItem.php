@@ -10,8 +10,10 @@
 namespace Catalog;
 
 use Eloquent;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class CatalogItem extends Eloquent
 {
@@ -30,6 +32,12 @@ class CatalogItem extends Eloquent
             return (int)$this->registered_price;
         }
         return (int)$this->price;
+    }
+
+    public function canBuyInOneClick()
+    {
+        $siteConfig = App::make("SiteConfigProvider")->getSiteConfig();
+        return $this->getOrderPrice() >= ($siteConfig->getMinOrderPrice() * 100);
     }
 
     public function tags()

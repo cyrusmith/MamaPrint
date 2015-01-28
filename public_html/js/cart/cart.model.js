@@ -1,10 +1,10 @@
-define(['backbone', './cart.item.model'], function (Backbone, CartItem) {
+define(['backbone', 'catalog/catalog.item.model'], function (Backbone, CatalogItemModel) {
 
     'use strict';
 
     var Cart = Backbone.Collection.extend({
 
-        model: CartItem,
+        model: CatalogItemModel,
 
         getTotal: function () {
             return this.reduce(function (memo, item) {

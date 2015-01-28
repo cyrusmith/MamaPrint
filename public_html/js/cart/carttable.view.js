@@ -2,9 +2,9 @@ define([
     '$',
     'backbone',
     './cart.item.view',
-    './cart.item.model',
-    './cart.model'
-], function ($, Backbone, CartItemView, CartItem, cartModel) {
+    './cart.model',
+    'siteconfig'
+], function ($, Backbone, CartItemView, cartModel, siteConfig) {
 
     return Backbone.View.extend({
 
@@ -31,7 +31,13 @@ define([
             if (cartModel.length === 0) {
                 this.$summary.remove();
                 $('.emptycart-message').show();
+                $('.insufficientprice-message').hide();
             }
+            else if (cartModel.getTotal() < siteConfig.getMinOrderPrice() * 100) {
+                $('.insufficientprice-message').show();
+                $('.payform').hide();
+            }
+
         }
 
     });

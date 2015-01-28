@@ -5,12 +5,14 @@ require(['domReady!'], function (doc) {
         'auth/auth.service',
         'auth/user.model',
         'cart/cart.model',
+        'siteconfig',
         'headhesive',
         'magnific',
         'twitterbootstrap'], function ($,
                                        authService,
                                        User,
-                                       cartModel) {
+                                       cartModel,
+                                       siteConfig) {
 
         'use strict';
 
@@ -40,6 +42,8 @@ require(['domReady!'], function (doc) {
         if (appConfig.user) {
             authService.setUser(new User(appConfig.user));
         }
+
+        siteConfig.init(appConfig.siteConfig);
 
         var modelsJson = $('#cart-json').text();
         var modelsData = JSON.parse(modelsJson);

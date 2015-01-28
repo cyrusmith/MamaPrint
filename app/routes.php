@@ -115,3 +115,5 @@ Route::group(array('before' => 'test'), function () {
     Route::post('/test/orders/payorder', 'Test\OrdersTestController@testPayOrder');
 
 });
+
+Route::when('*', 'register_globals');

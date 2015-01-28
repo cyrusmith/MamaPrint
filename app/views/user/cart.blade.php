@@ -31,16 +31,28 @@
                         <span data-cart-total>{{$total/100}}</span> P
                     </td>
                     <th class="text-right">
-                        <form action="{{URL::action('OrdersController@createOrder')}}" method="post">
-                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                            <button type="submit" class="btn btn-success progress-parent progress-hidden"
-                                    href="javascript:void(0);">
-                                Оплатить <span class="glyphicon glyphicon-chevron-right"></span><span
-                                        class="progress-left"></span></button>
-                        </form>
+
+                            <form class="payform" action="{{URL::action('OrdersController@createOrder')}}" method="post" @if($total < ($site_config->getMinOrderPrice()*100)) style="display: none;" @endif>
+                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                                <button type="submit" class="btn btn-success progress-parent progress-hidden"
+                                        href="javascript:void(0);">
+                                    Оплатить <span class="glyphicon glyphicon-chevron-right"></span><span
+                                            class="progress-left"></span></button>
+                            </form>
+
+
                     </th>
                 </tr>
             </table>
+
+
+            <p class="panel text-danger insufficientprice-message" @if($total >= ($site_config->getMinOrderPrice()*100))
+               style="display:none;" @endif>
+                Минимальная сумма заказа - {{$site_config->getMinOrderPrice()}} Р.
+                <a href="/">Продолжить
+                    покупки</a>
+            </p>
+
 
         @endif
 

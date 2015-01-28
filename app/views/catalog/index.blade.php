@@ -47,20 +47,28 @@
 
                                 <div class="addtocart">
                                     <div class="price">
-                                        @if(!empty($item->old_price))
+                                        @if(!Auth::check() && !empty($item->registered_price))
+                                            <span class="registered"><span class="sum label label-default">{{floatval($item->registered_price/100)}}
+                                                    Р.</span><span class="title"> - для зарегистрированных</span>
+                                                </span>
+                                        @elseif(!empty($item->old_price))
                                             <span class="old">{{floatval($item->old_price/100)}} Р.</span>
                                         @else
                                             <span class="old empty">&nbsp;</span>
                                         @endif
-                                        <span class="new"><span class="label label-primary">{{floatval($item->price/100)}}
+
+                                        <span class="new"><span class="label label-primary">{{floatval($item->getOrderPrice()/100)}}
                                                 Р.</span></span>
                                     </div>
                                     <div class="button">
 
-                                        <a class="btn btn-success btn-sm catalogitem-addtocart progress-parent progress-hidden"@if(in_array($item->id, $cart_ids)) style="display:none;"@endif><span
-                                                    class="glyphicon glyphicon-shopping-cart"></span> В корзину <span class="progress-left"></span></a>
+                                        <a class="btn btn-success btn-sm catalogitem-addtocart progress-parent progress-hidden"@if(in_array($item->id, $cart_ids))
+                                           style="display:none;"@endif><span
+                                                    class="glyphicon glyphicon-shopping-cart"></span> В корзину <span
+                                                    class="progress-left"></span></a>
 
-                                        <a class="btn btn-xs catalogitem-removefromcart progress-parent progress-hidden"@if(!in_array($item->id, $cart_ids)) style="display:none;"@endif>Удалить<br>из
+                                        <a class="btn btn-xs catalogitem-removefromcart progress-parent progress-hidden"@if(!in_array($item->id, $cart_ids))
+                                           style="display:none;"@endif>Удалить<br>из
                                             корзины <span class="progress-left"></span></a>
 
                                     </div>

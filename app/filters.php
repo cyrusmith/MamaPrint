@@ -86,7 +86,7 @@ Route::filter('csrf', function () {
 
 Route::filter('guest_create', function ($request, $response) {
 
-    if (Auth::check())  {
+    if (Auth::check()) {
         Session::set('guestid', null);
         return;
     }
@@ -109,4 +109,8 @@ Route::filter('test', function () {
     if (!Config::get('app.debug')) {
         throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
     }
+});
+
+Route::filter('register_globals', function () {
+    \Illuminate\Support\Facades\App::make("SiteConfigProvider")->init();
 });

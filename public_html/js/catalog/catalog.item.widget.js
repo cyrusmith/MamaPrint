@@ -16,7 +16,8 @@ define([
         var itemModel = new CatalogItem({
             id: el.attr('data-id'),
             title: el.find('.info .title h3 a').text(),
-            inCart: false
+            inCart: false,
+            price: parseFloat(el.find('.new .label').text())*100
         });
 
         var cartLinkView = new CatalogItemView({

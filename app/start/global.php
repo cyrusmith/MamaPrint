@@ -100,6 +100,10 @@ App::singleton('GalleryService', function ($app) {
     return new GalleryService();
 });
 
+App::singleton('SiteConfigProvider', function ($app) {
+    return new SiteConfigProvider();
+});
+
 Blade::extend(function ($value) {
     return preg_replace('/\@define(.+)/', '<?php ${1}; ?>', $value);
 });
@@ -128,6 +132,7 @@ View::composer('*', function ($view) {
     $view->with('cart', $cartItems);
     $view->with('cart_ids', $cartIds);
     $view->with('user', $user);
+    $view->with('site_config', \Illuminate\Support\Facades\App::make("SiteConfigProvider")->getSiteConfig());
 });
 
 require app_path() . '/filters.php';

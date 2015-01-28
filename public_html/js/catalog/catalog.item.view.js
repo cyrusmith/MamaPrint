@@ -3,8 +3,9 @@ define([
     'underscore',
     'cart/cart.model',
     'auth/auth.service',
-    'popup'
-], function (Backbone, _, cartModel, authService, popup) {
+    'popup',
+    'siteconfig'
+], function (Backbone, _, cartModel, authService, popup, siteConfig) {
 
     return Backbone.View.extend({
 
@@ -56,10 +57,12 @@ define([
                     url: "/api/v1/cart",
                     success: _.bind(function () {
                         cartModel.add(this.model);
-                        popup.showCartPrompt()
-                            .then(function () {
+                        if (cartModel.getTotal() >= siteConfig.getMinOrderPrice() * 100) {
+                            popup.showCartPrompt()
+                                .then(function () {
 
-                            });
+                                });
+                        }
                     }, this),
                     complete: _.bind(function () {
                         this.$addToCartBtn.attr('disabled', null);
@@ -77,7 +80,7 @@ define([
                 success: _.bind(function () {
                     cartModel.remove(this.model);
                 }, this),
-                complete: _.bind(function() {
+                complete: _.bind(function () {
                     this.$removeFromCartBtn.attr('disabled', null);
                     this.$removeFromCartBtn.addClass('progress-hidden');
                 }, this)
