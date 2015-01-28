@@ -1,6 +1,8 @@
 <?php
 
 use Order\Order;
+use \Illuminate\Support\Facades\Input;
+use \Illuminate\Support\Facades\Hash;
 
 class UserController extends BaseController
 {
@@ -22,7 +24,7 @@ class UserController extends BaseController
 
     public function saveName()
     {
-        $name = \Illuminate\Support\Facades\Input::get('name');
+        $name = Input::get('name');
         if (!empty($name)) {
             $user = Auth::user();
             $user->name = $name;
@@ -33,7 +35,49 @@ class UserController extends BaseController
 
     public function savePassword()
     {
-        return \Illuminate\Support\Facades\Redirect::to('/user/settings');
+        $oldPassword = Input::get('oldpassword');
+        $password = Input::get('newpassword');
+        $password2 = Input::get('newpassword2');
+
+        Validator::extend('validpass', function ($attribute, $value, $parameters) {
+            return Hash::check($value, Auth::user()->password);
+        });
+
+        $validator = Validator::make(
+            [
+                'Старый пароль' => $oldPassword,
+                'Новый пароль' => $password,
+                'Повторить новый пароль' => $password2
+            ],
+            [
+                'Старый пароль' => ['required', 'validpass'],
+                'Новый пароль' => ['required'],
+                'Повторить новый пароль' => ['required']
+            ],
+            [
+                'validpass' => 'Неправильный старый пароль'
+            ]
+        );
+
+        $isNewPassEquals = $password == $password2;
+
+        if ($validator->fails() || !$isNewPassEquals) {
+            $msgArr = [];
+            $messages = $validator->messages();
+            foreach ($messages->all() as $message) {
+                $msgArr[] = $message;
+            }
+            if(!$isNewPassEquals) {
+                $msgArr[] = 'Новый пароль и подтверждение не совпадают';
+            }
+            return $this->withErrorMessage(Redirect::to('/user/settings'), implode("<br>", $msgArr));
+        }
+
+        $user = Auth::user();
+        $user->password = Hash::make($password);
+        $user->save();
+
+        return $this->withSuccessMessage(\Illuminate\Support\Facades\Redirect::to('/user/settings'), 'Пароль сохранен');
     }
 
 }

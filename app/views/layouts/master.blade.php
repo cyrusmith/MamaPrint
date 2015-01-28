@@ -82,13 +82,21 @@ use \Illuminate\Support\Facades\App;
         @if(Session::get('success'))
             @define $msg = Session::get('success')
             @define $msgType = 'success'
+        @elseif(Session::get('error'))
+            @define $msg = Session::get('error')
+            @define $msgType = 'danger'
         @endif
 
+
         @if(!empty($msg))
-            <div class="alert alert-{{$msgType}} alert-dismissible fade in" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
-                {{$msg}}
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2">
+                    <div class="alert alert-{{$msgType}} alert-dismissible fade in" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                    aria-hidden="true">×</span></button>
+                        {{$msg}}
+                    </div>
+                </div>
             </div>
         @endif
 
@@ -127,6 +135,8 @@ use \Illuminate\Support\Facades\App;
 
 
 
+
+
 </script>
 
 @define $user = App::make("UsersService")->getUser()
@@ -135,6 +145,8 @@ use \Illuminate\Support\Facades\App;
     {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
      "siteConfig": {{$site_config->toJSON()}},
      "token": "{{csrf_token()}}"}
+
+
 
 
 
