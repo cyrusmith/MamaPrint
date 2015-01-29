@@ -93,6 +93,8 @@ Route::group(array('before' => 'admin'), function () {
     Route::get('/admin/settings', 'Admin\AdminSettingsController@edit');
     Route::post('/admin/settings', 'Admin\AdminSettingsController@edit');
 
+    Route::get('/admin/stats/orders', 'Admin\AdminStatsController@getOrders');
+
 });
 
 Route::post('/buyitem/{itemId}', array('before' => 'csrf', 'uses' => 'OrdersController@buyitem'));
