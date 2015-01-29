@@ -128,12 +128,17 @@ use \Illuminate\Support\Facades\App;
         <a href="{{URL::to('/login')}}">Войдите</a> или <a href="{{URL::to('/register')}}">зарегистрируйтесь</a>
     </div>
 
+    <div id="cookies-warning-popup" class="white-popup mfp-with-anim mfp-hide">
+        <h3 class="text-danger">Отключены cookies</h3>
+
+        <p>Для корректной работы сайта необходимо <a href="https://www.google.ru/search?q=Как+включить+cookies"
+                                                     target="_blank">включить cookies в вашем браузере</a></p>
+    </div>
+
 </div>
 
 <script type="x-tpl" id="cart-json">
    {{json_encode($cart)}}
-
-
 
 
 
@@ -145,8 +150,6 @@ use \Illuminate\Support\Facades\App;
     {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
      "siteConfig": {{$site_config->toJSON()}},
      "token": "{{csrf_token()}}"}
-
-
 
 
 

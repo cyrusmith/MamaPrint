@@ -23,13 +23,24 @@ define(['$', 'promise'], function ($, promise) {
                     removalDelay: 500
                 }, 0);
 
-                $( "#cart-prompt-popup").find('.btn-default').one( "click", function(e) {
+                $("#cart-prompt-popup").find('.btn-default').one("click", function (e) {
                     e.stopPropagation();
                     e.preventDefault();
                     $.magnificPopup.close();
                 });
 
                 resolve(true);
+            });
+        },
+
+        showCookiesWarning: function () {
+            $.magnificPopup.open({
+                items: {
+                    src: '#cookies-warning-popup',
+                    type: 'inline',
+                    mainClass: 'mfp-zoom-in',
+                    removalDelay: 500
+                }
             });
         }
 

@@ -1,4 +1,8 @@
-require(['domReady!'], function (doc) {
+require([
+    'domReady!',
+    'headhesive',
+    'magnific',
+    'twitterbootstrap'], function (doc) {
 
     require([
         '$',
@@ -6,13 +10,13 @@ require(['domReady!'], function (doc) {
         'auth/user.model',
         'cart/cart.model',
         'siteconfig',
-        'headhesive',
-        'magnific',
-        'twitterbootstrap'], function ($,
-                                       authService,
-                                       User,
-                                       cartModel,
-                                       siteConfig) {
+        'popup'
+    ], function ($,
+                 authService,
+                 User,
+                 cartModel,
+                 siteConfig,
+                 popup) {
 
         'use strict';
 
@@ -51,6 +55,10 @@ require(['domReady!'], function (doc) {
             for (var i = 0; i < modelsData.length; i++) {
                 cartModel.add(modelsData[i]);
             }
+        }
+
+        if (!navigator.cookieEnabled) {
+            popup.showCookiesWarning();
         }
 
 
