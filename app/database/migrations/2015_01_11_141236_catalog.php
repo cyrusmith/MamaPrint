@@ -103,6 +103,13 @@ class Catalog extends Migration
             $table->text('value');
         });
 
+        Schema::create('password_reminders', function(Blueprint $table)
+        {
+            $table->string('email')->index();
+            $table->string('token')->index();
+            $table->timestamp('created_at');
+        });
+
     }
 
     /**

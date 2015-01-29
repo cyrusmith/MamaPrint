@@ -67,6 +67,12 @@ Route::group(array('before' => 'guest'), function () {
     Route::post('/login', 'AuthController@login');
     Route::post('/register', 'AuthController@register');
 
+    Route::get('/remindpassword/{token}', 'RemindersController@getReset');
+    Route::post('/remindpassword/{token}', 'RemindersController@postReset');
+
+    Route::get('/remindpassword', 'RemindersController@getRemind');
+    Route::post('/remindpassword', 'RemindersController@postRemind');
+
 });
 
 Route::group(array('before' => 'admin'), function () {

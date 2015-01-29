@@ -68,7 +68,8 @@ class AuthController extends BaseController
     {
 
         Validator::extend('strongPassword', function ($attribute, $value, $parameters) {
-            return mb_strlen($value) > 6 && preg_match('/[0-9]/', $value) && preg_match('/[a-z]/', $value) && preg_match('/[A-Z]/', $value);
+            return mb_strlen($value) >= 6 /*&& preg_match('/[0-9]/', $value) && preg_match('/[a-z]/', $value) && preg_match('/[A-Z]/', $value)*/
+                ;
         });
 
         Validator::extend('checkUserWithEmail', function ($attribute, $value, $parameters) {
@@ -92,13 +93,17 @@ class AuthController extends BaseController
 
         $validator = Validator::make(
             $form,
-            array(
-                'password' => array('required'),
+            [
+                'password' => array('required', 'strongPassword'),
                 'password2' => array('required', 'same:password'),
                 'name' => array('required'),
                 'email' => array('email', 'required', 'checkUserWithEmail'),
-            )
+            ],
+            [
+                'strong_password' => 'Пароль должен содержать не менее шести символов'
+            ]
         );
+
 
         if ($validator->fails()) {
             return Redirect::to('register')->withErrors($validator)->with('form', $form);
@@ -129,6 +134,7 @@ class AuthController extends BaseController
     {
         $email = Input::get('email');
         $password = Input::get('password');
+
         if (Auth::attempt(array('email' => $email, 'password' => $password))) {
 
             $guestId = Session::get('guestid');

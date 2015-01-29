@@ -49,7 +49,7 @@
                                     <div class="price">
                                         @if(!Auth::check() && !empty($item->registered_price))
                                             <span class="registered"><span class="sum label label-default">{{floatval($item->registered_price/100)}}
-                                                    Р.</span><span class="title"> - для зарегистрированных</span>
+                                                    Р.</span><span class="title"> - для <a href="/login">зарегистрированных</a></span>
                                                 </span>
                                         @elseif(!empty($item->old_price))
                                             <span class="old">{{floatval($item->old_price/100)}} Р.</span>

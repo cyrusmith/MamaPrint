@@ -45,8 +45,12 @@ $form = Session::get('form');
                     <p class="text-danger">{{$errors->first('password2')}}</p>
                 @endif
             </div>
-            <button type="submit" class="btn btn-primary">Отправить</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Отправить</button>
+            </div>
+
             <p>Уже зарегистрированы? <a href="/login">Войти</a></p>
+            <p>Есть аккаунт но забыли пароль? <a href="/remindpassword">Восстановить пароль</a></p>
         </form>
 
     </div>
