@@ -77,7 +77,9 @@ Route::group(array('before' => 'guest'), function () {
 
 Route::group(array('before' => 'admin'), function () {
 
+    Route::get('/admin/', 'Admin\AdminCatalogController@index');
     Route::get('/admin/catalog', 'Admin\AdminCatalogController@index');
+
     Route::get('/admin/catalog/add', 'Admin\AdminCatalogController@add');
     Route::get('/admin/catalog/edit/{id}', 'Admin\AdminCatalogController@edit');
     Route::post('/admin/catalog/save', 'Admin\AdminCatalogController@save');
@@ -94,6 +96,11 @@ Route::group(array('before' => 'admin'), function () {
     Route::post('/admin/settings', 'Admin\AdminSettingsController@edit');
 
     Route::get('/admin/stats/orders', 'Admin\AdminStatsController@getOrders');
+    Route::get('/admin/stats/orders/{orderId}', 'Admin\AdminStatsController@getOrder');
+    Route::post('/admin/stats/orders/{orderId}', 'Admin\AdminStatsController@postOrder');
+
+    Route::get('/admin/users', 'Admin\AdminUsersController@getUsers');
+    Route::get('/admin/users/{userId}/orders', 'Admin\AdminUsersController@getUserOrders');
 
 });
 

@@ -63,7 +63,7 @@ Route::filter('guest', function () {
 
 Route::filter('admin', function () {
     if (!Auth::check()) return Redirect::to('/');
-    if (Auth::user()->id != 1) return Redirect::to('/');
+    if (!Auth::user()->hasRole(Role::getByName(Role::ROLE_ADMIN))) return Redirect::to('/');
 });
 
 

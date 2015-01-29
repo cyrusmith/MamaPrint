@@ -53,6 +53,8 @@ class AuthController extends BaseController
             $account->currency = "RUR";
             $user->accounts()->save($account);
 
+            $user->roles()->save(Role::getByName(Role::ROLE_USER));
+
             UserPending::where('email', '=', $user->email)->delete();
 
             DB::commit();

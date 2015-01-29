@@ -33,6 +33,12 @@ class Order extends Eloquent
         return intval($value);
     }
 
+    public function updateStatus($status)
+    {
+        if (!in_array($status, [self::STATUS_PENDING, self::STATUS_COMPLETE])) return;
+        $this->status = $status;
+    }
+
     public function isComplete()
     {
         return $this->status === self::STATUS_COMPLETE;
