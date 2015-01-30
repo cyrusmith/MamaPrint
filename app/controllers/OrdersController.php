@@ -118,7 +118,11 @@ class OrdersController extends BaseController
 
     }
 
-    public function download($orderId)
+    public function getOrderDownload($token) {
+        echo $token;
+    }
+
+    public function getOrderAttachment($orderId)
     {
         $user = App::make('UsersService')->getUser();
 

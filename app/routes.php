@@ -34,6 +34,8 @@ Route::group(array('before' => 'guest_create'), function () {
 
     Route::get('/cart', 'CartController@userCart');
 
+    Route::get('/downloads/{token}', 'OrdersController@getOrderDownload');
+
 });
 
 Route::group(array('before' => 'auth'), function () {
@@ -116,7 +118,6 @@ Route::get('/pay/fail', function () {
 });
 
 Route::get('/pay/{orderId}', 'PaymentsController@pay');
-Route::get('/orders/{orderId}/download', 'OrdersController@download')->where(['orderId' => '[0-9]+']);
 
 Route::post('/api/v1/payments/onpay', 'PaymentsController@onpayApi');
 Route::post('/api/v1/cart', 'CartController@addItem');
