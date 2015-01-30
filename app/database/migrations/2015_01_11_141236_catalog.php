@@ -113,6 +113,7 @@ class Catalog extends Migration
             $table->string('token');
             $table->bigInteger('order_id');
             $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
 
     }

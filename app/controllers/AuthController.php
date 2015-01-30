@@ -138,48 +138,10 @@ class AuthController extends BaseController
         $password = Input::get('password');
 
         if (Auth::attempt(array('email' => $email, 'password' => $password))) {
-
-            $guestId = Session::get('guestid');
-            if (empty($guestId)) {
-                $guestId = Cookie::get('guestid');
-            }
-            if (!empty($guestId)) {
-
-                $authUser = Auth::user();
-
-                if (empty($authUser->cart) || $authUser->cart->items->isEmpty()) {
-
-                    $tmpUser = User::where('guestid', '=', $guestId)->first();
-                    if (!empty($tmpUser)) {
-                        $tmpCart = $tmpUser->cart;
-                        if (!empty($tmpCart) && !$tmpCart->items->isEmpty()) {
-                            try {
-                                DB::beginTransaction();
-                                $authUserCart = $authUser->getOrCreateCart();
-                                foreach ($tmpUser->cart->items as $tmpCartItem) {
-                                    $cartItem = new CartItem;
-                                    $cartItem->catalogItem()->associate($tmpCartItem->catalogItem);
-                                    $authUserCart->items()->save($cartItem);
-                                }
-                                $tmpUser->cart->delete();
-                                DB::commit();
-                            } catch (Exception $e) {
-                                \Illuminate\Support\Facades\Log::error($e);
-                                DB::rollback();
-                            }
-                        }
-                    }
-
-                }
-
-            }
-            Session::set('guestid', null);
-            Cookie::queue('guestid', null, 0);
-
-            if($authUser->hasRole(Role::getByName(Role::ROLE_ADMIN))) {
+            App::make('UserService')->moveInfoFromGuest();
+            if (Auth::user()->hasRole(Role::getByName(Role::ROLE_ADMIN))) {
                 return Redirect::intended('/admin/catalog');
-            }
-            else {
+            } else {
                 return Redirect::intended('/');
             }
 

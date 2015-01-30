@@ -50,4 +50,19 @@ class OrdersTestController extends \BaseController
 
     }
 
+    public function testDownloadLink()
+    {
+        $orderId = Input::get('order_id');
+        try {
+            $token = App::make('OrderService')->createDownloadLink($orderId);
+            return Response::json([
+                'token' => $token
+            ], 200);
+        } catch (\Exception $e) {
+            return Response::json([
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
 }

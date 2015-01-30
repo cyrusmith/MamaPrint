@@ -118,38 +118,47 @@ class OrdersController extends BaseController
 
     }
 
-    public function getOrderDownload($token) {
-        echo $token;
+    public function getOrderDownload($token)
+    {
+        DB::table('download_links')->whereRaw('TIMESTAMPDIFF(MINUTE, created_at, \'' . date('Y-m-d H:i:s') . '\') > ' . Config::get('mamaprint.download_link_timeout'))->delete();
+        $link = DownloadLink::where('token', '=', $token)->first();
+        if (empty($link)) {
+            App::abort(404, 'Ссылка не существует');
+        }
+        $order = Order::find($link->order->id);
+        Cookie::queue('download_token', $token, 2628000);
+        return View::make('order.download', [
+            'order' => $order,
+            'token' => $token
+        ]);
     }
 
-    public function getOrderAttachment($orderId)
+    public function getOrderAttachment($token)
     {
-        $user = App::make('UsersService')->getUser();
 
-        if (empty($user)) {
-            App::abort(404, 'Пользователь не найден. Авторизуйтесь на сайте.');
+        DB::table('download_links')->whereRaw('TIMESTAMPDIFF(MINUTE, created_at, \'' . date('Y-m-d H:i:s') . '\') > ' . Config::get('mamaprint.download_link_timeout'))->delete();
+
+        $link = DownloadLink::where('token', '=', $token)->first();
+        if (empty($link)) {
+            App::abort(404, 'Ссылка не существует');
         }
-
-        $order = $user->orders()->where('id', '=', $orderId)->first();
+        $order = Order::find($link->order->id);
 
         if (empty($order)) {
-            App::abort(404, 'Заказ не найден. Авторизуйтесь на сайте.');
+            App::abort(404, 'Заказ не найден.');
         }
 
         if (!$order->isComplete()) {
             App::abort(404, 'Заказ еще не оплачен.');
         }
 
-        $orderItem = $order->items()->first();
-        $catalogItem = $orderItem->catalogItem;
-
-        $file = base_path() . DIRECTORY_SEPARATOR . 'downloads' . DIRECTORY_SEPARATOR . $catalogItem->id . '.' . $catalogItem->asset_extension;
+        $file = App::make('OrderService')->createOrderArchive($order->id);
 
         if (file_exists($file)) {
-            return Response::download($file, $catalogItem->asset_name . "." . $catalogItem->asset_extension);
+            return Response::download($file, "Заказ №{$order->id} с сайта Mama-print.ru.zip");
         } else {
             Log::error($file . ' does not exists');
-            App::abort(404);
+            App::abort(404, 'Нет материалов для скачивания');
         }
 
     }

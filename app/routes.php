@@ -35,6 +35,7 @@ Route::group(array('before' => 'guest_create'), function () {
     Route::get('/cart', 'CartController@userCart');
 
     Route::get('/downloads/{token}', 'OrdersController@getOrderDownload');
+    Route::get('/downloads/{token}/download', 'OrdersController@getOrderAttachment');
 
 });
 
@@ -134,6 +135,7 @@ Route::group(array('before' => 'test'), function () {
     });
 
     Route::post('/test/orders/payorder', 'Test\OrdersTestController@testPayOrder');
+    Route::post('/test/orders/downloadlink', 'Test\OrdersTestController@testDownloadLink');
 
 });
 

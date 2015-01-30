@@ -7,22 +7,12 @@ class DownloadLink extends Eloquent
 
     public function order()
     {
-        return $this->hasOne('Order\Order');
+        return $this->belongsTo('Order\Order');
     }
 
-    public static function create($order)
+    public function getDates()
     {
-
-        if (empty($order) || \Order\Order::STATUS_COMPLETE != $order->status) {
-            throw new Exception("Нельзя создать временную ссылку т.к. заказ пока не оплачен или не существует");
-        }
-
-        $link = new DownloadLink;
-        $link->order()->associate($order);
-        $link->token = str_random(40);
-        $link->save();
-
-        return $link;
+        return array('created_at');
     }
 
 }

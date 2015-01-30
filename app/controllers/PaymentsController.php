@@ -161,6 +161,8 @@ class PaymentsController extends BaseController
 
                     $orderService->payOrder($order->id);
 
+                    $downloadToken = $orderService->createDownloadLink($order->id);
+
                     $userEmail = Input::get('user.email');
                     $userName = '';
 
@@ -182,7 +184,8 @@ class PaymentsController extends BaseController
 
                         try {
                             Mail::send('emails.payments.order', array(
-                                "orderId" => $order->id
+                                'orderId' => $order->id,
+                                'token' => $downloadToken
                             ), function ($message) use ($todata) {
                                 Log::debug($todata);
                                 $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($todata['email'], empty($todata['name']) ? "Клиент mama-print" : $todata['name'])->subject('Покупка на сайте mama-print.ru');

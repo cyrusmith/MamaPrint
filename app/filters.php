@@ -88,6 +88,7 @@ Route::filter('guest_create', function ($request, $response) {
 
     if (Auth::check()) {
         Session::set('guestid', null);
+        Cookie::queue('guestid', null, 0);
         return;
     }
 

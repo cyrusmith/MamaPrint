@@ -13,6 +13,11 @@
            data-method="post"
            data-params='[{"name":"order_id"}]'
                 >PayOrder</a></li>
+
+    <li><a href="test/orders/downloadlink"
+           data-method="post"
+           data-params='[{"name":"order_id"}]'
+                >DownloadLink</a></li>
 </ul>
 
 <div class="params"></div>
