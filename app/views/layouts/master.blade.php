@@ -53,6 +53,10 @@ use \Illuminate\Support\Facades\App;
             <img src="/img/logobig.png"/>
         </a>
 
+        @if(mb_strlen(trim($site_config->getDescriptor())) > 10)
+            <h3 class="descriptor text-center">{{$site_config->getDescriptor()}}</h3>
+        @endif
+
         <div class="authcontrols">
             @if(Auth::check())
                 <a class="btn btn-sm btn-primary" href="/user" title="{{Auth::user()->name}}">Личный кабинет</a>
@@ -142,6 +146,8 @@ use \Illuminate\Support\Facades\App;
 
 
 
+
+
 </script>
 
 @define $user = App::make("UsersService")->getUser()
@@ -150,6 +156,8 @@ use \Illuminate\Support\Facades\App;
     {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
      "siteConfig": {{$site_config->toJSON()}},
      "token": "{{csrf_token()}}"}
+
+
 
 
 

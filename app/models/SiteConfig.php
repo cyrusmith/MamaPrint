@@ -10,11 +10,23 @@ class SiteConfig
 {
 
     const MIN_ORDER_PRICE = 'min_order_price';
+    const DESCRIPTOR = 'descriptor';
 
+    private $descriptor = null;
     private $minOrderPrice = 0;
 
     private function __construct()
     {
+    }
+
+    public function setDescriptor($descriptor)
+    {
+        $this->descriptor = $descriptor;
+    }
+
+    public function getDescriptor()
+    {
+        return $this->descriptor;
     }
 
     public function setMinOrderPrice($value)
@@ -36,13 +48,18 @@ class SiteConfig
         }
 
         $siteConfig = new SiteConfig();
-        if (array_key_exists(self::MIN_ORDER_PRICE, $data)) {
+        if (!empty($data)) {
             $siteConfig->setMinOrderPrice($data[self::MIN_ORDER_PRICE]);
+            $siteConfig->setDescriptor($data[self::DESCRIPTOR]);
         } else {
             DB::table('site_config')
                 ->insert(
-                    array("name" => self::MIN_ORDER_PRICE,
-                        "value" => $siteConfig->getMinOrderPrice())
+                    [
+                        ["name" => self::MIN_ORDER_PRICE,
+                            "value" => $siteConfig->getMinOrderPrice()],
+                        ["name" => self::DESCRIPTOR,
+                            "value" => $siteConfig->getDescriptor()]
+                    ]
                 );
         }
 
@@ -55,13 +72,18 @@ class SiteConfig
             DB::table('site_config')
                 ->where('name', self::MIN_ORDER_PRICE)
                 ->update(array('value' => strval($this->getMinOrderPrice())));
+
+            DB::table('site_config')
+                ->where('name', self::DESCRIPTOR)
+                ->update(array('value' => strval($this->getDescriptor())));
         });
     }
 
     public function toJSON()
     {
         $data = [
-            "min_order_price" => $this->getMinOrderPrice()
+            "min_order_price" => $this->getMinOrderPrice(),
+            "descriptor" => $this->getDescriptor()
         ];
         return json_encode($data);
     }

@@ -33,7 +33,7 @@ require([
 
         tinymce.init({
             selector: 'textarea.wysiwyg',
-            plugins: ['advlist autolink link image lists charmap print preview',
+            plugins: ['advlist autolink link image lists charmap print preview code',
                 'responsivefilemanager'],
             external_filemanager_path: "/admin/lib/responsivefilemanager/filemanager/",
             filemanager_title: "Responsive Filemanager",

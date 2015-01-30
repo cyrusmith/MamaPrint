@@ -176,7 +176,13 @@ class AuthController extends BaseController
             Session::set('guestid', null);
             Cookie::queue('guestid', null, 0);
 
-            return Redirect::intended('/');
+            if($authUser->hasRole(Role::getByName(Role::ROLE_ADMIN))) {
+                return Redirect::intended('/admin/catalog');
+            }
+            else {
+                return Redirect::intended('/');
+            }
+
         } else {
             return Redirect::to('/login')->with('data', array(
                 'error' => 'Неправильные емейл или пароль',

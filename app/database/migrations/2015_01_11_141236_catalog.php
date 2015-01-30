@@ -100,7 +100,7 @@ class Catalog extends Migration
 
         Schema::create('site_config', function ($table) {
             $table->string('name');
-            $table->text('value');
+            $table->text('value')->nullable();
         });
 
         Schema::create('password_reminders', function(Blueprint $table)

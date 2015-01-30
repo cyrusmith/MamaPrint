@@ -1,11 +1,13 @@
 /**
  * Created by cyrusmith on 17.12.2014.
  */
-//@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
+@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import "../bower_components/bootstrap/less/bootstrap.less";
 @import (less) "../bower_components/magnific-popup/dist/magnific-popup.css";
 
 @icon-font-path: 'fonts/';
+
+@item-title-color: #e95312;
 
 @font-face {
   font-family: 'mon_amour_twomedium';
@@ -102,6 +104,11 @@ strong {
       width: 90%;
     }
   }
+
+  .descriptor {
+    color: @item-title-color;
+    margin: 0;
+  }
 }
 
 .page {
@@ -115,8 +122,11 @@ strong {
       margin-right: .5em;
       color: #333;
       font-size: 2em;
-      text-decoration: underline;
+      font-family: "Ubuntu Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      border-bottom: 1px solid #000;
+      line-height: 1em;
       &:hover {
+        border: none;
         text-decoration: none;
       }
       &.font-hanwritten {
@@ -128,7 +138,7 @@ strong {
       }
 
       .glyphicon {
-        font-size: .85em;
+        font-size: .65em;
       }
     }
 
@@ -403,6 +413,7 @@ h4 {
     font-size: 2em;
     font-weight: bold;
     margin-top: .2em;
+    color: @item-title-color;
   }
 
   p.price {

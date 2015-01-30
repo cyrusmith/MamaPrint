@@ -29,9 +29,11 @@ class AdminSettingsController extends AdminController
         } elseif (Request::isMethod('post')) {
 
             $minOrderPrice = Input::get(\SiteConfig::MIN_ORDER_PRICE);
+            $descriptor = Input::get(\SiteConfig::DESCRIPTOR);
 
             $siteConfig = \SiteConfig::load();
             $siteConfig->setMinOrderPrice($minOrderPrice);
+            $siteConfig->setDescriptor($descriptor);
             $siteConfig->save();
 
             return Redirect::to(URL::action('Admin\AdminSettingsController@edit'));

@@ -22,7 +22,7 @@
                     </div>
                     @if(count($images) > 0)
                         <div class="thumbs">
-                            @define $len = max(count($images), 5)
+                            @define $len = min(count($images), 5)
                             @for($i=1; $i < $len; $i++)
                                 <a href="/images/{{$images[$i]->id}}" class="gallery-image @if($i==4) {{'last'}}@endif">
                                     <img src="/images/{{$images[$i]->id}}?width=80&height=80&crop=1"
@@ -97,7 +97,7 @@
             </div>
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-2">
-                    <div class="buttons" data-widget="itemcartbuttons" data-id="{{$item->id}}">
+                    <div class="buttons text-center" data-widget="itemcartbuttons" data-id="{{$item->id}}">
                         <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
                         'itemId' => $item->id
                     ])}}" method="post">
