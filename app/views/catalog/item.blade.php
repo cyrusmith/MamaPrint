@@ -68,22 +68,27 @@
                 @endif
 
                 <div class="buttons" data-widget="itemcartbuttons" data-id="{{$item->id}}">
-                    @if($item->canBuyInOneClick())
-                        <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
+                    @if(in_array($item->id, $user_item_ids))
+                        <a class="btn btn-inverse downloadlink" href="/catalog/{{$item->slug}}/download"><span
+                                    class="glyphicon glyphicon-download"></span> Скачать</a>
+                    @else
+                        @if($item->canBuyInOneClick())
+                            <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
                         'itemId' => $item->id
                     ])}}" method="post">
-                            <input type="hidden" name="_token" value="{{csrf_token()}}"/>
-                            <button type="submit" class="btn btn-default btn-sm">Купить в один клик</button>
-                        </form>
+                                <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+                                <button type="submit" class="btn btn-default btn-sm">Купить в один клик</button>
+                            </form>
+                        @endif
+                        <a data-addtocart
+                           class="btn btn-success progress-parent progress-hidden" @if(in_array($item->id, $cart_ids))
+                           style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
+                            Добавить
+                            в корзину <span class="progress-left"></span></a>
+                        <a data-removefromcart
+                           class="btn progress-parent progress-hidden" @if(!in_array($item->id, $cart_ids))
+                           style="display:none;"@endif>Убрать из корзины <span class="progress-left"></span></a>
                     @endif
-                    <a data-addtocart
-                       class="btn btn-success progress-parent progress-hidden" @if(in_array($item->id, $cart_ids))
-                       style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
-                        Добавить
-                        в корзину <span class="progress-left"></span></a>
-                    <a data-removefromcart
-                       class="btn progress-parent progress-hidden" @if(!in_array($item->id, $cart_ids))
-                       style="display:none;"@endif>Убрать из корзины <span class="progress-left"></span></a>
                 </div>
 
             </div>
@@ -98,20 +103,28 @@
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-2">
                     <div class="buttons text-center" data-widget="itemcartbuttons" data-id="{{$item->id}}">
-                        <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
+                        @if(in_array($item->id, $user_item_ids))
+                            <a class="btn btn-inverse" href="/catalog/{{$item->slug}}/download"><span
+                                        class="glyphicon glyphicon-download"></span> Скачать</a>
+                        @else
+                            @if($item->canBuyInOneClick())
+                                <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
                         'itemId' => $item->id
                     ])}}" method="post">
-                            <input type="hidden" name="_token" value="{{csrf_token()}}"/>
-                            <button type="submit" class="btn btn-default btn-sm">Заказать в один клик</button>
-                        </form>
-                        <a data-addtocart
-                           class="btn btn-success progress-parent progress-hidden" @if(in_array($item->id, $cart_ids))
-                           style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
-                            Добавить
-                            в корзину <span class="progress-left"></span></a>
-                        <a data-removefromcart
-                           class="btn progress-parent progress-hidden" @if(!in_array($item->id, $cart_ids))
-                           style="display:none;"@endif>Убрать из корзины <span class="progress-left"></span></a>
+                                    <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+                                    <button type="submit" class="btn btn-default btn-sm">Заказать в один клик</button>
+                                </form>
+                            @endif
+                            <a data-addtocart
+                               class="btn btn-success progress-parent progress-hidden" @if(in_array($item->id, $cart_ids))
+                               style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
+                                Добавить
+                                в корзину <span class="progress-left"></span></a>
+                            <a data-removefromcart
+                               class="btn progress-parent progress-hidden" @if(!in_array($item->id, $cart_ids))
+                               style="display:none;"@endif>Убрать из корзины <span class="progress-left"></span></a>
+
+                        @endif
                     </div>
                 </div>
             </div>

@@ -33,6 +33,14 @@ class OrdersController extends BaseController
             App::abort(500, 'Пользователь не задан. Войдите или зарегистрируйтесь.');
         }
 
+        if (Auth::check()) {
+            foreach ($user->catalogItems as $userCatalogItem) {
+                if ($userCatalogItem->id == $item->id) {
+                    App::abort(400, "Материал &laquo;" . $userCatalogItem->title . "&raquo; уже оплачен и доступен для скачивания в <a href='" . URL::to('/user') . "'>личном кабинете.");
+                }
+            }
+        }
+
         $order = new Order;
 
         DB::transaction(function () use ($item, $user, &$order) {
@@ -74,6 +82,11 @@ class OrdersController extends BaseController
 
         $cartItems = $cart->items;
 
+        $userCatalogItemIds = [];
+        foreach ($user->catalogItems as $userCatalogItem) {
+            $userCatalogItemIds[] = $userCatalogItem->id;
+        }
+
         if ($cartItems->isEmpty()) {
             App::abort(400, Lang::get('messages.error.cart_is_empty'));
         }
@@ -91,6 +104,7 @@ class OrdersController extends BaseController
 
             $orderItems = [];
             foreach ($cart->items as $item) {
+                if (Auth::check() && in_array($item->catalogItem->id, $userCatalogItemIds)) continue;
                 $price = $item->catalogItem->getOrderPrice();
                 $orderItem = new OrderItem;
                 $orderItem->price = $price;
@@ -99,7 +113,7 @@ class OrdersController extends BaseController
                 $total += $price;
             }
 
-            if ($total < ($siteConfig->getMinOrderPrice() * 100)) {
+            if ($total == 0 || $total < ($siteConfig->getMinOrderPrice() * 100)) {
                 throw new Exception("Минимальная сумма заказа - " . $siteConfig->getMinOrderPrice() . " P.");
             }
 

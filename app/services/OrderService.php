@@ -37,9 +37,16 @@ class OrderService
             $account->save();
             $order->save();
 
+            $userCatalogItemIds = [];
+            foreach ($user->catalogItems as $userCatalogItem) {
+                $userCatalogItemIds[] = $userCatalogItem->id;
+            }
+
             $catalogItems = [];
             foreach ($order->items as $item) {
-                $catalogItems[] = $item->catalogItem;
+                if (!in_array($item->catalogItem->id, $userCatalogItemIds)) {
+                    $catalogItems[] = $item->catalogItem;
+                }
             }
 
             $user->catalogItems()->saveMany($catalogItems);
@@ -110,7 +117,7 @@ class OrderService
             foreach ($order->items as $item) {
                 $n = 1;
                 $catalogItem = $item->catalogItem;
-                $attachments = Attachment::ofModel('catalogitem')->where('model_id', '=', $catalogItem->id)->get();
+                $attachments = $catalogItem->attachments;
                 foreach ($attachments as $attachment) {
                     $attachmentPath = $attachmentsService->getFilePath($attachment->id);
                     if ($attachmentPath) {

@@ -96,6 +96,10 @@ App::singleton('AttachmentService', function ($app) {
     return new AttachmentService();
 });
 
+App::singleton('CatalogService', function ($app) {
+    return new CatalogService();
+});
+
 App::singleton('GalleryService', function ($app) {
     return new GalleryService();
 });
@@ -117,6 +121,7 @@ View::composer('*', function ($view) {
     $user = App::make("UsersService")->getUser();
     $cartItems = [];
     $cartIds = [];
+    $userCatalogItemIds = [];
     if (!empty($user)) {
         $cart = $user->getOrCreateCart();
         foreach ($cart->items as $item) {
@@ -128,9 +133,16 @@ View::composer('*', function ($view) {
                 'price' => $catalogItem->getOrderPrice()
             ];
         }
+
+        if (Auth::check()) {
+            foreach ($user->catalogItems as $item) {
+                $userCatalogItemIds[] = $item->id;
+            }
+        }
     }
     $view->with('cart', $cartItems);
     $view->with('cart_ids', $cartIds);
+    $view->with('user_item_ids', $userCatalogItemIds);
     $view->with('user', $user);
     $view->with('site_config', \Illuminate\Support\Facades\App::make("SiteConfigProvider")->getSiteConfig());
 });

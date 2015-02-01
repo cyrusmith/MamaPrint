@@ -62,14 +62,21 @@
                                     </div>
                                     <div class="button">
 
-                                        <a class="btn btn-success btn-sm catalogitem-addtocart progress-parent progress-hidden"@if(in_array($item->id, $cart_ids))
-                                           style="display:none;"@endif><span
-                                                    class="glyphicon glyphicon-shopping-cart"></span> В корзину <span
-                                                    class="progress-left"></span></a>
+                                        @if(in_array($item->id, $user_item_ids))
+                                            <a class="btn btn-inverse" href="/catalog/{{$item->slug}}/download"><span
+                                                        class="glyphicon glyphicon-download"></span> Скачать</a>
+                                        @else
+                                            <a class="btn btn-success btn-sm catalogitem-addtocart progress-parent progress-hidden"@if(in_array($item->id, $cart_ids))
+                                               style="display:none;"@endif><span
+                                                        class="glyphicon glyphicon-shopping-cart"></span> В
+                                                корзину <span
+                                                        class="progress-left"></span></a>
 
-                                        <a class="btn btn-xs catalogitem-removefromcart progress-parent progress-hidden"@if(!in_array($item->id, $cart_ids))
-                                           style="display:none;"@endif>Удалить<br>из
-                                            корзины <span class="progress-left"></span></a>
+                                            <a class="btn btn-xs catalogitem-removefromcart progress-parent progress-hidden"@if(!in_array($item->id, $cart_ids))
+                                               style="display:none;"@endif>Удалить<br>из
+                                                корзины <span class="progress-left"></span></a>
+
+                                        @endif
 
                                     </div>
                                 </div>

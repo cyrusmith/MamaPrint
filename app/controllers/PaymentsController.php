@@ -119,15 +119,12 @@ class PaymentsController extends BaseController
                 $paymentWay = Input::get('payment.way');
                 $balanceWay = $currency;
 
-                Log::debug($signature);
-                Log::debug(sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret')));
-                Log::debug("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
-
                 $order = Order::find($payFor);
+                $checkSignature = sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
                 if (empty($order)
                     || ($order->total !== intval(100 * $fromAmount))
                     || ($currency != "RUR" && $currency != "TST")
-                    || $signature != sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'))
+                    || $signature != $checkSignature
                 ) {
                     return Response::json(array(
                         "code" => false,
@@ -217,7 +214,7 @@ class PaymentsController extends BaseController
         }
 
         return Response::json(array(
-            "error"
+            "Error"
         ), 404);
 
 

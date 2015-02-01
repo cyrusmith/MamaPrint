@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Lang;
                     <td>
                         # {{$item->id}}
                     </td>
-                    <td><a href="{{URL::action('Admin\AdminCatalogController@edit', [
+                    <td><a href="{{URL::action('Admin\AdminCatalogController@getItem', [
                         'id' => $item->id
                     ])}}">{{$item->title}}</a></td>
                     <td>{{$item->price/100}}

@@ -9,7 +9,7 @@
                     <td>
                         <a href="{{URL::action('CatalogController@item', ['path'=>$item->slug])}}">{{$item->title}}</a>
                     </td>
-                    <th class="text-right"><a class="btn btn-success btn-sm" href="/orders/{{$item->id}}/download"><span
+                    <th class="text-right"><a class="btn btn-success btn-sm" href="/catalog/{{$item->slug}}/download"><span
                                     class="glyphicon glyphicon-download"></span> Скачать</a></th>
                 </tr>
             @endforeach

@@ -138,7 +138,7 @@ class AuthController extends BaseController
         $password = Input::get('password');
 
         if (Auth::attempt(array('email' => $email, 'password' => $password))) {
-            App::make('UserService')->moveInfoFromGuest();
+            App::make('UsersService')->moveInfoFromGuest();
             if (Auth::user()->hasRole(Role::getByName(Role::ROLE_ADMIN))) {
                 return Redirect::intended('/admin/catalog');
             } else {

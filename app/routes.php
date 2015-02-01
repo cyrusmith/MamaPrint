@@ -14,7 +14,9 @@
 Route::group(array('before' => 'guest_create'), function () {
 
     Route::get('/', 'CatalogController@index');
-    Route::get('/catalog/{path}', 'CatalogController@item')->where('path', '(.*)');
+
+    Route::get('/catalog/{path}/download', 'CatalogController@getAttachments')->where('path', '(.+)');
+    Route::get('/catalog/{path}', 'CatalogController@item')->where('path', '(.+)');
 
     Route::get('/about', function () {
         return View::make('statics.about');
@@ -84,8 +86,8 @@ Route::group(array('before' => 'admin'), function () {
     Route::get('/admin/catalog', 'Admin\AdminCatalogController@index');
 
     Route::get('/admin/catalog/add', 'Admin\AdminCatalogController@add');
-    Route::get('/admin/catalog/edit/{id}', 'Admin\AdminCatalogController@edit');
-    Route::post('/admin/catalog/save', 'Admin\AdminCatalogController@save');
+    Route::get('/admin/catalog/edit/{id}', 'Admin\AdminCatalogController@getItem');
+    Route::post('/admin/catalog/save', 'Admin\AdminCatalogController@postItem');
 
     Route::get('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@view');
     Route::put('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@update');

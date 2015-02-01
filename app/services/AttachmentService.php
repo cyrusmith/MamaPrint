@@ -15,9 +15,7 @@ class AttachmentService
     public function saveUploadedFile(UploadedFile $file, Attachment $attachment)
     {
 
-        $DS = DIRECTORY_SEPARATOR;
-
-        $path = Config::get('mamaprint.attachments_path') . $DS . $attachment->model . $DS . $attachment->model_id . $DS . $attachment->id;
+        $path = Config::get('mamaprint.attachments_path') . DIRECTORY_SEPARATOR . $attachment->id;
         if (!file_exists($path)) {
             if (mkdir($path, 0777, true) !== true) {
                 throw new Exception(Lang::get('messages.error.could_not_create_folder', [
@@ -34,7 +32,7 @@ class AttachmentService
     {
         $attachment = Attachment::find($id);
         $DS = DIRECTORY_SEPARATOR;
-        $path = Config::get('mamaprint.attachments_path') . $DS . $attachment->model . $DS . $attachment->model_id . $DS . $attachment->id . $DS . 'original.' . $attachment->extension;
+        $path = Config::get('mamaprint.attachments_path') . $DS . $attachment->id . $DS . 'original.' . $attachment->extension;
         return file_exists($path) ? $path : null;
     }
 
@@ -52,7 +50,7 @@ class AttachmentService
             $attachment->delete();
 
             $DS = DIRECTORY_SEPARATOR;
-            $path = Config::get('mamaprint.attachments_path') . $DS . $attachment->model . $DS . $attachment->model_id . $DS . $attachment->id;
+            $path = Config::get('mamaprint.attachments_path') . $DS . $attachment->id;
 
             if (file_exists($path)) {
                 if ($handle = opendir($path)) {

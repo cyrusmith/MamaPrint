@@ -148,6 +148,19 @@ class CartController extends BaseController
             ], 400);
         }
 
+        if(Auth::check()) {
+            foreach ($user->catalogItems as $userCatalogItem) {
+                if ($userCatalogItem->id == $item->id) {
+                    return Response::json([
+                        'message' => 'Материал уже оплачен',
+                        '_links' => [
+                            'catalog.download' => URL::to('/catalog/' . $item->slug . '/download')
+                        ]
+                    ], 400);
+                }
+            }
+        }
+
         try {
             $cart = $user->getOrCreateCart();
             $item = $cart->addCartItem($item);

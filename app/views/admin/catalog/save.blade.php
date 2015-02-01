@@ -12,14 +12,14 @@
 
 @section('content')
 
-    <form role="form" action="{{URL::action('Admin\AdminCatalogController@save')}}" method="post"
+    <form role="form" action="{{URL::action('Admin\AdminCatalogController@postItem')}}" method="post"
           enctype="multipart/form-data">
         <div class="checkbox">
             <label>
                 <input type="checkbox"
                        @if(!isset($data['active']) || $data['active']))
                        checked="checked"
-                       @endif value="1" name="active"> Active
+                       @endif value="1" name="active"> Активен
             </label>
         </div>
         <div class="form-group {{$errors->has('title')?'has-error':''}}">

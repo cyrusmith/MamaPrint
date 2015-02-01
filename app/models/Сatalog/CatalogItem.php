@@ -26,7 +26,6 @@ class CatalogItem extends Eloquent
 
     public function getOrderPrice()
     {
-        //TODO create price rules in orders package instead of do it here
         $user = Auth::user();
         if (!empty($user) && !$user->isGuest() && !empty($this->registered_price)) {
             return (int)$this->registered_price;
@@ -62,7 +61,7 @@ class CatalogItem extends Eloquent
     {
         try {
             DB::beginTransaction();
-            $this->tags()->detach();;
+            $this->tags()->detach();
             $tags = [];
             foreach ($tagTags as $tagTag) {
                 $tag = Tag::whereTag($tagTag)->first();
@@ -86,6 +85,11 @@ class CatalogItem extends Eloquent
     public function galleries()
     {
         return $this->morphToMany('Gallery\Gallery', 'gallery_relation');
+    }
+
+    public function attachments()
+    {
+        return $this->morphToMany('Attachment', 'attachment_relation');
     }
 
 }

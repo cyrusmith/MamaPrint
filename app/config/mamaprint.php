@@ -4,8 +4,9 @@ define('DS', DIRECTORY_SEPARATOR);
 
 return array(
     'adminemail' => 'alexander.sutyagin@gmail.com',
-    'attachments_path' => __DIR__ . DS . '..' . DS . 'attachments',
-    'galleries_path' => __DIR__ . DS . '..' . DS . 'galleries',
-    'tmp_orders_path' => __DIR__ . DS . '..' . DS . '..' . DS . 'orders',
+    'attachments_path' => __DIR__ . DS . '..' . DS . 'storage' . DS . 'attachments',
+    'galleries_path' => __DIR__ . DS . '..' . DS . 'storage' . DS . 'galleries',
+    'tmp_orders_path' => __DIR__ . DS . '..' . DS . 'storage' . DS . 'orders',
+    'tmp_catalog_items' => __DIR__ . DS . '..' . DS . 'storage' . DS . 'catalog_items',
     'download_link_timeout' => 60
 );

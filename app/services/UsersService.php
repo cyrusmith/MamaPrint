@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: cyrusmith
- * Date: 24.12.2014
- * Time: 11:19
- */
-
 use Account\Account;
 use Account\OperationRefill;
 
@@ -37,12 +30,15 @@ class UsersService
             $guestId = Cookie::get('guestid');
         }
         $guestOrders = [];
+        $tmpUsersIds = [];
         if (!empty($guestId)) {
 
             if (empty($authUser->cart) || $authUser->cart->items->isEmpty()) {
 
                 $tmpUser = User::where('guestid', '=', $guestId)->first();
                 if (!empty($tmpUser)) {
+
+                    $tmpUsersIds[] = $tmpUser->id;
 
                     foreach ($tmpUser->orders as $order) {
                         $guestOrders[] = $order;
@@ -54,7 +50,7 @@ class UsersService
                             DB::beginTransaction();
                             $authUserCart = $authUser->getOrCreateCart();
                             foreach ($tmpUser->cart->items as $tmpCartItem) {
-                                $cartItem = new CartItem;
+                                $cartItem = new \Cart\CartItem();
                                 $cartItem->catalogItem()->associate($tmpCartItem->catalogItem);
                                 $authUserCart->items()->save($cartItem);
                             }
@@ -65,6 +61,7 @@ class UsersService
                             DB::rollback();
                         }
                     }
+
                 }
 
             }
@@ -75,14 +72,21 @@ class UsersService
 
         if (!empty($downloadToken)) {
             $link = DownloadLink::where('token', '=', $downloadToken)->first();
-            $guestOrders[] = $link->order;
+            if (!empty($link)) {
+                $guestOrders[] = $link->order;
+                $tmpUsersIds[] = $link->order->user->id;
+            }
+            Cookie::queue('download_token', null, 0);
         }
 
         foreach ($guestOrders as $order) {
             $order->user()->associate($authUser);
-            $order->save(;
+            $order->save();
         }
 
+        DB::table('user_catalog_items_access')
+            ->whereIn('user_id', $tmpUsersIds)
+            ->update(['user_id' => $authUser->id]);
 
     }
 

@@ -50,7 +50,7 @@ class AdminCatalogController extends AdminController
         );
     }
 
-    public function edit($id)
+    public function getItem($id)
     {
 
         $item = CatalogItem::find($id);
@@ -59,7 +59,7 @@ class AdminCatalogController extends AdminController
             App::abort(404);
         }
 
-        $attachments = \Attachment::ofModel(\Attachment::MODEL_CATALOGITEM)->where('model_id', '=', $id)->get();
+        $attachments = $item->attachments;
 
         $gallery = $item->galleries()->first();
 
@@ -75,7 +75,7 @@ class AdminCatalogController extends AdminController
         ]);
     }
 
-    public function save()
+    public function postItem()
     {
 
         $id = intval(Input::get('id'));
@@ -170,14 +170,14 @@ class AdminCatalogController extends AdminController
                     $attachment->mime = is_string($file->getMimeType()) ? $file->getMimeType() : $file->getClientMimeType();
                     $attachment->extension = is_string($file->guessExtension()) ? $file->guessExtension() : $file->getExtension();
                     $attachment->size = $file->getClientSize();
-                    $attachment->model = \Attachment::MODEL_CATALOGITEM;
-                    $attachment->model_id = $id;
 
-                    $attachment->save();
+                    $item->attachments()->save($attachment);
 
                     App::make('AttachmentService')->saveUploadedFile($file, $attachment);
 
                 }
+
+                App::make('CatalogService')->cleanDownloadCache($item->id);
 
             }
 
@@ -185,7 +185,6 @@ class AdminCatalogController extends AdminController
 
             if ($isNew) {
                 $gallery = new Gallery();
-                $gallery->save();
                 $item->galleries()->save($gallery);
             }
 
@@ -212,7 +211,7 @@ class AdminCatalogController extends AdminController
             ]), $e->getMessage());
         }
 
-        return $this->withSuccessMessage(Redirect::action('Admin\AdminCatalogController@edit', [
+        return $this->withSuccessMessage(Redirect::action('Admin\AdminCatalogController@getItem', [
             'id' => $id
         ]), empty($messages) ? Lang::get('messages.admin.catalogitemsaved') : implode('<br>', $messages));
     }

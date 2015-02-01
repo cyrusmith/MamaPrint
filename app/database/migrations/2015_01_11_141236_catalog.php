@@ -36,8 +36,6 @@ class Catalog extends Migration
 
         Schema::create('attachments', function (Blueprint $table) {
             $table->increments('id');
-            $table->enum('model', array(Attachment::MODEL_ARTICLE, Attachment::MODEL_CATALOGITEM));
-            $table->bigInteger('model_id');
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->string('mime');
@@ -45,6 +43,13 @@ class Catalog extends Migration
             $table->bigInteger('size');
             $table->dateTime('updated_at');
             $table->dateTime('created_at');
+        });
+
+        Schema::create('attachment_relations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->bigInteger('attachment_id');
+            $table->string('attachment_relation_type');
+            $table->bigInteger('attachment_relation_id');
         });
 
         Schema::create('galleries', function (Blueprint $table) {

@@ -10,9 +10,17 @@
     <p>Спасибо за покупку на сайте mama-print.ru!</p>
 
     <p>Чтобы скачать ваш заказ, пройдите по ссылке <a
-                href="{{URL::to('/orders/'.$orderId.'/download')}}">{{URL::to('/orders/'.$orderId.'/download')}}</a></p>
+                href="{{URL::to('/downloads/'.$token)}}">{{URL::to('/downloads/'.$token)}}</a></p>
 
-    <p><strong style="font-weight: bold;">Внимание!</strong> Ссылка откроется только в том же браузере, где вы оформляли покупку или где вы выполнили вход в mama-print.ru</p>
+    <p><strong style="font-weight: bold;">Внимание!</strong> Ссылка дейсвует в
+        течение {{Config::get('mamaprint.download_link_timeout')}} мин.</p>
+
+    @if(Auth::check())
+        <p>Также, оплаченные материалы доступны в вашем личном кабинете {{URL::to('/user')}}.</p>
+    @else
+        <p>Чтобы иметь постоянный доступ к приобретеным материалам, необходимо <a href="{{URL::to('/register/')}}">зарегистрироваться
+                на сайте</a>.</p>
+    @endif
 
     <p>С уважением, команда Mama-Print.ru.<br><i>Скачайте и распечатайте качественные
             материалы для занятий с ребенком 0+</i></p>
