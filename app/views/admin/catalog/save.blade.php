@@ -14,6 +14,12 @@
 
     <form role="form" action="{{URL::action('Admin\AdminCatalogController@postItem')}}" method="post"
           enctype="multipart/form-data">
+
+        @if(!empty($data['id']))
+            <a href="/catalog/{{$data['slug']}}" class="btn btn-default" target="_blank"><span
+                        class="glyphicon glyphicon-eye-open"></span> Просмотр</a>
+        @endif
+
         <div class="checkbox">
             <label>
                 <input type="checkbox"
@@ -192,10 +198,18 @@
 
     <script type="x-tpl" id="attachment-item-models-json">
         {{$attachments or '[]'}}
+
+
+
+
     </script>
 
     <script type="x-tpl" id="gallery-images-json">
         {{$images or '[]'}}
+
+
+
+
     </script>
 
     <script type="x-tpl" id="gallery-item-tpl">
@@ -214,6 +228,10 @@
                 <span class="control-delete btn btn-xs btn-danger glyphicon glyphicon-trash"></span>
             </a>
         </li>
+
+
+
+
 
 
 
@@ -281,6 +299,10 @@
                         </div>
                          <% }  %>
                     </li>
+
+
+
+
 
 
 

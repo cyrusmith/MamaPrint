@@ -59,11 +59,13 @@ use \Illuminate\Support\Facades\App;
 
         <div class="authcontrols">
             @if(Auth::check())
-                <a class="btn btn-sm btn-primary" href="/user" title="{{Auth::user()->name}}">Личный кабинет</a>
-                <a class="btn btn-warning btn-sm" href="/logout">Выйти</a>
+                <a class="btn btn-sm btn-primary" href="/user" title="{{Auth::user()->name}}"><span
+                            class="glyphicon glyphicon-user"></span> Личный кабинет</a>
+                <a class="btn btn-warning btn-sm" href="/logout">Выйти <span class="glyphicon glyphicon-log-out"></span></a>
             @else
-                <a class="btn btn-primary btn-sm" href="/login">Войти</a> или <a class="btn btn-link register"
-                                                                                 href="/register">Зарегистрироваться</a>
+                <a class="btn btn-primary btn-sm" href="/login"><span class="glyphicon glyphicon-log-in"></span>
+                    Войти</a> или <a class="btn btn-link register"
+                                     href="/register">Зарегистрироваться</a>
                 <br>
             @endif
         </div>
@@ -148,6 +150,7 @@ use \Illuminate\Support\Facades\App;
 
 
 
+
 </script>
 
 @define $user = App::make("UsersService")->getUser()
@@ -156,6 +159,7 @@ use \Illuminate\Support\Facades\App;
     {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
      "siteConfig": {{$site_config->toJSON()}},
      "token": "{{csrf_token()}}"}
+
 
 
 

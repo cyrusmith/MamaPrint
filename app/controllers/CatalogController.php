@@ -34,6 +34,11 @@ class CatalogController extends BaseController
         $slug = $parts[count($parts) - 1];
 
         $item = CatalogItem::where('slug', '=', $slug)->where('active', '=', true)->first();
+        if (empty($item)) {
+            if (Auth::check() && Auth::user()->hasRole(Role::getByName(Role::ROLE_ADMIN))) {
+                $item = CatalogItem::where('slug', '=', $slug)->first();
+            }
+        }
 
         if (empty($item)) {
             App::abort(404);
