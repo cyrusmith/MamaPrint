@@ -70,8 +70,8 @@ class AdminCatalogController extends AdminController
             'data' => array_merge($item->toArray(), [
                 'tags' => $item->getTagsAsString()
             ]),
-            'attachments' => $attachments->toJSON(),
-            'images' => $gallery->images->toJSON()
+            'attachments' => $attachments ? $attachments->toJSON() : json_encode([]),
+            'images' => $gallery ? $gallery->images->toJSON() : json_encode([])
         ]);
     }
 

@@ -100,7 +100,7 @@
 @if (Config::get('app.debug'))
     <script src="/bower_components/requirejs/require.js" data-main="/admin/js/main.js"></script>
 @else
-    <script data-main="/admin/all.js"></script>
+    <script src="/admin/all.js"></script>
 @endif
 
 </body>

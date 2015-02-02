@@ -7,7 +7,10 @@
         @for($i=0; $i < $items->count(); $i++)
 
             @define $item = $items[$i]
-            @define $image = $items[$i]->galleries()->first()->images()->first()
+            @define $image = null
+            @if($items[$i]->galleries()->first())
+                @define $image = $items[$i]->galleries()->first()->images()->first()
+            @endif
 
             @if($i % 3 === 0)
                 <div class="row">
