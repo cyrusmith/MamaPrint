@@ -88,4 +88,29 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $cart;
     }
 
+    public function attachCatalogItems($catalogItems)
+    {
+
+        if (empty($catalogItems) || count($catalogItems) == 0) return;
+
+        $ids = [];
+        foreach ($catalogItems as $item) {
+            $ids[] = $item->id;
+        }
+
+        if (count($ids) == 0) return;
+
+        try {
+            DB::beginTransaction();
+            $this->catalogItems()->detach($ids);
+            $this->catalogItems()->attach($ids);
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+
+    }
+
+
 }

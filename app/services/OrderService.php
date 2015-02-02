@@ -48,8 +48,7 @@ class OrderService
                     $catalogItems[] = $item->catalogItem;
                 }
             }
-
-            $user->catalogItems()->saveMany($catalogItems);
+            $user->attachCatalogItems($catalogItems);
 
             DB::commit();
 

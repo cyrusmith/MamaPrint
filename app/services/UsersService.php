@@ -24,30 +24,27 @@ class UsersService
         if (!Auth::check()) throw new Exception('Пользователь не авторизован');
 
         $authUser = Auth::user();
+        try {
+            DB::beginTransaction();
+            $guestId = Session::get('guestid');
+            if (empty($guestId)) {
+                $guestId = Cookie::get('guestid');
+            }
+            $guestOrders = [];
+            if (!empty($guestId)) {
 
-        $guestId = Session::get('guestid');
-        if (empty($guestId)) {
-            $guestId = Cookie::get('guestid');
-        }
-        $guestOrders = [];
-        $tmpUsersIds = [];
-        if (!empty($guestId)) {
+                if (empty($authUser->cart) || $authUser->cart->items->isEmpty()) {
 
-            if (empty($authUser->cart) || $authUser->cart->items->isEmpty()) {
+                    $tmpUser = User::where('guestid', '=', $guestId)->first();
+                    if (!empty($tmpUser)) {
 
-                $tmpUser = User::where('guestid', '=', $guestId)->first();
-                if (!empty($tmpUser)) {
+                        foreach ($tmpUser->orders as $order) {
+                            $guestOrders[] = $order;
+                        }
 
-                    $tmpUsersIds[] = $tmpUser->id;
+                        $tmpCart = $tmpUser->cart;
+                        if (!empty($tmpCart) && !$tmpCart->items->isEmpty()) {
 
-                    foreach ($tmpUser->orders as $order) {
-                        $guestOrders[] = $order;
-                    }
-
-                    $tmpCart = $tmpUser->cart;
-                    if (!empty($tmpCart) && !$tmpCart->items->isEmpty()) {
-                        try {
-                            DB::beginTransaction();
                             $authUserCart = $authUser->getOrCreateCart();
                             foreach ($tmpUser->cart->items as $tmpCartItem) {
                                 $cartItem = new \Cart\CartItem();
@@ -55,39 +52,66 @@ class UsersService
                                 $authUserCart->items()->save($cartItem);
                             }
                             $tmpUser->cart->delete();
-                            DB::commit();
-                        } catch (Exception $e) {
-                            \Illuminate\Support\Facades\Log::error($e);
-                            DB::rollback();
+
                         }
+
                     }
 
                 }
 
             }
 
-        }
+            $downloadToken = Cookie::get('download_token');
 
-        $downloadToken = Cookie::get('download_token');
-
-        if (!empty($downloadToken)) {
-            $link = DownloadLink::where('token', '=', $downloadToken)->first();
-            if (!empty($link)) {
-                $guestOrders[] = $link->order;
-                $tmpUsersIds[] = $link->order->user->id;
+            if (!empty($downloadToken)) {
+                $link = DownloadLink::where('token', '=', $downloadToken)->first();
+                if (!empty($link)) {
+                    $guestOrders[] = $link->order;
+                }
+                Cookie::queue('download_token', null, 0);
             }
-            Cookie::queue('download_token', null, 0);
+
+            $guestCatalogItems = [];
+            foreach ($guestOrders as $order) {
+                $order->user()->associate($authUser);
+                $order->save();
+                foreach ($order->items as $orderItem) {
+                    $guestCatalogItems[] = $orderItem->catalogItem;
+                }
+            }
+
+            $guestCatalogItems = $this->uniqueArrayOfCatalogItems($guestCatalogItems);
+
+            $authUser->attachCatalogItems($guestCatalogItems);
+
+            DB::commit();
+        } catch (Exception $e) {
+            \Illuminate\Support\Facades\Log::error($e);
+            DB::rollback();
         }
 
-        foreach ($guestOrders as $order) {
-            $order->user()->associate($authUser);
-            $order->save();
+    }
+
+    private function uniqueArrayOfCatalogItems($arr)
+    {
+        $len = count($arr);
+        $unique = [];
+        if ($len > 0) {
+            $unique[] = $arr[0];
+            for ($i = 1; $i < $len; $i++) {
+                $uniqueLen = count($unique);
+                $j = 0;
+                for (; $j < $uniqueLen; $j++) {
+                    if ($unique[$j]->id == $arr[$i]->id) {
+                        break;
+                    }
+                }
+                if ($j === $uniqueLen) {
+                    $unique[] = $arr[$i];
+                }
+            }
         }
-
-        DB::table('user_catalog_items_access')
-            ->whereIn('user_id', $tmpUsersIds)
-            ->update(['user_id' => $authUser->id]);
-
+        return $unique;
     }
 
 }

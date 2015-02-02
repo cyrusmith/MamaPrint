@@ -6,7 +6,7 @@
         <div class="col-sm-4">
             <form action="{{URL::action('UserController@saveName')}}" method="post">
                 <div class="form-group">
-                    <label for="name">Имя (ник)</label>
+                    <label for="name">Имя</label>
                     <input type="text" class="form-control" id="name" placeholder="Ваше имя (ник)" name="name"
                            value="{{Auth::user()->name}}">
                 </div>
