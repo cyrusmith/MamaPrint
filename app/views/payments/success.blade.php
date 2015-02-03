@@ -19,7 +19,9 @@
                 @endforeach
             </table>
         @else
-            <p>Ожижание ответа от платежной системы....</p>
+            <p>Упс! Похоже, что-то пошло не так при оплате заказа. Свяжитесь с нами по email <a
+                        href="mailto:info@mama-print.ru">info@mama-print.ru</a>. В письме укажите email, который вы
+                ввели при оплате и примерное время операции.</p>
         @endif
 
         <p>Остались вопросы? Напишите нам на <a href="mailto:info@mama-print.ru">info@mama-print.ru</a></p>

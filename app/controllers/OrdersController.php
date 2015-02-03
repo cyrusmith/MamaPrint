@@ -177,4 +177,37 @@ class OrdersController extends BaseController
 
     }
 
+    public function getOrderAttachmentForGuestUser($orderId)
+    {
+
+        $order = Order::find($orderId);
+
+        if (empty($order)) {
+            App::abort(404, 'Заказ не найден.');
+        }
+
+        $user = App::make('UsersService')->getUser();
+        if (empty($user)) {
+            App::abort(400, 'Ошибка приложения - пользователь не задан. Обновите страницу. Если ошибка повторяется, то сообщите нам на email ' . \Illuminate\Support\Facades\Config::get('mamaprint.supportemail'));
+        }
+
+        if ($order->user->id != $user->id) {
+            App::abort(401, 'Доступ к скачиванию закрыт.');
+        }
+
+        if (!$order->isComplete()) {
+            App::abort(404, 'Заказ еще не оплачен.');
+        }
+
+        $file = App::make('OrderService')->createOrderArchive($order->id);
+
+        if (file_exists($file)) {
+            return Response::download($file, "Заказ №{$order->id} с сайта Mama-print.ru.zip");
+        } else {
+            Log::error($file . ' does not exists');
+            App::abort(404, 'Нет материалов для скачивания');
+        }
+
+    }
+
 }

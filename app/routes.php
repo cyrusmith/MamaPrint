@@ -38,6 +38,7 @@ Route::group(array('before' => 'guest_create'), function () {
 
     Route::get('/downloads/{token}', 'OrdersController@getOrderDownload');
     Route::get('/downloads/{token}/download', 'OrdersController@getOrderAttachment');
+    Route::get('/orders/{orderId}/download', 'OrdersController@getOrderAttachmentForGuestUser');
 
 });
 

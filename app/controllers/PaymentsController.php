@@ -68,7 +68,7 @@ class PaymentsController extends BaseController
 
                 $amount = floatval(Input::get('amount'));
                 $amount = intval($amount * 100) / 100.0;
-                $amountStr = number_format($amount, ($amount == intval($amount)) ? 1 : 2, '.', '');
+                $amountStr = $this->amountStr($amount);
 
                 $currency = Input::get('way');
                 $mode = Input::get('mode');
@@ -106,7 +106,7 @@ class PaymentsController extends BaseController
 
                 $balanceAmount = Input::get('balance.amount');
                 $balanceAmount = intval($balanceAmount * 100) / 100.0;
-                $balanceAmountStr = number_format($balanceAmount, ($balanceAmount == intval($balanceAmount)) ? 1 : 2, '.', '');
+                $balanceAmountStr = $this->amountStr($balanceAmount);
 
                 $currency = Input::get('balance.way');
                 $signature = Input::get('signature');
@@ -114,18 +114,23 @@ class PaymentsController extends BaseController
                 $paymentId = Input::get('payment.id');
                 $paymentAmount = Input::get('payment.amount');
                 $paymentAmount = intval($paymentAmount * 100) / 100.0;
-                $paymentAmountStr = number_format($paymentAmount, ($paymentAmount == intval($paymentAmount)) ? 1 : 2, '.', '');
+                $paymentAmountStr = $this->amountStr($paymentAmount);
 
                 $paymentWay = Input::get('payment.way');
                 $balanceWay = $currency;
 
                 $order = Order::find($payFor);
+                Log::debug("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
                 $checkSignature = sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
                 if (empty($order)
                     || ($order->total !== intval(100 * $fromAmount))
                     || ($currency != "RUR" && $currency != "TST")
                     || $signature != $checkSignature
                 ) {
+                    Log::debug("Payment verification fail");
+                    Log::debug("order->total=" . $order->total . " fromAmount=" . $fromAmount);
+                    Log::debug("currency=" . $currency);
+                    Log::debug("signatures: " . $signature . " " . $checkSignature);
                     return Response::json(array(
                         "code" => false,
                         "pay_for" => $payFor,
@@ -218,6 +223,15 @@ class PaymentsController extends BaseController
         ), 404);
 
 
+    }
+
+    private function amountStr($amount)
+    {
+        $str = strval($amount);
+        if ($amount == intval($amount)) {
+            $str = $str . ".0";
+        }
+        return $str;
     }
 
 }
