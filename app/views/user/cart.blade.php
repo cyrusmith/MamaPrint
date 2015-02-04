@@ -15,11 +15,10 @@
                         <td>
                             <span data-cart-item-price>{{$item['price']/100}}</span> P
                         </td>
-                        <th class="text-right"><a class="btn btn-danger btn-sm progress-parent progress-hidden"
+                        <th class="text-right"><a class="btn btn-danger btn-sm"
                                                   href="javascript:void(0);"
                                                   data-cart-item-remove><span
-                                        class="glyphicon glyphicon-trash"></span> Удалить<span
-                                        class="progress-left"></span></a></th>
+                                        class="glyphicon glyphicon-trash"></span> Удалить</a></th>
                     </tr>
                 @endforeach
 
@@ -34,10 +33,9 @@
 
                             <form class="payform" action="{{URL::action('OrdersController@createOrder')}}" method="post" @if($total < ($site_config->getMinOrderPrice()*100)) style="display: none;" @endif>
                                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                <button type="submit" class="btn btn-success progress-parent progress-hidden"
+                                <button type="submit" class="btn btn-success"
                                         href="javascript:void(0);">
-                                    Оплатить <span class="glyphicon glyphicon-chevron-right"></span><span
-                                            class="progress-left"></span></button>
+                                    Оплатить <span class="glyphicon glyphicon-chevron-right"></span></button>
                             </form>
 
 

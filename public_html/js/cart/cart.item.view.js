@@ -14,7 +14,7 @@ define([
         },
 
         onRemove: function () {
-            this.$removeFromCartBtn.removeClass('progress-hidden');
+            this.$removeFromCartBtn.addClass('progress-right');
             this.$removeFromCartBtn.attr('disabled', 'disabled');
             cartModel.sync("delete", this.model, {
                 url: "/api/v1/cart/" + this.model.id,
@@ -24,7 +24,7 @@ define([
                 }, this),
                 complete: _.bind(function () {
                     this.$removeFromCartBtn.attr('disabled', null);
-                    this.$removeFromCartBtn.addClass('progress-hidden');
+                    this.$removeFromCartBtn.removeClass('progress-right');
                 }, this)
             });
 

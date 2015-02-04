@@ -23,7 +23,8 @@
                                 @if(empty($image))
                                     <img src="/assets/noimage.png" title="" alt=""/>
                                 @else
-                                    <img src="/images/{{$image->id}}?width=360&height=360&crop=1" title="{{$item->title}}" alt="{{$item->short_description}}"/>
+                                    <img src="/images/{{$image->id}}?width=360&height=360&crop=1"
+                                         title="{{$item->title}}" alt="{{$item->short_description}}"/>
                                 @endif
                             </a>
 
@@ -68,15 +69,15 @@
                                             <a class="btn btn-inverse" href="/catalog/{{$item->slug}}/download"><span
                                                         class="glyphicon glyphicon-download"></span> Скачать</a>
                                         @else
-                                            <a class="btn btn-success btn-sm catalogitem-addtocart progress-parent progress-hidden"@if(in_array($item->id, $cart_ids))
+                                            <a class="btn btn-default btn-sm catalogitem-addtocart"@if(in_array($item->id, $cart_ids))
                                                style="display:none;"@endif><span
                                                         class="glyphicon glyphicon-shopping-cart"></span> В
-                                                корзину <span
-                                                        class="progress-left"></span></a>
+                                                корзину</a>
 
-                                            <a class="btn btn-xs catalogitem-removefromcart progress-parent progress-hidden"@if(!in_array($item->id, $cart_ids))
-                                               style="display:none;"@endif>Удалить<br>из
-                                                корзины <span class="progress-left"></span></a>
+                                            <a href="{{URL::to('/cart')}}"
+                                               class="btn btn-sm goto-order btn-success"@if(!in_array($item->id, $cart_ids))
+                                               style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span>
+                                                Оформить заказ</a>
 
                                         @endif
 

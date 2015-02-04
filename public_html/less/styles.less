@@ -20,22 +20,24 @@
   font-style: normal;
 }
 
-.progress-parent {
+.progress-left, .progress-right {
   position: relative;
-  .progress-left {
+  &:after {
+    content: "";
     width: 16px;
     height: 16px;
     position: absolute;
-    left: -24px;
     top: 25%;
     background: #FFF url(img/ajax-loader.gif) no-repeat 50% 50%;
   }
+}
 
-  &.progress-hidden {
-    .progress-left {
-      display: none;
-    }
-  }
+.progress-left:after {
+   left: -24px;
+}
+
+.progress-right:after {
+   right: -24px;
 }
 
 .font-hanwritten {
@@ -335,9 +337,6 @@ h4 {
           a {
             display: inline-block;
             text-align: center;
-          }
-          .catalogitem-removefromcart {
-            line-height: 1.2em;
           }
 
         }

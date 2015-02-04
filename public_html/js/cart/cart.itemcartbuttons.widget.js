@@ -13,13 +13,12 @@ define([
     var ItemCartButtonsView = Backbone.View.extend({
 
         events: {
-            'click [data-addtocart]': 'addToCart',
-            'click [data-removefromcart]': 'removeFromCart'
+            'click [data-addtocart]': 'addToCart'
         },
 
         initialize: function () {
             this.$addToCartBtn = this.$el.find('[data-addtocart]');
-            this.$removeFromCartBtn = this.$el.find('[data-removefromcart]');
+            this.$gotoCartBtn = this.$el.find('[data-gotocart]');
             this.listenTo(cartModel, "add", this.onCartModelChange);
             this.listenTo(cartModel, "remove", this.onCartModelChange);
         },
@@ -27,13 +26,13 @@ define([
         onCartModelChange: function () {
             if (cartModel.isInCart(this.model)) {
                 this.$addToCartBtn.hide();
-                this.$removeFromCartBtn.css({
+                this.$gotoCartBtn.css({
                     display: "inline-block"
                 });
             }
             else {
                 this.$addToCartBtn.show();
-                this.$removeFromCartBtn.css({
+                this.$gotoCartBtn.css({
                     display: "none"
                 });
             }
@@ -44,7 +43,7 @@ define([
                 popup.showLoginPrompt();
             }
             else {
-                this.$addToCartBtn.removeClass('progress-hidden');
+                this.$addToCartBtn.addClass('progress-right');
                 this.$addToCartBtn.attr('disabled', 'disabled');
                 Backbone.sync("create", this.model, {
                     url: "/api/v1/cart",
@@ -60,25 +59,10 @@ define([
                     }, this),
                     complete: _.bind(function () {
                         this.$addToCartBtn.attr('disabled', null);
-                        this.$addToCartBtn.addClass('progress-hidden');
+                        this.$addToCartBtn.removeClass('progress-right');
                     }, this)
                 });
             }
-        },
-
-        removeFromCart: function (e) {
-            this.$removeFromCartBtn.removeClass('progress-hidden');
-            this.$removeFromCartBtn.attr('disabled', 'disabled');
-            cartModel.sync("delete", this.model, {
-                url: "/api/v1/cart/" + this.model.id,
-                success: _.bind(function () {
-                    cartModel.remove(this.model);
-                }, this),
-                complete: _.bind(function () {
-                    this.$removeFromCartBtn.attr('disabled', null);
-                    this.$removeFromCartBtn.addClass('progress-hidden');
-                }, this)
-            });
         }
 
     });

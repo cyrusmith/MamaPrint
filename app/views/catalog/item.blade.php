@@ -6,7 +6,6 @@
 
 @section('content')
 
-
     <div class="col-lg-10 col-lg-offset-1 catalog-item-page">
         <div class="row">
             <div class="col-sm-6">
@@ -80,14 +79,14 @@
                                 <button type="submit" class="btn btn-default btn-sm">Купить в один клик</button>
                             </form>
                         @endif
-                        <a data-addtocart
-                           class="btn btn-success progress-parent progress-hidden" @if(in_array($item->id, $cart_ids))
+                        <a data-addtocart="data-addtocart"
+                           class="btn btn-success" @if(in_array($item->id, $cart_ids))
                            style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
                             Добавить
-                            в корзину <span class="progress-left"></span></a>
-                        <a data-removefromcart
-                           class="btn progress-parent progress-hidden" @if(!in_array($item->id, $cart_ids))
-                           style="display:none;"@endif>Убрать из корзины <span class="progress-left"></span></a>
+                            в корзину</a>
+                        <a data-gotocart="data-gotocart" href="{{URL::to('/cart')}}"
+                           class="btn btn-success" @if(!in_array($item->id, $cart_ids))
+                           style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить заказ</a>
                     @endif
                 </div>
 
@@ -116,13 +115,13 @@
                                 </form>
                             @endif
                             <a data-addtocart
-                               class="btn btn-success progress-parent progress-hidden" @if(in_array($item->id, $cart_ids))
+                               class="btn btn-success" @if(in_array($item->id, $cart_ids))
                                style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
-                                Добавить
-                                в корзину <span class="progress-left"></span></a>
-                            <a data-removefromcart
-                               class="btn progress-parent progress-hidden" @if(!in_array($item->id, $cart_ids))
-                               style="display:none;"@endif>Убрать из корзины <span class="progress-left"></span></a>
+                                Добавить в корзину</a>
+                            <a data-gotocart="data-gotocart" href="{{URL::to('/cart')}}"
+                               class="btn btn-success" @if(!in_array($item->id, $cart_ids))
+                               style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
+                                заказ</a>
 
                         @endif
                     </div>

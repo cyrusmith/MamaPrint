@@ -145,12 +145,6 @@ use \Illuminate\Support\Facades\App;
 
 <script type="x-tpl" id="cart-json">
    {{json_encode($cart)}}
-
-
-
-
-
-
 </script>
 
 @define $user = App::make("UsersService")->getUser()
@@ -159,12 +153,6 @@ use \Illuminate\Support\Facades\App;
     {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
      "siteConfig": {{$site_config->toJSON()}},
      "token": "{{csrf_token()}}"}
-
-
-
-
-
-
 </script>
 
 @if (Config::get('app.debug'))
