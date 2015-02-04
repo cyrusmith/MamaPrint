@@ -112,7 +112,7 @@
                         'itemId' => $item->id
                     ])}}" method="post">
                                     <input type="hidden" name="_token" value="{{csrf_token()}}"/>
-                                    <button type="submit" class="btn btn-default btn-sm">Заказать в один клик</button>
+                                    <button type="submit" class="btn btn-default btn-sm">Купить в один клик</button>
                                 </form>
                             @endif
                             <a data-addtocart
