@@ -23,8 +23,7 @@
                                 @if(empty($image))
                                     <img src="/assets/noimage.png" title="" alt=""/>
                                 @else
-                                    <img src="/images/{{$image->id}}?width=220&height=220&crop=1" title="" alt=""
-                                         class="img-rounded"/>
+                                    <img src="/images/{{$image->id}}?width=360&height=360&crop=1" title="{{$item->title}}" alt="{{$item->short_description}}"/>
                                 @endif
                             </a>
 

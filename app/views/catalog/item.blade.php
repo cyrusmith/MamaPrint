@@ -7,7 +7,7 @@
 @section('content')
 
 
-    <div class="col-lg-10 col-lg-offset-1 catalog-item">
+    <div class="col-lg-10 col-lg-offset-1 catalog-item-page">
         <div class="row">
             <div class="col-sm-6">
                 <div class="gallery" data-widget="gallery">

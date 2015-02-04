@@ -28,6 +28,9 @@
   .mainmenu {
     text-align: center;
     font-size: 1em;
+    a {
+      font-size: 2em;
+    }
   }
 
   .preview {
@@ -51,23 +54,19 @@
 
 .catalog-items {
 
-  .row {
-    margin-bottom: 2em;
-  }
-
   .catalog-item {
 
     .img {
       display: block;
       float: none;
-      width: 220px;
+      width: 100%;
       margin: 0 auto;
       text-align: center;
     }
 
     .info {
       float: none;
-      width: 220px;
+      width: 100%;
       margin: 0 auto;
       .title {
         h3 {
@@ -105,8 +104,14 @@
   }
 }
 
-.catalog-item {
+.catalog-item-page {
   .gallery {
     margin: 0 auto;
+
+    .thumbs {
+      height: auto;
+      visibility: visible;
+      overflow: visible;
+    }
   }
 }
