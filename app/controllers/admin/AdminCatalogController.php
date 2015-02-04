@@ -84,10 +84,10 @@ class AdminCatalogController extends AdminController
 
         $form = array(
             'id' => Input::get('id'),
-            'title' => Input::get('title'),
+            'title' => str_replace('"', '&quot;', Input::get('title')),
             'active' => Input::get('active'),
             'slug' => mb_strtolower(Input::get('slug')),
-            'short_description' => Input::get('short_description'),
+            'short_description' => str_replace('"', '&quot;', Input::get('short_description')),
             'long_description' => Input::get('long_description'),
             'price' => intval(floatval(Input::get('price')) * 100),
             'registered_price' => intval(floatval(Input::get('registered_price')) * 100),
