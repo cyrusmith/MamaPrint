@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('page_title'){{$site_config->getDescriptor()}}@stop
+
 @section('content')
 
     <div class="container catalog-items">

@@ -6,7 +6,7 @@ use \Illuminate\Support\Facades\App;
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Mama-print @yield('page_title')</title>
+    <title>@yield('page_title') MamaPrint.ru</title>
     <meta name="description" content="@yield('description')">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
