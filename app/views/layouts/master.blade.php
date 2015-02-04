@@ -171,6 +171,7 @@ use \Illuminate\Support\Facades\App;
     <script src="/bower_components/requirejs/require.js" data-main="/js/main.js"></script>
 @else
     <script src="/all.js"></script>
+    <script type="text/javascript">(window.Image ? (new Image()) : document.createElement('img')).src = location.protocol + '//vk.com/rtrg?r=alsG0C6qV9mhaLfYW4qmnwqWcCkWxS5bsDfnVzoBMhtoTJV*UgIJ316PcGZYUXSBVCjzrDk7l64XZWhc*0fMqJxI2aJWOHZrvnJI0BHr40d339ocg1kzj2hGnWKtpfXSAY7vCx0pO22p5NZwYqqD2hPZ7OwYK1EpZRimu9BDVY8-';</script>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
         (function (d, w, c) {
