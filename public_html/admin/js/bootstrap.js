@@ -30,8 +30,10 @@ require([
         $('[data-toggle="tooltip"]').tooltip({
             container: 'body'
         });
-
-        tinymce.init({
+		
+		tinyMCE.baseURL = 'http://'+location.hostname+'/admin/lib/tinymce/js/tinymce';
+        
+		tinymce.init({
             selector: 'textarea.wysiwyg',
             plugins: ['advlist autolink link image lists charmap print preview code',
                 'responsivefilemanager'],

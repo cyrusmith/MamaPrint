@@ -19,7 +19,11 @@ require.config({
         },
         twitterbootstrap: ['$'],
         tinymce: {
-            exports: 'tinymce'
+            exports: 'tinymce',
+			init: function () {
+                this.tinyMCE.DOM.events.domLoaded = true;
+                return this.tinyMCE;
+            }			
         },
         backbone: {
             deps: ['$', 'underscore'],
