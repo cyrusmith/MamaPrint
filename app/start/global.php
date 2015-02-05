@@ -145,6 +145,15 @@ View::composer('*', function ($view) {
     $view->with('user_item_ids', $userCatalogItemIds);
     $view->with('user', $user);
     $view->with('site_config', \Illuminate\Support\Facades\App::make("SiteConfigProvider")->getSiteConfig());
+
+    if (Session::has('form')) {
+        $form = Session::get('form');
+        foreach ($form as $name => $value) {
+            $view->with($name, $value);
+        }
+    }
+
+
 });
 
 require app_path() . '/filters.php';

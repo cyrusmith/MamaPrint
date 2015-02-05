@@ -19,4 +19,5 @@ return [
     'error.cart.itemnotfound' => 'Позиция в корзине не найдена',
     'error.attachment_not_found' => 'Файл не найден',
     'error.could_not_delete_cart_item' => 'Не удалось удалить товар из корзины',
+    'error.article_not_exist' => 'Статья не существует',
 ];

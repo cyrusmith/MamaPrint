@@ -40,6 +40,8 @@ Route::group(array('before' => 'guest_create'), function () {
     Route::get('/downloads/{token}/download', 'OrdersController@getOrderAttachment');
     Route::get('/orders/{orderId}/download', 'OrdersController@getOrderAttachmentForGuestUser');
 
+    Route::get('/blog/{path}', 'ArticlesController@getArticle')->where('path', '(.+)');;
+
 });
 
 Route::group(array('before' => 'auth'), function () {
@@ -107,6 +109,10 @@ Route::group(array('before' => 'admin'), function () {
 
     Route::get('/admin/users', 'Admin\AdminUsersController@getUsers');
     Route::get('/admin/users/{userId}/orders', 'Admin\AdminUsersController@getUserOrders');
+
+    Route::get('/admin/articles', 'Admin\AdminArticlesController@getArticles');
+    Route::get('/admin/articles/{id}', 'Admin\AdminArticlesController@getArticle');
+    Route::post('/admin/articles', 'Admin\AdminArticlesController@postArticle');
 
 });
 
