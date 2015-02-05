@@ -6,8 +6,12 @@
 require.config({
     paths: {
         '$': '../../bower_components/jquery/dist/jquery',
+        'jqueryui': '../../bower_components/jquery-ui/jquery-ui',
+        'jqueryuii18n-en': '../../bower_components/jquery-ui/ui/i18n/datepicker-en-GB',
+        'jqueryuii18n-ru': '../../bower_components/jquery-ui/ui/i18n/datepicker-ru',
         'twitterbootstrap': '../../bower_components/bootstrap/dist/js/bootstrap',
         'backbone': '../../bower_components/backbone/backbone',
+        'datetimepicker': '../../bower_components/datetimepicker/jquery.datetimepicker',
         'underscore': '../../bower_components/underscore/underscore',
         'requireLib': '../../bower_components/requirejs/require',
         'tinymce': '../lib/tinymce/js/tinymce/tinymce.min'
@@ -17,6 +21,10 @@ require.config({
         '$': {
             exports: 'jQuery'
         },
+        'jqueryui': ['$'],
+        'jqueryuii18n-en': ['jqueryui'],
+        'jqueryuii18n-ru': ['jqueryui'],
+        'datetimepicker': ['$'],
         twitterbootstrap: ['$'],
         tinymce: {
             exports: 'tinymce',

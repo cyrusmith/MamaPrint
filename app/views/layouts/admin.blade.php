@@ -1,8 +1,12 @@
-<!DOCTYPE html>
+<?php
+use \Illuminate\Support\Facades\Lang;
+?><!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('pagetitle')</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/admin/styles.css">
 </head>
 <body>
@@ -25,9 +29,9 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="/admin/settings"><span class="glyphicon glyphicon-wrench"></span>Настройки <span
-                                    class="sr-only">(current)</span></a></li>
                     <li><a href="/admin/catalog"><span class="glyphicon glyphicon-list"></span> Каталог <span
+                                    class="sr-only">(current)</span></a></li>
+                    <li><a href="{{action('Admin\AdminArticlesController@getArticles')}}"><span class="glyphicon glyphicon-copyright-mark"></span> {{Lang::get('static.admin.articles')}} <span
                                     class="sr-only">(current)</span></a></li>
                     <li><a href="/admin/users"><span class="glyphicon glyphicon-user"></span>Пользователи</a></li>
                     <li class="dropdown">
@@ -39,11 +43,11 @@
                     </li>
                 </ul>
 
-
                 <a class="navbar-right navbar-link navbar-btn btn" href="/logout"
                    data-toggle="tooltip" data-placement="bottom" title="Log out"><span
                             class="glyphicon glyphicon-log-out"></span> Выход</a>
-
+                <a href="/admin/settings" class="navbar-right navbar-link navbar-btn btn"><span class="glyphicon glyphicon-wrench"></span><span
+                            class="sr-only">(current)</span></a>
             </div>
         </div>
 

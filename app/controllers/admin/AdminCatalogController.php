@@ -28,7 +28,7 @@ class AdminCatalogController extends AdminController
     public function index()
     {
 
-        $items = CatalogItem::paginate(10);
+        $items = CatalogItem::paginate(20);
         $this->setPageTitle(Lang::get('static.admin.pagetitle.catalog'));
         $this->addToolbarAction('add', 'Новый', 'catalog/add');
         return $this->makeView("admin.catalog.index", [

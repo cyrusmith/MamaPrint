@@ -45,6 +45,8 @@ return [
     'admin.settings.min_order_price.help' => 'Сумма, ниже которой нельзя оформить заказ',
     'admin.settings.descriptor' => 'Дескриптор сайта',
     'admin.settings.descriptor.help' => 'Текст под заголовком',
+    'admin.articles' => 'Статьи',
+    'admin.article.new' => 'Новая статья',
     'admin.article.title' => 'Заголовок',
     'admin.article.description' => 'Описание',
     'admin.article.seo_title' => 'SEO заголовок',

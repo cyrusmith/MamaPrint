@@ -39,6 +39,9 @@ use Illuminate\Support\Facades\Lang;
                 </tr>
             @endforeach
         </table>
+        <div class="text-center">
+            {{$items->links()}}
+        </div>
     @endif
 
 @stop

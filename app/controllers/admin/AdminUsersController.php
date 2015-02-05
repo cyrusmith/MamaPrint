@@ -28,7 +28,7 @@ class AdminUsersController extends AdminController
         } else {
             $search = '';
         }
-        $users = $query->paginate(2);
+        $users = $query->paginate(20);
         return $this->makeView('admin.users', [
             'users' => $users,
             'search' => $search

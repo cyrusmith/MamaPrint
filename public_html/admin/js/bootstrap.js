@@ -2,7 +2,10 @@ require([
     '$',
     'tinymce',
     'editform',
-    'twitterbootstrap'], function ($, tinymce, editform) {
+    'twitterbootstrap',
+    'datetimepicker'], function ($,
+                                 tinymce,
+                                 editform) {
 
     'use strict';
 
@@ -30,12 +33,17 @@ require([
         $('[data-toggle="tooltip"]').tooltip({
             container: 'body'
         });
-		
-		tinyMCE.baseURL = 'http://'+location.hostname+'/admin/lib/tinymce/js/tinymce';
-        
-		tinymce.init({
+
+        $('[data-datetimepicker]').datetimepicker({
+            format: 'Y-m-d H:i',
+            lang: 'ru'
+        });
+
+        tinyMCE.baseURL = 'http://' + location.hostname + '/admin/lib/tinymce/js/tinymce';
+
+        tinymce.init({
             selector: 'textarea.wysiwyg',
-            plugins: ['advlist autolink link image lists charmap print preview code',
+            plugins: ['advlist autolink link image lists charmap print preview code pagebreak',
                 'responsivefilemanager'],
             external_filemanager_path: "/admin/lib/responsivefilemanager/filemanager/",
             filemanager_title: "Responsive Filemanager",

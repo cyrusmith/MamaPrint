@@ -40,7 +40,8 @@ Route::group(array('before' => 'guest_create'), function () {
     Route::get('/downloads/{token}/download', 'OrdersController@getOrderAttachment');
     Route::get('/orders/{orderId}/download', 'OrdersController@getOrderAttachmentForGuestUser');
 
-    Route::get('/blog/{path}', 'ArticlesController@getArticle')->where('path', '(.+)');;
+    Route::get('/blog', 'ArticlesController@getArticles');
+    Route::get('/blog/{path}', 'ArticlesController@getArticle')->where('path', '(.+)');
 
 });
 

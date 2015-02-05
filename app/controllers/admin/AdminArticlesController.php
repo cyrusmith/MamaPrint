@@ -22,6 +22,24 @@ class AdminArticlesController extends AdminController
     public function getArticles()
     {
 
+        $query = Article::where('title', '<>', '""');
+
+        $search = Input::get('search');
+        if (mb_strlen($search) > 2) {
+            $query->where(function ($query) use ($search) {
+                $query->orWhere('title', 'LIKE', "%$search%")
+                    ->orWhere('description', 'LIKE', "%$search%");
+            });
+        }
+
+        $articles = $query->paginate(20);
+
+        $this->setPageTitle(Lang::get('static.admin.pagetitle.catalog'));
+        $this->addToolbarAction('add', Lang::get('static.admin.article.new'), 'articles/0');
+        return $this->makeView("admin.articles.index", [
+            'articles' => $articles,
+            'search' => $search,
+        ]);
     }
 
     public function getArticle($id)
@@ -54,6 +72,7 @@ class AdminArticlesController extends AdminController
             'seo_title' => str_replace('"', '&quot;', Input::get('seo_title')),
             'seo_description' => str_replace('"', '&quot;', Input::get('seo_description')),
             'active' => Input::get('active'),
+            'publish_date' => Input::get('publish_date'),
             'urlpath' => $this->filterUrlpath(Input::get('urlpath')),
         );
 
@@ -66,6 +85,7 @@ class AdminArticlesController extends AdminController
                 'urlpath' => array('required'),
                 'description' => array('required'),
                 'content' => array('required'),
+                'publish_date' => array('required'),
             )
         );
 
@@ -87,6 +107,7 @@ class AdminArticlesController extends AdminController
         $article->seo_title = $form['seo_title'];
         $article->seo_description = $form['seo_description'];
         $article->urlpath = $form['urlpath'];
+        $article->publish_date = $form['publish_date'];
 
         $article->save();
 
