@@ -3,6 +3,7 @@ return [
     'catalogitem.more' => 'Подробнее',
     'catalogitem.registeredprice' => 'цена для зарегистрированных',
     'admin.save' => 'Сохранить',
+    'admin.delete' => 'Удалить',
     'admin.currency.rub' => 'руб.',
     'admin.addattachment' => 'Добавить файл',
     'admin.saveattachment' => 'Сохранить информацию о файле',
@@ -59,4 +60,6 @@ return [
     'admin.article.published' => 'Опубликовано',
     'admin.article.view' => 'Просмотр',
     'admin.article.publish_date' => 'Дата публикации',
+    'admin.article.active' => 'Опубликована',
+    'admin.article.inactive' => 'Скрыта',
 ];

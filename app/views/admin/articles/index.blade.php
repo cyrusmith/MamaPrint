@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Lang;
     </form>
     <table class="table">
         @foreach($articles as $article)
-            <tr>
+            <tr class="{{$article->active ? '' : 'danger'}}">
                 <td>
                     # {{$article->id}}
                 </td>
@@ -30,6 +30,15 @@ use Illuminate\Support\Facades\Lang;
                     ])}}">{{$article->title}}</a></td>
                 <td>{{$article->description}}</td>
                 <td>{{$article->publish_date}}</td>
+                <td>{{$article->active ? Lang::get('static.admin.article.active') : Lang::get('static.admin.article.inactive')}}</td>
+                <td>
+                    <form action="{{action('Admin\AdminArticlesController@deleteArticle', ['id'=>$article->id])}}"
+                          method="post" class="text-right">
+                        <button type="submit" class="btn btn-danger btn-xs"><span
+                                    class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </form>
+                </td>
             </tr>
         @endforeach
     </table>

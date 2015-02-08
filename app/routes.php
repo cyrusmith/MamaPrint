@@ -114,6 +114,7 @@ Route::group(array('before' => 'admin'), function () {
     Route::get('/admin/articles', 'Admin\AdminArticlesController@getArticles');
     Route::get('/admin/articles/{id}', 'Admin\AdminArticlesController@getArticle');
     Route::post('/admin/articles', 'Admin\AdminArticlesController@postArticle');
+    Route::post('/admin/articles/{id}/delete', 'Admin\AdminArticlesController@deleteArticle');
 
 });
 

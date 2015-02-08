@@ -76,6 +76,7 @@ class AdminArticlesController extends AdminController
             'urlpath' => $this->filterUrlpath(Input::get('urlpath')),
         );
 
+
         $id = intval($form['id']);
 
         $validator = Validator::make(
@@ -101,6 +102,11 @@ class AdminArticlesController extends AdminController
             $article = new Article;
         }
 
+
+        if (preg_match("#^[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$#", $form['publish_date'])) {
+            $form['publish_date'] .= ":00";
+        }
+
         $article->title = $form['title'];
         $article->description = $form['description'];
         $article->content = $form['content'];
@@ -108,6 +114,7 @@ class AdminArticlesController extends AdminController
         $article->seo_description = $form['seo_description'];
         $article->urlpath = $form['urlpath'];
         $article->publish_date = $form['publish_date'];
+        $article->active = $form['active'] == "1";
 
         $article->save();
 
@@ -117,9 +124,16 @@ class AdminArticlesController extends AdminController
 
     }
 
+    public function deleteArticle($id)
+    {
+        Article::find($id)->delete();
+        return Redirect::action('Admin\AdminArticlesController@getArticles');
+    }
+
     private function filterUrlpath($urlpath)
     {
         return mb_strtolower(trim(trim($urlpath), "/\\"));
     }
+
 
 }

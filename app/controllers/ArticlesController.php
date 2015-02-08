@@ -23,6 +23,11 @@ class ArticlesController extends BaseController
         $article = Article::where('urlpath', '=', $path)->where('active', '=', true)->first();
 
         if (empty($article)) {
+            if (Auth::check() && Auth::user()->hasRole(Role::getByName(Role::ROLE_ADMIN))) {
+                $article = Article::where('urlpath', '=', $path)->first();
+            }
+        }
+        if (empty($article)) {
             App::abort(404, Lang::get('messages.error.article_not_exist'));
         }
 
