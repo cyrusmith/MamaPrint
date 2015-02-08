@@ -50,7 +50,8 @@
                         <span class="price">{{$item->getOrderPrice()/100}} руб.</span>
                         @if(!empty($item->registered_price))
                             <span class="registeredprice"><span class="pricesum">{{$item->registered_price/100}}
-                                    руб.</span> - <span class="title">{{Lang::get('static.catalogitem.registeredprice')}}</span>
+                                    руб. <sup>*</sup></span>
+                                <small class="title"><span class="text-red">*</span> - {{Lang::get('static.catalogitem.registeredprice')}}. <a href="{{action('AuthController@login')}}">{{Lang::get('static.login')}}</a></small>
                                </span>
                         @endif
                     @endif

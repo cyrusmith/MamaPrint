@@ -1,7 +1,8 @@
 <?php
 return [
+    'login' => 'Войти',
     'catalogitem.more' => 'Подробнее',
-    'catalogitem.registeredprice' => 'цена для зарегистрированных',
+    'catalogitem.registeredprice' => 'цена для авторизованных пользователей',
     'admin.save' => 'Сохранить',
     'admin.delete' => 'Удалить',
     'admin.currency.rub' => 'руб.',

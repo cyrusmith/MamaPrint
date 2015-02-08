@@ -20,6 +20,10 @@
   font-style: normal;
 }
 
+.text-red {
+  color: @item-title-color;
+}
+
 .progress-left, .progress-right {
   position: relative;
   &:after {
@@ -418,9 +422,13 @@ h4 {
 
   .registeredprice {
     .pricesum {
-      font-size: 1.2em;
+      font-size: 1.85em;
       font-weight: bold;
       color: @item-title-color;
+      display: block;
+      sup {
+        left: -.5em;
+      }
     }
   }
 
@@ -432,11 +440,13 @@ h4 {
   }
 
   p.price {
+    margin-bottom: 1.4em;
     span.price {
       font-weight: bold;
       font-size: 1.2em;
       .text-primary;
       display: block;
+
     }
     span.oldprice {
       text-decoration: line-through;
@@ -496,6 +506,7 @@ h4 {
   font-size: 1.2em;
   font-family: serif;
 }
+
 .publishdate {
   font-size: .5em;
   float: right;

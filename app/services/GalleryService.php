@@ -180,8 +180,15 @@ class GalleryService
             header('Content-Type: ' . $image->mime);
             header('Cache-Control: max-age=86400');
             header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
-            header('Content-Type: image/png');
-            $typeToImageFunctions[$image->mime][1]($im);
+
+            if ($typeToImageFunctions[$image->mime][1] == 'imagejpeg') {
+                $typeToImageFunctions[$image->mime][1]($im, null, 95);
+            } else if ($typeToImageFunctions[$image->mime][1] == 'imagepng') {
+                $typeToImageFunctions[$image->mime][1]($im, null, 0);
+            } else {
+                $typeToImageFunctions[$image->mime][1]($im);
+            }
+
         } catch (Exception $e) {
             if ($im) {
                 imagedestroy($im);
@@ -253,7 +260,7 @@ class GalleryService
                 imagegif($new, $dst);
                 break;
             case 'jpg':
-                imagejpeg($new, $dst, 95);
+                imagejpeg($new, $dst, 100);
                 break;
             case 'png':
                 imagepng($new, $dst, 0);
