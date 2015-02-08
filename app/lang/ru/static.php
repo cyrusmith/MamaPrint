@@ -56,4 +56,5 @@ return [
     'admin.article.urlpath.help' => 'Часть url. Если Url=my/cool/article, то в результате адрес статьи будет http://mama-print.ru/blog/my/cool/article',
     'admin.article.published' => 'Опубликовано',
     'admin.article.view' => 'Просмотр',
+    'admin.article.publish_date' => 'Дата публикации',
 ];

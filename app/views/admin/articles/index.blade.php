@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Lang;
                         'id' => $article->id
                     ])}}">{{$article->title}}</a></td>
                 <td>{{$article->description}}</td>
+                <td>{{$article->publish_date}}</td>
             </tr>
         @endforeach
     </table>

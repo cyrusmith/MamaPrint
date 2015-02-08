@@ -6,14 +6,15 @@
 
 @section('content')
 
-    <div class="row">
+    <div class="row article-page">
         <div class="col-sm-8 col-sm-offset-2">
 
             <article>
                 <h1>{{$article->title}}</h1>
-                <blockquote>
+
+                <p class="description">
                     {{$article->description}}
-                </blockquote>
+                </p>
                 {{$article->content}}
             </article>
 

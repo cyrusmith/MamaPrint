@@ -33,11 +33,11 @@
 }
 
 .progress-left:after {
-   left: -24px;
+  left: -24px;
 }
 
 .progress-right:after {
-   right: -24px;
+  right: -24px;
 }
 
 .font-hanwritten {
@@ -469,6 +469,37 @@ h4 {
           }
         }
       }
+    }
+  }
+}
+
+.description {
+  font-style: italic;
+  font-size: 1.2em;
+  font-family: serif;
+}
+.publishdate {
+  font-size: .5em;
+  float: right;
+  margin-top: .5em;
+}
+
+.article-page {
+  article {
+    .description {
+      .description
+    }
+  }
+}
+
+.blog {
+  .blog-item {
+    .publishdate {
+      .publishdate
+    }
+    padding-bottom: 1em;
+    .description {
+      .description
     }
   }
 }

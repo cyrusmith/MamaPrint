@@ -45,6 +45,7 @@ require([
             selector: 'textarea.wysiwyg',
             plugins: ['advlist autolink link image lists charmap print preview code pagebreak',
                 'responsivefilemanager'],
+            image_advtab: true,
             external_filemanager_path: "/admin/lib/responsivefilemanager/filemanager/",
             filemanager_title: "Responsive Filemanager",
             external_plugins: {"filemanager": "/admin/lib/responsivefilemanager/filemanager/plugin.min.js"}

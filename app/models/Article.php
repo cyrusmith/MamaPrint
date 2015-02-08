@@ -10,4 +10,14 @@ class Article extends Eloquent {
 
     protected $table = 'articles';
 
+    public function getPagebreak() {
+        $parts = explode("<p><!-- pagebreak --></p>", $this->content);
+        return $parts[0];
+    }
+
+    public function getDates()
+    {
+        return array('created_at', 'updated_at', 'publish_date');
+    }
+
 }

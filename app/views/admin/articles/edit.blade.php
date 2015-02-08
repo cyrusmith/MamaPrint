@@ -72,9 +72,10 @@
                 <div class="form-group {{$errors->has('publish_date')?'has-error':''}}">
                     <label for="publish_date"
                            class="control-label">{{Lang::get('static.admin.article.publish_date')}}</label>
+
                     <div class="input-group">
                         <input type="text" class="form-control" name="publish_date" placeholder=""
-                               value="{{$publish_date or $created_at}}" data-datetimepicker>
+                               value="{{$publish_date or ''}}" data-datetimepicker>
                           <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"><span
                                             class="glyphicon glyphicon-calendar"></span></button>
