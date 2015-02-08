@@ -56,6 +56,10 @@ strong {
 .topbar {
   a, a:visited, a:active {
     color: #FFF;
+    text-decoration: underline;
+    &:hover {
+      text-decoration: none;
+    }
   }
   .navbar-default {
     background: #42a5bd;
@@ -83,6 +87,9 @@ strong {
 
   .cart {
     padding-bottom: 1em;
+    a {
+      text-decoration: none;
+    }
   }
 }
 
@@ -127,7 +134,7 @@ strong {
       font-family: "Ubuntu Condensed", "Helvetica Neue", Helvetica, Arial, sans-serif;
       border-bottom: 1px solid #000;
       line-height: 1em;
-      &:hover {
+      &:hover, &:active, &:focus {
         border: none;
         text-decoration: none;
       }
@@ -137,6 +144,7 @@ strong {
       &.active {
         text-decoration: none;
         color: #666;
+        border: none;
       }
 
       .glyphicon {
@@ -408,6 +416,14 @@ h4 {
 
   padding-top: 1.4em;
 
+  .registeredprice {
+    .pricesum {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: @item-title-color;
+    }
+  }
+
   h1 {
     font-size: 2em;
     font-weight: bold;
@@ -418,7 +434,9 @@ h4 {
   p.price {
     span.price {
       font-weight: bold;
-      font-size: 1.4em;
+      font-size: 1.2em;
+      .text-primary;
+      display: block;
     }
     span.oldprice {
       text-decoration: line-through;

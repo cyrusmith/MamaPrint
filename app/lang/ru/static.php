@@ -1,5 +1,7 @@
 <?php
 return [
+    'catalogitem.more' => 'Подробнее',
+    'catalogitem.registeredprice' => 'цена для зарегистрированных',
     'admin.save' => 'Сохранить',
     'admin.currency.rub' => 'руб.',
     'admin.addattachment' => 'Добавить файл',

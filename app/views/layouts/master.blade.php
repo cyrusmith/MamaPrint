@@ -37,8 +37,7 @@ use \Illuminate\Support\Facades\App;
                 </ul>
                 <div class="cart col-sm-4" data-widget="cartlink">
                     <a class="btn btn-info" href="{{URL::action('CartController@userCart')}}"><span
-                                class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">@if(empty($cart))
-                                Нет товаров@else{{count($cart)}} ед.@endif</span>)</a>
+                                class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">@if(empty($cart)){{'Нет товаров'}}@else{{count($cart)}} ед.@endif</span>)</a>
                 </div>
             </div>
         </div>
@@ -74,7 +73,9 @@ use \Illuminate\Support\Facades\App;
 
     <div class="page row">
         <div class="mainmenu">
-            <a href="/" class="{{Request::is('/')?'active':''}}">Каталог</a>
+            <a href="/" class="{{Request::is('/')?'active':''}}">Все материалы</a>
+            <span>/</span>
+            <a href="{{action('ArticlesController@getArticles')}}" class="{{Request::is('blog')?'active':''}}">Блог</a>
             <span>/</span>
             <a href="/about" class="{{Request::is('about')?'active':''}}">О нас</a>
             <span>/</span>

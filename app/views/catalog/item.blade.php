@@ -47,10 +47,11 @@
                         @endif
                         <span class="price text-primary">{{$item->getOrderPrice()/100}} руб.</span>
                     @else
-                        <span class="price text-primary">{{$item->getOrderPrice()/100}} руб.</span>
+                        <span class="price">{{$item->getOrderPrice()/100}} руб.</span>
                         @if(!empty($item->registered_price))
-                            <span class="registeredprice">Цена для зарегистрированных пользователей: {{$item->registered_price/100}}
-                                руб.</span>
+                            <span class="registeredprice"><span class="pricesum">{{$item->registered_price/100}}
+                                    руб.</span> - <span class="title">{{Lang::get('static.catalogitem.registeredprice')}}</span>
+                               </span>
                         @endif
                     @endif
 

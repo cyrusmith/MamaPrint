@@ -21,7 +21,7 @@
                     <div class="col-sm-4">
                         <div class="catalog-item" data-widget="catalogitem" data-id="{{$item->id}}">
 
-                            <a href="/catalog/{{$item->slug}}" class="img">
+                            <a href="{{action('CatalogController@item', ['path'=>$item->slug])}}" class="img">
                                 @if(empty($image))
                                     <img src="/assets/noimage.png" title="" alt=""/>
                                 @else
@@ -50,6 +50,12 @@
                                     {{$item->short_description}}
                                 </p>
 
+                                <p class="text-right">
+                                    <a class="btn btn-link" href="{{action('CatalogController@item', ['path'=>$item->slug])}}">{{Lang::get('static.catalogitem.more')}}<span
+                                                class="glyphicon glyphicon-menu-right"></span></a>
+                                </p>
+
+                                {{--
                                 <div class="addtocart">
                                     <div class="price">
                                         @if(!Auth::check() && !empty($item->registered_price))
@@ -85,7 +91,7 @@
 
                                     </div>
                                 </div>
-
+                                --}}
 
                             </div>
                         </div>

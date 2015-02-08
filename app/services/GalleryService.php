@@ -253,10 +253,10 @@ class GalleryService
                 imagegif($new, $dst);
                 break;
             case 'jpg':
-                imagejpeg($new, $dst);
+                imagejpeg($new, $dst, 95);
                 break;
             case 'png':
-                imagepng($new, $dst);
+                imagepng($new, $dst, 0);
                 break;
         }
 

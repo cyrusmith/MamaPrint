@@ -9,6 +9,10 @@
     <div class="col-sm-8 col-sm-offset-2">
 
         <div class="blog">
+            @if($articles->isEmpty())
+                <p class="panel text-error text-center">Пока нет статей</p>
+            @endif
+
             @foreach($articles as $article)
                 <div class="blog-item">
                     <h2>
