@@ -6,7 +6,7 @@
  * Time: 10:43
  */
 
-namespace admin;
+namespace Admin;
 
 
 use Illuminate\Support\Facades\Input;
