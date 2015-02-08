@@ -7,7 +7,7 @@ use \Illuminate\Support\Facades\Lang;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>@yield('pagetitle')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/admin/styles.css">
+    <link rel="stylesheet" type="text/css" href="/admin/styles.css?v={{Config::get('mamaprint.version')}}">
 </head>
 <body>
 
@@ -104,7 +104,7 @@ use \Illuminate\Support\Facades\Lang;
 @if (Config::get('app.debug'))
     <script src="/bower_components/requirejs/require.js" data-main="/admin/js/main.js"></script>
 @else
-    <script src="/admin/all.js"></script>
+    <script src="/admin/all.js?v={{Config::get('mamaprint.version')}}"></script>
 @endif
 
 </body>

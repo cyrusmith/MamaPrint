@@ -11,7 +11,7 @@ use \Illuminate\Support\Facades\App;
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
-    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <link rel="stylesheet" type="text/css" href="/styles.css?v={{Config::get('mamaprint.version')}}">
 </head>
 
 <body>
@@ -159,7 +159,7 @@ use \Illuminate\Support\Facades\App;
 @if (Config::get('app.debug'))
     <script src="/bower_components/requirejs/require.js" data-main="/js/main.js"></script>
 @else
-    <script src="/all.js"></script>
+    <script src="/all.js?v={{Config::get('mamaprint.version')}}"></script>
     <script type="text/javascript">(window.Image ? (new Image()) : document.createElement('img')).src = location.protocol + '//vk.com/rtrg?r=alsG0C6qV9mhaLfYW4qmnwqWcCkWxS5bsDfnVzoBMhtoTJV*UgIJ316PcGZYUXSBVCjzrDk7l64XZWhc*0fMqJxI2aJWOHZrvnJI0BHr40d339ocg1kzj2hGnWKtpfXSAY7vCx0pO22p5NZwYqqD2hPZ7OwYK1EpZRimu9BDVY8-';</script>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
