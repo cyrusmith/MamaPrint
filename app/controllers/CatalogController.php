@@ -13,7 +13,15 @@ class CatalogController extends BaseController
 
     public function index()
     {
-        $items = CatalogItem::where('active', '=', true)->get();
+        $items = CatalogItem::where('active', '=', true)->paginate(50);
+        return View::make('catalog.index', [
+            'items' => $items
+        ]);
+    }
+
+    public function getItemsFree()
+    {
+        $items = CatalogItem::where('active', '=', true)->where('registered_price', '=', 0)->paginate(50);
         return View::make('catalog.index', [
             'items' => $items
         ]);
@@ -74,6 +82,17 @@ class CatalogController extends BaseController
 
         if (empty($item)) {
             App::abort(404);
+        }
+
+        $user = App::make('UsersService')->getUser();
+        if (empty($user)) {
+            App::abort(401, 'Нет доступа');
+        }
+
+        if (!$user->hasItem($item)) {
+            if (!Auth::check() || $item->registered_price > 0) {
+                App::abort(401, 'Нет доступа');
+            }
         }
 
         $file = \Illuminate\Support\Facades\App::make("CatalogService")->getItemAttachmentPath($item->id);

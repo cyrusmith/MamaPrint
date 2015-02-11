@@ -42,16 +42,24 @@
                 <p class="price">
 
                     @if(Auth::check())
-                        @if(!empty($item->old_price))
-                            <span class="oldprice">{{$item->old_price/100}} руб.</span><br/>
+                        @if($item->regestered_price == 0)
+                            <a class="btn btn-inverse downloadlink" href="/catalog/{{$item->slug}}/download"><span
+                                        class="glyphicon glyphicon-download"></span> Скачать</a>
+                        @else
+                            @if(!empty($item->old_price))
+                                <span class="oldprice">{{$item->old_price/100}} руб.</span><br/>
+                            @endif
+                            <span class="price text-primary">{{$item->getOrderPrice()/100}} руб.</span>
                         @endif
-                        <span class="price text-primary">{{$item->getOrderPrice()/100}} руб.</span>
                     @else
                         <span class="price">{{$item->getOrderPrice()/100}} руб.</span>
                         @if(!empty($item->registered_price))
                             <span class="registeredprice"><span class="pricesum">{{$item->registered_price/100}}
                                     руб. <sup>*</sup></span>
-                                <small class="title"><span class="text-red">*</span> - {{Lang::get('static.catalogitem.registeredprice')}}. <a href="{{action('AuthController@login')}}">{{Lang::get('static.login')}}</a></small>
+                                <small class="title"><span class="text-red">*</span>
+                                    - {{Lang::get('static.catalogitem.registeredprice')}}. <a
+                                            href="{{action('AuthController@login')}}">{{Lang::get('static.login')}}</a>
+                                </small>
                                </span>
                         @endif
                     @endif

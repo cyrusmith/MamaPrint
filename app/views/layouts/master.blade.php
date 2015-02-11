@@ -37,7 +37,8 @@ use \Illuminate\Support\Facades\App;
                 </ul>
                 <div class="cart col-sm-4" data-widget="cartlink">
                     <a class="btn btn-info" href="{{URL::action('CartController@userCart')}}"><span
-                                class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span class="title">@if(empty($cart)){{'Нет товаров'}}@else{{count($cart)}} ед.@endif</span>)</a>
+                                class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span
+                                class="title">@if(empty($cart)){{'Нет товаров'}}@else{{count($cart)}} ед.@endif</span>)</a>
                 </div>
             </div>
         </div>
@@ -75,14 +76,15 @@ use \Illuminate\Support\Facades\App;
         <div class="mainmenu">
             <a href="/" class="{{Request::is('/')?'active':''}}">Все материалы</a>
             <span>/</span>
+            <a href="/free" class="{{Request::is('free')?'active':''}}"><span
+                        class="glyphicon glyphicon-shopping-cart text-primary"></span>Бесплатно</a>
+            <span>/</span>
             <a href="{{action('ArticlesController@getArticles')}}" class="{{Request::is('blog')?'active':''}}">Блог</a>
             <span>/</span>
             <a href="/about" class="{{Request::is('about')?'active':''}}">О нас</a>
             <span>/</span>
             <a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a>
             <span>/</span>
-            <a href="/cart" class="{{Request::is('contacts')?'active':''}}"><span
-                        class="glyphicon glyphicon-shopping-cart text-primary"></span>Корзина</a>
         </div>
 
         @define $msg = null
@@ -146,6 +148,7 @@ use \Illuminate\Support\Facades\App;
 
 <script type="x-tpl" id="cart-json">
    {{json_encode($cart)}}
+
 </script>
 
 @define $user = App::make("UsersService")->getUser()
@@ -154,6 +157,7 @@ use \Illuminate\Support\Facades\App;
     {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
      "siteConfig": {{$site_config->toJSON()}},
      "token": "{{csrf_token()}}"}
+
 </script>
 
 @if (Config::get('app.debug'))

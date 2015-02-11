@@ -153,7 +153,7 @@ class GalleryService
         $im = null;
         try {
 
-            if ($width > 0 && $height > 0) {
+            if ($width > 0 || $height > 0) {
 
                 $cacheFolder = Config::get('mamaprint.galleries_path') . $DS . 'cache';
 
@@ -182,7 +182,7 @@ class GalleryService
             header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
 
             if ($typeToImageFunctions[$image->mime][1] == 'imagejpeg') {
-                $typeToImageFunctions[$image->mime][1]($im, null, 95);
+                $typeToImageFunctions[$image->mime][1]($im, null, 100);
             } else if ($typeToImageFunctions[$image->mime][1] == 'imagepng') {
                 $typeToImageFunctions[$image->mime][1]($im, null, 0);
             } else {
@@ -204,7 +204,7 @@ class GalleryService
 
     }
 
-    private function imageResize($src, $dst, $width, $height, $crop = false)
+    private function imageResize($src, $dst, $width = 0, $height = 0, $crop = false)
     {
 
         if (!list($w, $h) = getimagesize($src)) new Exception("Unsupported picture type");
@@ -229,13 +229,11 @@ class GalleryService
         }
 
         if ($crop) {
-            if ($w < $width or $h < $height) throw new Exception("Picture is too small!");
             $ratio = max($width / $w, $height / $h);
             $h = $height / $ratio;
             $x = ($w - $width / $ratio) / 2;
             $w = $width / $ratio;
         } else {
-            if ($w < $width and $h < $height) throw new Exception("Picture is too small!");
             $ratio = min($width / $w, $height / $h);
             $width = $w * $ratio;
             $height = $h * $ratio;

@@ -62,6 +62,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $this->belongsToMany('Catalog\CatalogItem', 'user_catalog_items_access', 'user_id', 'catalog_item_id');
     }
 
+    public function hasItem($catalogItem)
+    {
+        foreach ($this->catalogItems() as $item) {
+            if ($item->id == $catalogItem->id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function isGuest()
     {
         return !empty($this->guestid);

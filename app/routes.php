@@ -18,6 +18,8 @@ Route::group(array('before' => 'guest_create'), function () {
     Route::get('/catalog/{path}/download', 'CatalogController@getAttachments')->where('path', '(.+)');
     Route::get('/catalog/{path}', 'CatalogController@item')->where('path', '(.+)');
 
+    Route::get('/free', 'CatalogController@getItemsFree');
+
     Route::get('/about', function () {
         return View::make('statics.about');
     });
