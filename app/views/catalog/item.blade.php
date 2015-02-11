@@ -42,7 +42,7 @@
                 <p class="price">
 
                     @if(Auth::check())
-                        @if($item->regestered_price == 0)
+                        @if($item->registered_price == 0)
                             <a class="btn btn-inverse downloadlink" href="/catalog/{{$item->slug}}/download"><span
                                         class="glyphicon glyphicon-download"></span> Скачать</a>
                         @else
@@ -53,7 +53,11 @@
                         @endif
                     @else
                         <span class="price">{{$item->getOrderPrice()/100}} руб.</span>
-                        @if(!empty($item->registered_price))
+                        @if(empty($item->registered_price))
+                            <span class="text-muted">Бесплатно для зарегистрированных.</span>
+                            <a class="btn btn-primary btn-xs" href="/login"><span
+                                        class="glyphicon glyphicon-log-in"></span> Войти</a>
+                        @else
                             <span class="registeredprice"><span class="pricesum">{{$item->registered_price/100}}
                                     руб. <sup>*</sup></span>
                                 <small class="title"><span class="text-red">*</span>
@@ -62,6 +66,7 @@
                                 </small>
                                </span>
                         @endif
+
                     @endif
 
                 </p>
@@ -76,29 +81,32 @@
                     <p><b>Что развиваем:</b> {{$item->info_targets}}</p>
                 @endif
 
-                <div class="buttons" data-widget="itemcartbuttons" data-id="{{$item->id}}">
-                    @if(in_array($item->id, $user_item_ids))
-                        <a class="btn btn-inverse downloadlink" href="/catalog/{{$item->slug}}/download"><span
-                                    class="glyphicon glyphicon-download"></span> Скачать</a>
-                    @else
-                        @if($item->canBuyInOneClick())
-                            <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
+                @if(!Auth::check() || !$item->registered_price ==0)
+                    <div class="buttons" data-widget="itemcartbuttons" data-id="{{$item->id}}">
+                        @if(in_array($item->id, $user_item_ids))
+                            <a class="btn btn-inverse downloadlink" href="/catalog/{{$item->slug}}/download"><span
+                                        class="glyphicon glyphicon-download"></span> Скачать</a>
+                        @else
+                            @if($item->canBuyInOneClick())
+                                <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
                         'itemId' => $item->id
                     ])}}" method="post">
-                                <input type="hidden" name="_token" value="{{csrf_token()}}"/>
-                                <button type="submit" class="btn btn-default btn-sm">Купить в один клик</button>
-                            </form>
+                                    <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+                                    <button type="submit" class="btn btn-default btn-sm">Купить в один клик</button>
+                                </form>
+                            @endif
+                            <a data-addtocart="data-addtocart"
+                               class="btn btn-success" @if(in_array($item->id, $cart_ids))
+                               style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
+                                Добавить
+                                в корзину</a>
+                            <a data-gotocart="data-gotocart" href="{{URL::to('/cart')}}"
+                               class="btn btn-success" @if(!in_array($item->id, $cart_ids))
+                               style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
+                                заказ</a>
                         @endif
-                        <a data-addtocart="data-addtocart"
-                           class="btn btn-success" @if(in_array($item->id, $cart_ids))
-                           style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
-                            Добавить
-                            в корзину</a>
-                        <a data-gotocart="data-gotocart" href="{{URL::to('/cart')}}"
-                           class="btn btn-success" @if(!in_array($item->id, $cart_ids))
-                           style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить заказ</a>
-                    @endif
-                </div>
+                    </div>
+                @endif
 
             </div>
         </div>
@@ -111,30 +119,34 @@
             </div>
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-2">
-                    <div class="buttons text-center" data-widget="itemcartbuttons" data-id="{{$item->id}}">
-                        @if(in_array($item->id, $user_item_ids))
-                            <a class="btn btn-inverse" href="/catalog/{{$item->slug}}/download"><span
-                                        class="glyphicon glyphicon-download"></span> Скачать</a>
-                        @else
-                            @if($item->canBuyInOneClick())
-                                <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
+                    @if(!Auth::check() || !$item->registered_price ==0)
+                        <div class="buttons text-center" data-widget="itemcartbuttons" data-id="{{$item->id}}">
+                            @if(in_array($item->id, $user_item_ids))
+                                <a class="btn btn-inverse" href="/catalog/{{$item->slug}}/download"><span
+                                            class="glyphicon glyphicon-download"></span> Скачать</a>
+                            @else
+                                @if($item->canBuyInOneClick())
+                                    <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
                         'itemId' => $item->id
                     ])}}" method="post">
-                                    <input type="hidden" name="_token" value="{{csrf_token()}}"/>
-                                    <button type="submit" class="btn btn-default btn-sm">Купить в один клик</button>
-                                </form>
-                            @endif
-                            <a data-addtocart
-                               class="btn btn-success" @if(in_array($item->id, $cart_ids))
-                               style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
-                                Добавить в корзину</a>
-                            <a data-gotocart="data-gotocart" href="{{URL::to('/cart')}}"
-                               class="btn btn-success" @if(!in_array($item->id, $cart_ids))
-                               style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
-                                заказ</a>
+                                        <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+                                        <button type="submit" class="btn btn-default btn-sm">Купить в один клик</button>
+                                    </form>
+                                @endif
+                                <a data-addtocart
+                                   class="btn btn-success" @if(in_array($item->id, $cart_ids))
+                                   style="display:none;"@endif data><span
+                                            class="glyphicon glyphicon-shopping-cart"></span>
+                                    Добавить в корзину</a>
+                                <a data-gotocart="data-gotocart" href="{{URL::to('/cart')}}"
+                                   class="btn btn-success" @if(!in_array($item->id, $cart_ids))
+                                   style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
+                                    заказ</a>
 
-                        @endif
-                    </div>
+                            @endif
+                        </div>
+                    @endif
+
                 </div>
             </div>
 

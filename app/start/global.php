@@ -47,12 +47,12 @@ Log::useFiles(storage_path() . '/logs/laravel.log');
 |
 */
 
-/*App::error(function (Exception $exception, $code) {
+App::error(function (Exception $exception, $code) {
     Log::error($exception);
-    if ($code == 400 || $code === 500) {
+    if ($code == 400 || $code === 401 || $code === 500) {
         return Response::view('errors.' . $code, array('error' => $exception->getMessage()), $code);
     }
-});*/
+});
 
 /*
 |--------------------------------------------------------------------------

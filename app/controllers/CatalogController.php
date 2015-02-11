@@ -91,7 +91,7 @@ class CatalogController extends BaseController
 
         if (!$user->hasItem($item)) {
             if (!Auth::check() || $item->registered_price > 0) {
-                App::abort(401, 'Нет доступа');
+                App::abort(401, 'Нет доступа к материалу');
             }
         }
 

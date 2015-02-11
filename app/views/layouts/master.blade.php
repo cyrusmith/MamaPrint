@@ -76,8 +76,7 @@ use \Illuminate\Support\Facades\App;
         <div class="mainmenu">
             <a href="/" class="{{Request::is('/')?'active':''}}">Все материалы</a>
             <span>/</span>
-            <a href="/free" class="{{Request::is('free')?'active':''}}"><span
-                        class="glyphicon glyphicon-shopping-cart text-primary"></span>Бесплатно</a>
+            <a href="/free" class="{{Request::is('free')?'active':''}}">Бесплатно</a>
             <span>/</span>
             <a href="{{action('ArticlesController@getArticles')}}" class="{{Request::is('blog')?'active':''}}">Блог</a>
             <span>/</span>
