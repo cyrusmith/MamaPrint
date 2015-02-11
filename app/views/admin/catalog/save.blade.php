@@ -155,6 +155,16 @@
         </div>
 
         <fieldset>
+            <legend><span class="glyphicon glyphicon-list"></span> {{Lang::get('static.admin.catalogitem.related')}}
+            </legend>
+            <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
+                <input type="text" class="autocomplete form-control"
+                       data-url="{{action('Admin\AdminCatalogController@index')}}"/>
+                <p><small>Начните вводить название материала</small></p>
+            </div>
+        </fieldset>
+
+        <fieldset>
             <legend><span class="glyphicon glyphicon-info-sign"></span> Доп. информация</legend>
             <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
                 <label for="catitemage" class="control-label">{{Lang::get('static.admin.catitem.age')}}</label>
@@ -195,7 +205,6 @@
     </form>
 
 
-
     <script type="x-tpl" id="attachment-item-models-json">
         {{$attachments or '[]'}}
 
@@ -228,9 +237,6 @@
                 <span class="control-delete btn btn-xs btn-danger glyphicon glyphicon-trash"></span>
             </a>
         </li>
-
-
-
 
 
 
@@ -299,6 +305,10 @@
                         </div>
                          <% }  %>
                     </li>
+
+
+
+
 
 
 

@@ -28,11 +28,19 @@ class AdminCatalogController extends AdminController
     public function index()
     {
 
-        $items = CatalogItem::paginate(20);
+        $search = Input::get('search');
+        if (!empty($search)) {
+            $items = CatalogItem::where('title', 'LIKE', '%' . $search . '%')->paginate(20);
+        } else {
+            $items = CatalogItem::paginate(20);
+        }
+
+
         $this->setPageTitle(Lang::get('static.admin.pagetitle.catalog'));
         $this->addToolbarAction('add', 'Новый', 'catalog/add');
         return $this->makeView("admin.catalog.index", [
-            'items' => $items
+            'items' => $items,
+            'search' => $search
         ]);
     }
 

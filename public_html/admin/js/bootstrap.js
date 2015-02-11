@@ -3,9 +3,10 @@ require([
     'tinymce',
     'editform',
     'twitterbootstrap',
-    'datetimepicker'], function ($,
-                                 tinymce,
-                                 editform) {
+    'datetimepicker',
+    'jqueryui'], function ($,
+                           tinymce,
+                           editform) {
 
     'use strict';
 

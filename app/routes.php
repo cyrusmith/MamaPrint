@@ -88,7 +88,6 @@ Route::group(array('before' => 'guest'), function () {
 
 Route::group(array('before' => 'admin'), function () {
 
-    Route::get('/admin/', 'Admin\AdminCatalogController@index');
     Route::get('/admin/catalog', 'Admin\AdminCatalogController@index');
 
     Route::get('/admin/catalog/add', 'Admin\AdminCatalogController@add');
