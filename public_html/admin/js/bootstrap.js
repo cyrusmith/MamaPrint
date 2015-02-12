@@ -11,6 +11,7 @@ require([
     'use strict';
 
     require([
+        'autocomplete.widget',
         'attachments/attachments.widget',
         'gallery/gallery.widget'
     ], function () {

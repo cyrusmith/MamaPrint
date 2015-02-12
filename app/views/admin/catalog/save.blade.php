@@ -157,9 +157,10 @@
         <fieldset>
             <legend><span class="glyphicon glyphicon-list"></span> {{Lang::get('static.admin.catalogitem.related')}}
             </legend>
-            <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
-                <input type="text" class="autocomplete form-control"
-                       data-url="{{action('Admin\AdminCatalogController@index')}}"/>
+            <div class="form-group {{$errors->has('info_age')?'has-error':''}}" data-widget="autocomplete" data-url="{{action('Admin\AdminCatalogController@index')}}">
+                <input type="text" class="form-control"
+                       />
+                <input type="hidden" name="related" value=""/>
                 <p><small>Начните вводить название материала</small></p>
             </div>
         </fieldset>

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Lang;
 use Catalog\CatalogItem;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use \Exception;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -38,6 +39,9 @@ class AdminCatalogController extends AdminController
 
         $this->setPageTitle(Lang::get('static.admin.pagetitle.catalog'));
         $this->addToolbarAction('add', 'Новый', 'catalog/add');
+        if(Request::ajax()) {
+            return Request::json(200, $items->all());
+        }
         return $this->makeView("admin.catalog.index", [
             'items' => $items,
             'search' => $search
