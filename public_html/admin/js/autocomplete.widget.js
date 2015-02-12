@@ -1,8 +1,9 @@
 define([
     '$',
+    'backbone',
     'gallery/gallery.list.view',
     'gallery/gallery.image.model'
-], function ($, GalleryListView, Image) {
+], function ($, Backbone, GalleryListView, Image) {
 
     'use strict';
 
@@ -21,10 +22,22 @@ define([
 
     function init($el) {
 
-        var url = $el.attr('data-url');
-        $el.data('ids', []);
+        var url = $el.attr('data-url'),
+            $input = $el.find('input.form-control'),
+            titleModelMap = {};
 
-        $el.find('input.form-control').autocomplete({
+        var ids = new Backbone.Collection();
+
+        ids.on("add remove change", refreshInput);
+
+        function refreshInput() {
+            var hiddenValue = ids.map(function (item) {
+                return item.get('id')
+            }).join(",");
+            $el.find("input[type='hidden']").val(hiddenValue);
+        }
+
+        $input.autocomplete({
             minLength: 0,
             source: function (request, response) {
                 $.getJSON(url, {
@@ -32,8 +45,24 @@ define([
                 }, response);
             },
             search: function () {
-                console.log(this.value);
                 var term = extractLast(this.value);
+                var newTitleModelMap = {};
+                var items = split(this.value);
+
+                for (var i = 0; i < items.length; i++) {
+                    var title = items[i].toLowerCase();
+                    if (titleModelMap.hasOwnProperty(title)) {
+                        newTitleModelMap[title] = titleModelMap[title];
+                        delete titleModelMap[title];
+                    }
+                }
+
+                for (var title in titleModelMap) {
+                    ids.remove(titleModelMap[title]);
+                }
+
+                titleModelMap = newTitleModelMap;
+
                 if (term.length < 2) {
                     return false;
                 }
@@ -42,25 +71,25 @@ define([
                 return false;
             },
             select: function (event, ui) {
-                var terms = split(this.value);
-                terms.pop();
-                terms.push(ui.item.title);
-                terms.push("");
-                this.value = terms.join(", ");
+                titleModelMap[ui.item.title.toLowerCase()] = ids.add(ui.item);
 
-                var ids = $el.data('ids');
-                if(ids.indexOf(+ui.item.id)===-1) {
-                    ids.push(+ui.item.id);
-                    $el.data('ids', ids);
+                var string = ids.map(function (item) {
+                    return item.get('title')
+                }).join(", ");
+                if (string.length > 0) {
+                    string = string + ", ";
                 }
-                $el.find("input[type=hidden]").val(ids.join(","));
+                $input.val(string);
+
+                refreshInput();
                 return false;
             }
-        }).autocomplete( "instance" )._renderItem = function( ul, item ) {
-            return $( "<li>" )
-                .append( "<a>" + item.title + "<br>" + item.short_description.substring(100) + "</a>" )
-                .appendTo( ul );
-        };;
+        }).autocomplete("instance")._renderItem = function (ul, item) {
+            return $("<li>")
+                .append("<a><span class='title'>" + item.title + "</span><br><span class='description'>" + item.short_description + "</span></a>")
+                .appendTo(ul);
+        };
+        ;
     }
 
 });
