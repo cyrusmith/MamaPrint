@@ -24,9 +24,17 @@ define([
 
         var url = $el.attr('data-url'),
             $input = $el.find('input.form-control'),
-            titleModelMap = {};
+            titleModelMap = {},
+            exclude = $el.attr('data-exclude');
 
         var ids = new Backbone.Collection();
+
+        try {
+            ids.add(JSON.parse($('#related-json').text()));
+        }
+        catch(e) {
+            throw e;
+        }
 
         ids.on("add remove change", refreshInput);
 
@@ -41,7 +49,8 @@ define([
             minLength: 0,
             source: function (request, response) {
                 $.getJSON(url, {
-                    search: extractLast(request.term)
+                    search: extractLast(request.term),
+                    exclude: exclude
                 }, response);
             },
             search: function () {

@@ -157,10 +157,10 @@
         <fieldset>
             <legend><span class="glyphicon glyphicon-list"></span> {{Lang::get('static.admin.catalogitem.related')}}
             </legend>
-            <div class="form-group {{$errors->has('info_age')?'has-error':''}}" data-widget="autocomplete" data-url="{{action('Admin\AdminCatalogController@index')}}">
+            <div class="form-group {{$errors->has('info_age')?'has-error':''}}" data-widget="autocomplete" data-url="{{action('Admin\AdminCatalogController@index')}}" data-exclude="{{$data['id'] or ''}}">
                 <input type="text" class="form-control"
-                       />
-                <input type="hidden" name="related" value=""/>
+                       value="{{$data['relatedtitles']}}"/>
+                <input type="hidden" name="related" value="{{$data['relatedids']}}"/>
                 <p><small>Начните вводить название материала</small></p>
             </div>
         </fieldset>
@@ -220,6 +220,10 @@
 
 
 
+    </script>
+
+    <script type="x-tpl" id="related-json">
+        {{$data['related'] or '[]'}}
     </script>
 
     <script type="x-tpl" id="gallery-item-tpl">

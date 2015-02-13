@@ -57,6 +57,11 @@ class CatalogItem extends Eloquent
         return implode($separator, $names);
     }
 
+    public function relatedItems()
+    {
+        return $this->belongsToMany('Catalog\CatalogItem', 'catalogitem_relations', 'owner_id', 'relation_id');
+    }
+
     public function updateTags($tagTags)
     {
         try {

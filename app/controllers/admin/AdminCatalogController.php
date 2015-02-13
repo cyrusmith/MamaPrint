@@ -30,8 +30,16 @@ class AdminCatalogController extends AdminController
     {
 
         $search = Input::get('search');
-        if (!empty($search)) {
-            $items = CatalogItem::where('title', 'LIKE', '%' . $search . '%')->paginate(20);
+        $exclude = Input::get('exclude');
+        if (!empty($search) || !empty($exclude)) {
+            $query = CatalogItem::distinct();
+            if (!empty($search)) {
+                $query->where('title', 'LIKE', '%' . $search . '%');
+            }
+            if (!empty($exclude)) {
+                $query->where('id', '<>', $exclude);
+            }
+            $items = $query->paginate(20);
         } else {
             $items = CatalogItem::paginate(20);
         }
@@ -39,7 +47,7 @@ class AdminCatalogController extends AdminController
 
         $this->setPageTitle(Lang::get('static.admin.pagetitle.catalog'));
         $this->addToolbarAction('add', 'Новый', 'catalog/add');
-        if(Request::ajax()) {
+        if (Request::ajax()) {
             return Request::json(200, $items->all());
         }
         return $this->makeView("admin.catalog.index", [
@@ -56,7 +64,10 @@ class AdminCatalogController extends AdminController
         $this->addToolbarAction('cancel', 'Отмена', 'catalog');
         return $this->makeView("admin.catalog.save", [
                 'data' => array_merge($item->toArray(), [
-                    'tags' => $item->getTagsAsString()
+                    'tags' => $item->getTagsAsString(),
+                    'related' => $item->relatedItems,
+                    'relatedids' => $this->getRelatedIdsString($item),
+                    'relatedtitles' => $this->getRelatedTitlesString($item)
                 ])
             ]
         );
@@ -80,11 +91,33 @@ class AdminCatalogController extends AdminController
         $this->addToolbarAction('cancel', 'Отмена', 'catalog');
         return $this->makeView("admin.catalog.save", [
             'data' => array_merge($item->toArray(), [
-                'tags' => $item->getTagsAsString()
+                'tags' => $item->getTagsAsString(),
+                'related' => $item->relatedItems,
+                'relatedids' => $this->getRelatedIdsString($item),
+                'relatedtitles' => $this->getRelatedTitlesString($item)
+
             ]),
             'attachments' => $attachments ? $attachments->toJSON() : json_encode([]),
             'images' => $gallery ? $gallery->images->toJSON() : json_encode([])
         ]);
+    }
+
+    private function getRelatedIdsString($item)
+    {
+        $ids = [];
+        foreach ($item->relatedItems as $relItem) {
+            $ids[] = $relItem->id;
+        }
+        return implode(",", $ids);
+    }
+
+    private function getRelatedTitlesString($item)
+    {
+        $titles = [];
+        foreach ($item->relatedItems as $relItem) {
+            $titles[] = $relItem->title;
+        }
+        return implode(", ", $titles) . (count($titles) > 0 ? ', ' : '');
     }
 
     public function postItem()
@@ -212,6 +245,13 @@ class AdminCatalogController extends AdminController
                     }
                 }
 
+            }
+
+            $relatedIds = array_filter(explode(",", Input::get('related')));
+
+            $item->relatedItems()->detach();
+            if (is_array($relatedIds) && count($relatedIds) > 0) {
+                $item->relatedItems()->attach($relatedIds);
             }
 
             DB::commit();

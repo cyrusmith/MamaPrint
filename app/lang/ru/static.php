@@ -2,6 +2,7 @@
 return [
     'login' => 'Войти',
     'catalogitem.more' => 'Подробнее',
+    'catalogitem.related' => 'Возможно, вам будет интересно:',
     'catalogitem.registeredprice' => 'цена для авторизованных пользователей',
     'admin.save' => 'Сохранить',
     'admin.delete' => 'Удалить',

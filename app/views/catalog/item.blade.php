@@ -152,6 +152,34 @@
 
         @endif
 
+        @if(!$item->relatedItems->isEmpty())
+            <div class="row related">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <h3>{{Lang::get('static.catalogitem.related')}}</h3>
+
+                    <div class="related-items">
+                        @foreach($item->relatedItems as $relItem)
+                            <div class="related-item">
+                                <div class="related-item-wrapper">
+                                    @define $img = $relItem->galleries()->first()->images()->first()
+                                    <a href="{{action('CatalogController@item', ['path'=>$relItem->slug])}}">
+                                        @if(empty($img))
+                                            <img src="/assets/noimage.png"/>
+                                        @else
+                                            <img src="/images/{{$img->id}}?width=200&height=200&crop=1"/>
+                                        @endif
+                                    </a>
+                                    <h5>
+                                        <a href="{{action('CatalogController@item', ['path'=>$relItem->slug])}}">{{$relItem->title}}</a>
+                                    </h5>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
+
     </div>
 
 
