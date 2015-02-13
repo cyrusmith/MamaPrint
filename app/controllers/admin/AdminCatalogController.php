@@ -31,19 +31,18 @@ class AdminCatalogController extends AdminController
 
         $search = Input::get('search');
         $exclude = Input::get('exclude');
+        $query = CatalogItem::orderBy('weight', 'asc');
         if (!empty($search) || !empty($exclude)) {
-            $query = CatalogItem::distinct();
             if (!empty($search)) {
                 $query->where('title', 'LIKE', '%' . $search . '%');
             }
             if (!empty($exclude)) {
                 $query->where('id', '<>', $exclude);
             }
-            $items = $query->paginate(20);
-        } else {
-            $items = CatalogItem::paginate(20);
+
         }
 
+        $items = $query->paginate(100);
 
         $this->setPageTitle(Lang::get('static.admin.pagetitle.catalog'));
         $this->addToolbarAction('add', 'Новый', 'catalog/add');
@@ -118,6 +117,27 @@ class AdminCatalogController extends AdminController
             $titles[] = $relItem->title;
         }
         return implode(", ", $titles) . (count($titles) > 0 ? ', ' : '');
+    }
+
+    public function postReorder()
+    {
+        $weights = Input::get('weights');
+        try {
+            DB::beginTransaction();
+
+            foreach ($weights as $id => $value) {
+                $item = CatalogItem::find($id);
+                if ($item) {
+                    $item->weight = $value;
+                    $item->save();
+                }
+            }
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rolback();
+        }
+        return Redirect::back();
     }
 
     public function postItem()

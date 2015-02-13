@@ -93,6 +93,7 @@ Route::group(array('before' => 'admin'), function () {
     Route::get('/admin/catalog/add', 'Admin\AdminCatalogController@add');
     Route::get('/admin/catalog/edit/{id}', 'Admin\AdminCatalogController@getItem');
     Route::post('/admin/catalog/save', 'Admin\AdminCatalogController@postItem');
+    Route::post('/admin/catalog/reorder', 'Admin\AdminCatalogController@postReorder');
 
     Route::get('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@view');
     Route::put('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@update');

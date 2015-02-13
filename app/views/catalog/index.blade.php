@@ -111,7 +111,10 @@
 
         @endfor
 
+    </div>
 
+    <div class="text-center">
+        {{$items->links()}}
     </div>
 
 @stop

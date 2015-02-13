@@ -13,7 +13,7 @@ class CatalogController extends BaseController
 
     public function index()
     {
-        $items = CatalogItem::where('active', '=', true)->paginate(50);
+        $items = CatalogItem::orderBy('weight', 'asc')->where('active', '=', true)->paginate(50);
         return View::make('catalog.index', [
             'items' => $items
         ]);
