@@ -30,9 +30,13 @@ define([
         var ids = new Backbone.Collection();
 
         try {
-            ids.add(JSON.parse($('#related-json').text()));
+            var json = JSON.parse($('#related-json').text());
+            for (var i = 0; i < json.length; i++) {
+                titleModelMap[json[i].title.toLowerCase()] = ids.add(json[i]);
+            }
+
         }
-        catch(e) {
+        catch (e) {
             throw e;
         }
 
