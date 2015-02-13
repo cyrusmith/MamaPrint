@@ -31,18 +31,22 @@
                     </td>
                     <th class="text-right">
 
-                            <form class="payform" action="{{URL::action('OrdersController@createOrder')}}" method="post" @if($total < ($site_config->getMinOrderPrice()*100)) style="display: none;" @endif>
-                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                <button type="submit" class="btn btn-success"
-                                        href="javascript:void(0);">
-                                    Оплатить <span class="glyphicon glyphicon-chevron-right"></span></button>
-                            </form>
+                        <form class="payform" action="{{URL::action('OrdersController@createOrder')}}"
+                              method="post" @if($total < ($site_config->getMinOrderPrice()*100))
+                              style="display: none;" @endif>
+                            <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                            <button type="submit" class="btn btn-success"
+                                    href="javascript:void(0);">
+                                Оплатить <span class="glyphicon glyphicon-chevron-right"></span></button>
+                        </form>
 
 
                     </th>
                 </tr>
             </table>
 
+            <p class="text-center payments-icons" @if($total < ($site_config->getMinOrderPrice()*100))
+               style="display:none;" @endif><img src="/img/ic-payments.png"/></p>
 
             <p class="panel text-danger insufficientprice-message" @if($total >= ($site_config->getMinOrderPrice()*100))
                style="display:none;" @endif>

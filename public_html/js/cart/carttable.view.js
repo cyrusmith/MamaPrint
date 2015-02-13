@@ -32,10 +32,12 @@ define([
                 this.$summary.remove();
                 $('.emptycart-message').show();
                 $('.insufficientprice-message').hide();
+                $('.payments-icons').hide();
             }
             else if (cartModel.getTotal() < siteConfig.getMinOrderPrice() * 100) {
                 $('.insufficientprice-message').show();
                 $('.payform').hide();
+                $('.payments-icons').hide();
             }
 
         }
