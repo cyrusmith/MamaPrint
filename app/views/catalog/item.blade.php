@@ -104,6 +104,7 @@
                                class="btn btn-success" @if(!in_array($item->id, $cart_ids))
                                style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
                                 заказ</a>
+                                <img src="/img/ic-payments.png"/>
                         @endif
                     </div>
                 @endif
@@ -142,7 +143,7 @@
                                    class="btn btn-success" @if(!in_array($item->id, $cart_ids))
                                    style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
                                     заказ</a>
-
+                                <img src="/img/ic-payments.png"/>
                             @endif
                         </div>
                     @endif
