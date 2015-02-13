@@ -31,7 +31,7 @@ class AdminCatalogController extends AdminController
 
         $search = Input::get('search');
         $exclude = Input::get('exclude');
-        $query = CatalogItem::orderBy('weight', 'asc');
+        $query = CatalogItem::orderBy('weight', 'desc');
         if (!empty($search) || !empty($exclude)) {
             if (!empty($search)) {
                 $query->where('title', 'LIKE', '%' . $search . '%');
@@ -66,7 +66,8 @@ class AdminCatalogController extends AdminController
                     'tags' => $item->getTagsAsString(),
                     'related' => $item->relatedItems,
                     'relatedids' => $this->getRelatedIdsString($item),
-                    'relatedtitles' => $this->getRelatedTitlesString($item)
+                    'relatedtitles' => $this->getRelatedTitlesString($item),
+                    'weight' => DB::table('catalog_items')->max('weight') + 1
                 ])
             ]
         );
@@ -151,6 +152,7 @@ class AdminCatalogController extends AdminController
             'id' => Input::get('id'),
             'title' => str_replace('"', '&quot;', Input::get('title')),
             'active' => Input::get('active'),
+            'weight' => Input::get('weight'),
             'slug' => mb_strtolower(Input::get('slug')),
             'short_description' => str_replace('"', '&quot;', Input::get('short_description')),
             'long_description' => Input::get('long_description'),
@@ -205,6 +207,7 @@ class AdminCatalogController extends AdminController
             }
 
             $item->active = $form['active'];
+            $item->weight = $form['weight'];
             $item->title = $form['title'];
             $item->slug = $form['slug'];
             $item->short_description = $form['short_description'];

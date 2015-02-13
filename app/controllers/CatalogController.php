@@ -13,7 +13,7 @@ class CatalogController extends BaseController
 
     public function index()
     {
-        $items = CatalogItem::orderBy('weight', 'asc')->where('active', '=', true)->paginate(50);
+        $items = CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->paginate(50);
         return View::make('catalog.index', [
             'items' => $items
         ]);
@@ -21,7 +21,7 @@ class CatalogController extends BaseController
 
     public function getItemsFree()
     {
-        $items = CatalogItem::where('active', '=', true)->where('registered_price', '=', 0)->paginate(50);
+        $items = CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->where('registered_price', '=', 0)->paginate(50);
         return View::make('catalog.index', [
             'items' => $items
         ]);

@@ -20,13 +20,19 @@
                         class="glyphicon glyphicon-eye-open"></span> Просмотр</a>
         @endif
 
-        <div class="checkbox">
-            <label>
-                <input type="checkbox"
-                       @if(!isset($data['active']) || $data['active']))
-                       checked="checked"
-                       @endif value="1" name="active"> Активен
-            </label>
+        <div class="row">
+            <div class="col-sm-3 checkbox">
+                <label>
+                    <input type="checkbox"
+                           @if(!isset($data['active']) || $data['active']))
+                           checked="checked"
+                           @endif value="1" name="active"> Активен
+                </label>
+            </div>
+            <div class="col-sm-3">
+                <label>Вес:</label>
+                <input class="form-control" value="{{$data['weight'] or 0}}" name="weight"/>
+            </div>
         </div>
         <div class="form-group {{$errors->has('title')?'has-error':''}}">
             <label for="catitemtitle" class="control-label">{{Lang::get('static.admin.catitem.title')}}</label>
@@ -157,11 +163,15 @@
         <fieldset>
             <legend><span class="glyphicon glyphicon-list"></span> {{Lang::get('static.admin.catalogitem.related')}}
             </legend>
-            <div class="form-group {{$errors->has('info_age')?'has-error':''}}" data-widget="autocomplete" data-url="{{action('Admin\AdminCatalogController@index')}}" data-exclude="{{$data['id'] or ''}}">
+            <div class="form-group {{$errors->has('info_age')?'has-error':''}}" data-widget="autocomplete"
+                 data-url="{{action('Admin\AdminCatalogController@index')}}" data-exclude="{{$data['id'] or ''}}">
                 <input type="text" class="form-control"
                        value="{{$data['relatedtitles']}}"/>
                 <input type="hidden" name="related" value="{{$data['relatedids']}}"/>
-                <p><small>Начните вводить название материала</small></p>
+
+                <p>
+                    <small>Начните вводить название материала</small>
+                </p>
             </div>
         </fieldset>
 
@@ -212,6 +222,7 @@
 
 
 
+
     </script>
 
     <script type="x-tpl" id="gallery-images-json">
@@ -220,10 +231,12 @@
 
 
 
+
     </script>
 
     <script type="x-tpl" id="related-json">
         {{$data['related'] or '[]'}}
+
     </script>
 
     <script type="x-tpl" id="gallery-item-tpl">
@@ -242,6 +255,7 @@
                 <span class="control-delete btn btn-xs btn-danger glyphicon glyphicon-trash"></span>
             </a>
         </li>
+
 
 
 
@@ -310,6 +324,7 @@
                         </div>
                          <% }  %>
                     </li>
+
 
 
 

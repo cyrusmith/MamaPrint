@@ -15,7 +15,7 @@
                             <img src="/assets/noimage.png"/>
                         @else
                             <a href="/images/{{$images[0]->id}}" class="gallery-image">
-                                <img src="/images/{{$images[0]->id}}?width=400&height=400&crop=1"/>
+                                <img src="/images/{{$images[0]->id}}"/> {{--?width=400&height=400&crop=1--}}
                             </a>
                         @endif
                     </div>
