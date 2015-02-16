@@ -104,7 +104,8 @@
                                class="btn btn-success" @if(!in_array($item->id, $cart_ids))
                                style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
                                 заказ</a>
-                                <img src="/img/ic-payments.png"/>
+                            <br>
+                                <img src="/img/ic-payments.gif"/>
                         @endif
                     </div>
                 @endif
@@ -143,7 +144,8 @@
                                    class="btn btn-success" @if(!in_array($item->id, $cart_ids))
                                    style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
                                     заказ</a>
-                                <img src="/img/ic-payments.png"/>
+                                    <br>
+                                <img src="/img/ic-payments.gif"/>
                             @endif
                         </div>
                     @endif
@@ -155,7 +157,7 @@
 
         @if(!$item->relatedItems->isEmpty())
             <div class="row related">
-                <div class="col-sm-6 col-sm-offset-3">
+                <div class="col-lg-10 col-lg-offset-2">
                     <h3>{{Lang::get('static.catalogitem.related')}}</h3>
 
                     <div class="related-items">

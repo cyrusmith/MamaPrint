@@ -46,7 +46,7 @@
             </table>
 
             <p class="text-center payments-icons" @if($total < ($site_config->getMinOrderPrice()*100))
-               style="display:none;" @endif><img src="/img/ic-payments.png"/></p>
+               style="display:none;" @endif><img src="/img/ic-payments.gif"/></p>
 
             <p class="panel text-danger insufficientprice-message" @if($total >= ($site_config->getMinOrderPrice()*100))
                style="display:none;" @endif>
