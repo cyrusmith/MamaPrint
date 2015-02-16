@@ -36,7 +36,7 @@
                 </td>
                 <td>
                     <a href="/admin/stats/orders/{{$order->id}}"
-                       class="btn btn-info btn-xs">{{$order->items->count()}}</a>
+                       class="btn btn-info btn-xs">({{$order->items->count()}}) Просмотр <span class="glyphicon glyphicon-eye-open"></span></a>
                 </td>
             </tr>
         @endforeach

@@ -17,7 +17,7 @@ class AdminUsersController extends AdminController
     public function getUsers()
     {
         $this->setPageTitle('Пользователи');
-        $query = \User::orderBy('name', 'desc')->where('guestid', '=', null);
+        $query = \User::orderBy('created_at', 'desc')->where('guestid', '=', null);
 
         $search = Input::get('search');
         if (mb_strlen($search) > 2) {

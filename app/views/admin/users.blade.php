@@ -20,6 +20,7 @@
             <th>#</th>
             <th>Имя</th>
             <th>Email</th>
+            <th>Дата регистрации</th>
             <th>Заказы</th>
         </tr>
 
@@ -30,7 +31,8 @@
                 </td>
                 <td>{{$user->name}}</td>
                 <td>{{$user->email}}</td>
-                <td><a href="/admin/users/{{$user->id}}/orders" class="btn btn-info btn-xs">{{$user->orders->count()}}</a>
+                <td>{{$user->created_at}}</td>
+                <td><a href="/admin/users/{{$user->id}}/orders" class="btn btn-info btn-xs">({{$user->orders->count()}}) Просмотр <span class="glyphicon glyphicon-eye-open"></span></a>
                 </td>
             </tr>
         @endforeach
