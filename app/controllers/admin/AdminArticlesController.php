@@ -72,6 +72,7 @@ class AdminArticlesController extends AdminController
             'seo_title' => str_replace('"', '&quot;', Input::get('seo_title')),
             'seo_description' => str_replace('"', '&quot;', Input::get('seo_description')),
             'active' => Input::get('active'),
+            'isblog' => Input::get('isblog'),
             'publish_date' => Input::get('publish_date'),
             'urlpath' => $this->filterUrlpath(Input::get('urlpath')),
         );
@@ -115,6 +116,7 @@ class AdminArticlesController extends AdminController
         $article->urlpath = $form['urlpath'];
         $article->publish_date = $form['publish_date'];
         $article->active = $form['active'] == "1";
+        $article->isblog = $form['isblog'] == "1";
 
         $article->save();
 

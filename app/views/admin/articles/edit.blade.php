@@ -16,6 +16,15 @@
         <div class="checkbox">
             <label>
                 <input type="checkbox"
+                       @if(!isset($isblog) || $isblog))
+                       checked="checked"
+                       @endif value="1" name="isblog"> {{Lang::get('static.admin.article.isblog')}}
+            </label>
+        </div>
+
+            <div class="checkbox">
+            <label>
+                <input type="checkbox"
                        @if(!isset($active) || $active))
                        checked="checked"
                        @endif value="1" name="active"> {{Lang::get('static.admin.article.published')}}

@@ -31,6 +31,7 @@ use Illuminate\Support\Facades\Lang;
                 <td>{{$article->description}}</td>
                 <td>{{$article->publish_date}}</td>
                 <td>{{$article->active ? Lang::get('static.admin.article.active') : Lang::get('static.admin.article.inactive')}}</td>
+                <td>{{$article->isblog ? Lang::get('static.admin.article.isblog') : Lang::get('static.admin.article.notisblog')}}</td>
                 <td>
                     <form action="{{action('Admin\AdminArticlesController@deleteArticle', ['id'=>$article->id])}}"
                           method="post" class="text-right">

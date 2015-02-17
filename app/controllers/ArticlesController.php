@@ -13,7 +13,7 @@ class ArticlesController extends BaseController
 
     public function getArticles()
     {
-        $articles = Article::where('active', '=', true)->orderBy('publish_date', 'desc')->paginate(20);
+        $articles = Article::where('active', '=', true)->where('isblog', '=', true)->orderBy('publish_date', 'desc')->paginate(20);
         return View::make('articles.index', ['articles' => $articles]);
     }
 

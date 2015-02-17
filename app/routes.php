@@ -21,19 +21,24 @@ Route::group(array('before' => 'guest_create'), function () {
     Route::get('/free', 'CatalogController@getItemsFree');
 
     Route::get('/about', function () {
-        return View::make('statics.about');
+        $article = Article::where('urlpath', '=', 'about')->first();
+        return View::make('page', ['article' => $article]);
     });
 
     Route::get('/public_offer', function () {
-        return View::make('statics.public_offer');
+        $article = Article::where('urlpath', '=', 'public_offer')->first();
+
+        return View::make('page', ['article' => $article]);
     });
 
     Route::get('/howto', function () {
-        return View::make('statics.howto');
+        $article = Article::where('urlpath', '=', 'howto')->first();
+        return View::make('page', ['article' => $article]);
     });
 
     Route::get('/contacts', function () {
-        return View::make('statics.contacts');
+        $article = Article::where('urlpath', '=', 'contacts')->first();
+        return View::make('page', ['article' => $article]);
     });
 
     Route::get('/cart', 'CartController@userCart');

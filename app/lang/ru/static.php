@@ -63,6 +63,8 @@ return [
     'admin.article.view' => 'Просмотр',
     'admin.article.publish_date' => 'Дата публикации',
     'admin.article.active' => 'Опубликована',
+    'admin.article.isblog' => 'В блоге',
+    'admin.article.notisblog' => 'Не в блоге',
     'admin.article.inactive' => 'Скрыта',
     'admin.catalogitem.related' => 'Связанные материалы',
 ];
