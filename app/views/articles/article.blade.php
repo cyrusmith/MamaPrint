@@ -1,9 +1,5 @@
 @extends('layouts.master')
 
-@section('page_title'){{$article->seo_title or $article->title}}@stop
-
-@section('description'){{$article->seo_description or $article->description}}@stop
-
 @section('content')
 
     <div class="row article-page">

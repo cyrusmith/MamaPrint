@@ -1,13 +1,12 @@
 <?php
 use \Illuminate\Support\Facades\App;
-
 ?>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>@yield('page_title') MamaPrint.ru</title>
-    <meta name="description" content="@yield('description')">
+    <title>{{$page_title or $site_config->getDescriptor()}}</title>
+    <meta name="description" content="{{$page_description or $site_config->getSeoDescription()}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
@@ -82,7 +81,7 @@ use \Illuminate\Support\Facades\App;
             <span>/</span>
             <a href="/about" class="{{Request::is('about')?'active':''}}">О нас</a>
             <span>/</span>
-            <a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a>
+            <a href="/contacts" class="{{Request::is('contacts')?'active':''}}" rel="nofollow">Контакты</a>
         </div>
 
         @define $msg = null

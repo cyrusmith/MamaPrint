@@ -1,9 +1,5 @@
 @extends('layouts.master')
 
-@section('page_title') Блог @stop
-
-@section('description') Полезное о материалах для скачивания @stop
-
 @section('content')
 
     <div class="col-sm-8 col-sm-offset-2">

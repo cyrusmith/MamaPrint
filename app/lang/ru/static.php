@@ -50,6 +50,7 @@ return [
     'admin.settings.min_order_price.help' => 'Сумма, ниже которой нельзя оформить заказ',
     'admin.settings.descriptor' => 'Дескриптор сайта',
     'admin.settings.descriptor.help' => 'Текст под заголовком',
+    'admin.settings.seo_description' => 'СЕО описание',
     'admin.articles' => 'Статьи',
     'admin.article.new' => 'Новая статья',
     'admin.article.title' => 'Заголовок',
@@ -67,4 +68,5 @@ return [
     'admin.article.notisblog' => 'Не в блоге',
     'admin.article.inactive' => 'Скрыта',
     'admin.catalogitem.related' => 'Связанные материалы',
+
 ];

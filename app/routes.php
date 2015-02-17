@@ -20,27 +20,6 @@ Route::group(array('before' => 'guest_create'), function () {
 
     Route::get('/free', 'CatalogController@getItemsFree');
 
-    Route::get('/about', function () {
-        $article = Article::where('urlpath', '=', 'about')->first();
-        return View::make('page', ['article' => $article]);
-    });
-
-    Route::get('/public_offer', function () {
-        $article = Article::where('urlpath', '=', 'public_offer')->first();
-
-        return View::make('page', ['article' => $article]);
-    });
-
-    Route::get('/howto', function () {
-        $article = Article::where('urlpath', '=', 'howto')->first();
-        return View::make('page', ['article' => $article]);
-    });
-
-    Route::get('/contacts', function () {
-        $article = Article::where('urlpath', '=', 'contacts')->first();
-        return View::make('page', ['article' => $article]);
-    });
-
     Route::get('/cart', 'CartController@userCart');
 
     Route::get('/downloads/{token}', 'OrdersController@getOrderDownload');
@@ -159,3 +138,5 @@ Route::group(array('before' => 'test'), function () {
 });
 
 Route::when('*', 'register_globals');
+
+Route::get('/{path}', 'ArticlesController@getStaticArticle')->where('path', '(.+)');

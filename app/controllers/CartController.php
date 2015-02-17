@@ -38,7 +38,8 @@ class CartController extends BaseController
 
         return View::make('user.cart', [
             'items' => $items,
-            'total' => $total
+            'total' => $total,
+            'page_title' => 'Корзина'
         ]);
 
     }

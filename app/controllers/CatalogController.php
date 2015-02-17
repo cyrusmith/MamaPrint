@@ -23,7 +23,8 @@ class CatalogController extends BaseController
     {
         $items = CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->where('registered_price', '=', 0)->paginate(50);
         return View::make('catalog.index', [
-            'items' => $items
+            'items' => $items,
+            'page_title' => 'Бесплатные материалы на сайте mama-print.ru'
         ]);
     }
 
@@ -60,7 +61,9 @@ class CatalogController extends BaseController
 
         return View::make('catalog.item', [
             'item' => $item,
-            'images' => $images
+            'images' => $images,
+            'page_title' => $item->title,
+            'page_description' => $item->short_description,
         ]);
 
     }

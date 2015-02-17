@@ -30,10 +30,12 @@ class AdminSettingsController extends AdminController
 
             $minOrderPrice = Input::get(\SiteConfig::MIN_ORDER_PRICE);
             $descriptor = Input::get(\SiteConfig::DESCRIPTOR);
+            $seoDescription = Input::get(\SiteConfig::SEO_DESCRIPTION);
 
             $siteConfig = \SiteConfig::load();
             $siteConfig->setMinOrderPrice($minOrderPrice);
             $siteConfig->setDescriptor($descriptor);
+            $siteConfig->setSeoDescription($seoDescription);
             $siteConfig->save();
 
             return Redirect::to(URL::action('Admin\AdminSettingsController@edit'));

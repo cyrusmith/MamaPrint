@@ -1,9 +1,5 @@
 @extends('layouts.master')
 
-@section('page_title')
-    | Сброс пароля
-@stop
-
 @section('content')
     <div class="col-sm-6 col-sm-offset-3 register">
 

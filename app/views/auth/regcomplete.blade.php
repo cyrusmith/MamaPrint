@@ -1,10 +1,5 @@
 @extends('layouts.master')
 
-@section('page_title')
-    | Продолжение регистрации, необходимо подтверждение
-@stop
-
-
 @section('content')
     <div class="row">
         <div class="col-sm-6 col-sm-offset-3">

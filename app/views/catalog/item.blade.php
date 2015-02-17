@@ -1,9 +1,5 @@
 @extends('layouts.master')
 
-@section('page_title'){{$item->title}}@stop
-
-@section('description'){{$item->short_description}}@stop
-
 @section('content')
 
     <div class="col-lg-10 col-lg-offset-1 catalog-item-page">

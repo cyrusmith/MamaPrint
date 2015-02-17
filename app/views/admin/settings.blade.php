@@ -20,6 +20,17 @@
             @endif
         </div>
 
+        <div class="form-group {{$errors->has(SiteConfig::SEO_DESCRIPTION)?'has-error':''}}">
+            <label for="{{SiteConfig::SEO_DESCRIPTION}}"
+                   class="control-label">{{Lang::get('static.admin.settings.seo_description')}}</label>
+            <input type="text" class="form-control" id="{{SiteConfig::SEO_DESCRIPTION}}"
+                   value="{{$config->getSeoDescription()}}"
+                   name="{{SiteConfig::SEO_DESCRIPTION}}">
+            @if($errors->has('title'))
+                <p class="text-danger">{{$errors->first(SiteConfig::SEO_DESCRIPTION)}}</p>
+            @endif
+        </div>
+
         <div class="form-group {{$errors->has(SiteConfig::MIN_ORDER_PRICE)?'has-error':''}}">
             <label for="{{SiteConfig::MIN_ORDER_PRICE}}"
                    class="control-label">{{Lang::get('static.admin.settings.min_order_price')}}</label>

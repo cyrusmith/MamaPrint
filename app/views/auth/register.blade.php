@@ -3,11 +3,6 @@ $form = Session::get('form');
 ?>
 @extends('layouts.master')
 
-@section('page_title')
-    | Регистрация на сайте
-@stop
-
-
 @section('content')
     <div class="col-sm-6 col-sm-offset-3 register">
         <h2>Регистрация</h2>

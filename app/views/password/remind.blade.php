@@ -1,9 +1,5 @@
 @extends('layouts.master')
 
-@section('page_title')
-    | Напоминание пароля
-@stop
-
 @section('content')
     <div class="col-sm-6 col-sm-offset-3 register">
 

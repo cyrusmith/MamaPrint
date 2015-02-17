@@ -1,2 +1,6 @@
 User-agent: *
-Disallow:
+Disallow: /public_offer
+Disallow: /cart
+Disallow: /login
+Disallow: /register
+Disallow: /pay

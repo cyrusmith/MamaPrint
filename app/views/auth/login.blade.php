@@ -5,10 +5,6 @@ $error = $data['error'];
 ?>
 @extends('layouts.master')
 
-@section('page_title')
-    | Регистрация на сайте
-@stop
-
 @section('content')
     <div class="col-sm-6 col-sm-offset-3 register">
         <h2>Войти</h2>

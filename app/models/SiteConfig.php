@@ -11,8 +11,10 @@ class SiteConfig
 
     const MIN_ORDER_PRICE = 'min_order_price';
     const DESCRIPTOR = 'descriptor';
+    const SEO_DESCRIPTION = 'seo_description';
 
     private $descriptor = null;
+    private $seoDescription = null;
     private $minOrderPrice = 0;
 
     private function __construct()
@@ -27,6 +29,16 @@ class SiteConfig
     public function getDescriptor()
     {
         return $this->descriptor;
+    }
+
+    public function setSeoDescription($seoDescription)
+    {
+        $this->seoDescription = $seoDescription;
+    }
+
+    public function getSeoDescription()
+    {
+        return $this->seoDescription;
     }
 
     public function setMinOrderPrice($value)
@@ -51,6 +63,7 @@ class SiteConfig
         if (!empty($data)) {
             $siteConfig->setMinOrderPrice($data[self::MIN_ORDER_PRICE]);
             $siteConfig->setDescriptor($data[self::DESCRIPTOR]);
+            $siteConfig->setSeoDescription($data[self::SEO_DESCRIPTION]);
         } else {
             DB::table('site_config')
                 ->insert(
@@ -58,7 +71,10 @@ class SiteConfig
                         ["name" => self::MIN_ORDER_PRICE,
                             "value" => $siteConfig->getMinOrderPrice()],
                         ["name" => self::DESCRIPTOR,
-                            "value" => $siteConfig->getDescriptor()]
+                            "value" => $siteConfig->getDescriptor()],
+                        ["name" => self::SEO_DESCRIPTION,
+                            "value" => $siteConfig->getSeoDescription()
+                        ],
                     ]
                 );
         }
@@ -76,6 +92,10 @@ class SiteConfig
             DB::table('site_config')
                 ->where('name', self::DESCRIPTOR)
                 ->update(array('value' => strval($this->getDescriptor())));
+
+            DB::table('site_config')
+                ->where('name', self::SEO_DESCRIPTION)
+                ->update(array('value' => strval($this->getSeoDescription())));
         });
     }
 
@@ -83,7 +103,8 @@ class SiteConfig
     {
         $data = [
             "min_order_price" => $this->getMinOrderPrice(),
-            "descriptor" => $this->getDescriptor()
+            "descriptor" => $this->getDescriptor(),
+            "seo_description" => $this->getSeoDescription()
         ];
         return json_encode($data);
     }
