@@ -36,6 +36,7 @@
                               style="display: none;" @endif>
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                             <button type="submit" class="btn btn-success"
+                                    onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('to_pay'); return true;"
                                     href="javascript:void(0);">
                                 Оплатить <span class="glyphicon glyphicon-chevron-right"></span></button>
                         </form>

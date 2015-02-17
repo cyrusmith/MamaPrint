@@ -96,6 +96,7 @@
                                 </form>
                             @endif
                             <a data-addtocart="data-addtocart"
+                               onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('to_basket'); return true;"
                                class="btn btn-success" @if(in_array($item->id, $cart_ids))
                                style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
                                 Добавить
@@ -136,6 +137,7 @@
                                     </form>
                                 @endif
                                 <a data-addtocart
+                                   onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('to_basket'); return true;"
                                    class="btn btn-success" @if(in_array($item->id, $cart_ids))
                                    style="display:none;"@endif data><span
                                             class="glyphicon glyphicon-shopping-cart"></span>

@@ -20,6 +20,7 @@
         <div class="text-center confirmcontrols">
 
             <a class="btn btn-success"
+               onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('to_pay'); return true;"
                href="https://secure.onpay.ru/pay/mamaprint_ru?price_final=true&ticker=RUR&pay_mode=fix&price={{(float)($order->total/100.0)}}&pay_for={{$order->id}}&user_email={{Auth::check()?Auth::user()->email:''}}&url_success={{URL::to('/pay/success/'.$order->id)}}&url_fail={{URL::to('/pay/fail')}}&ln=ru">Перейти
                 к оплате</a>
 
