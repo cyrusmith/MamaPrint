@@ -17,6 +17,23 @@
             <th>Позиции</th>
         </tr>
 
+        <form action="{{action('Admin\AdminStatsController@getOrders')}}" class="form-inline panel panel-default">
+            <div class="panel-body">
+                <label>Дата от</label>
+                <input type="text" name="from" value="{{$from or ''}}" data-datepicker>
+                &nbsp;<label>Дата до</label>
+                <input type="text" name="to" value="{{$to or ''}}" data-datepicker>
+                &nbsp;&nbsp;<label>
+                    <input type="checkbox" name="complete" @if($complete) checked="checked" @endif> Только оплаченные
+                </label>
+
+                &nbsp;&nbsp;
+                <button type="submit" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-search"></span>
+                    Применить
+                </button>
+            </div>
+        </form>
+
         @foreach($orders as $order)
 
             <tr @if(\Order\Order::STATUS_COMPLETE == $order->status) class="success" @endif>

@@ -40,6 +40,11 @@ require([
             format: 'Y-m-d H:i',
             lang: 'ru'
         });
+        $('[data-datepicker]').datetimepicker({
+            format: 'Y-m-d',
+            lang: 'ru',
+            timepicker:false
+        });
 
         tinyMCE.baseURL = 'http://' + location.hostname + '/admin/lib/tinymce/js/tinymce';
 

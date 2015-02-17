@@ -21,9 +21,26 @@ class AdminStatsController extends AdminController
 
     public function getOrders()
     {
-        $orders = Order::orderBy('created_at', 'desc')->paginate(50);
+        $from = Input::get('from');
+        $to = Input::get('to');
+        $complete = Input::get('complete');
+
+        $query = Order::orderBy('created_at', 'desc');
+        if (!empty($from)) {
+            $query->where('updated_at', '>=', $from);
+        }
+        if (!empty($from)) {
+            $query->where('updated_at', '<=', $to);
+        }
+        if ($complete) {
+            $query->where('status', '=', Order::STATUS_COMPLETE);
+        }
+
         return View::make('admin.stats.orders', [
-            'orders' => $orders
+            'orders' => $query->paginate(50),
+            'from' => $from,
+            'to' => $to,
+            'complete' => $complete,
         ]);
     }
 
@@ -68,7 +85,7 @@ class AdminStatsController extends AdminController
 
         $total = count(DB::select('select count(catalog_items.id) as count from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=? group by catalog_items.id', [Order::STATUS_COMPLETE]));
 
-        $items = DB::select('select catalog_items.id, catalog_items.price, count(catalog_items.id) as count, sum(order_items.price) as sum, catalog_items.title, order_items.price, orders.updated_at from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=? group by catalog_items.id order by sum desc limit ' . (($page - 1)*$perPage) . ', ' . $perPage, [Order::STATUS_COMPLETE]);
+        $items = DB::select('select catalog_items.id, catalog_items.price, count(catalog_items.id) as count, sum(order_items.price) as sum, catalog_items.title, order_items.price, orders.updated_at from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=? group by catalog_items.id order by sum desc limit ' . (($page - 1) * $perPage) . ', ' . $perPage, [Order::STATUS_COMPLETE]);
 
         $pagedItems = Paginator::make($items, $total, $perPage);
 
