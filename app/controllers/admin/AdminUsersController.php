@@ -9,6 +9,7 @@
 namespace Admin;
 
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 
 class AdminUsersController extends AdminController
@@ -31,7 +32,8 @@ class AdminUsersController extends AdminController
         $users = $query->paginate(20);
         return $this->makeView('admin.users', [
             'users' => $users,
-            'search' => $search
+            'search' => $search,
+            'count' => $query->count()
         ]);
     }
 

@@ -18,12 +18,14 @@
         </tr>
 
         @foreach($orders as $order)
+
             <tr @if(\Order\Order::STATUS_COMPLETE == $order->status) class="success" @endif>
                 <td>
-                    <a href="/admin/stats/orders/{{$order->id}}" class="btn btn-primary btn-xs">{{$order->id}}</a>
+                    {{$order->id}}
                 </td>
-                <td><a href="/admin/users/{{$order->user->id}}" class="btn btn-link">{{$order->user->name}}</a></td>
+                <td><a href="/admin/users/{{$order->user['id']}}" class="btn btn-link">{{$order->user['name']}}</a></td>
                 <td>{{$order->created_at}}</td>
+
                 <td>
                     @if($order->status == \Order\Order::STATUS_COMPLETE)
                         {{$order->updated_at}}
@@ -35,10 +37,11 @@
                     {{$order->total/100}}
                 </td>
                 <td>
-                    <a href="/admin/stats/orders/{{$order->id}}"
-                       class="btn btn-info btn-xs">({{$order->items->count()}}) Просмотр <span class="glyphicon glyphicon-eye-open"></span></a>
+                    <span class="label label-default">{{$order->items->count()}}</span><a
+                            href="/admin/stats/orders/{{$order->id}}" class="btn btn-link btn-xs">Просмотр</a>
                 </td>
             </tr>
+
         @endforeach
 
     </table>

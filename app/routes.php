@@ -109,6 +109,7 @@ Route::group(array('before' => 'admin'), function () {
     Route::get('/admin/stats/orders', 'Admin\AdminStatsController@getOrders');
     Route::get('/admin/stats/orders/{orderId}', 'Admin\AdminStatsController@getOrder');
     Route::post('/admin/stats/orders/{orderId}', 'Admin\AdminStatsController@postOrder');
+    Route::get('/admin/stats/catalogitems', 'Admin\AdminStatsController@getCatalogitems');
 
     Route::get('/admin/users', 'Admin\AdminUsersController@getUsers');
     Route::get('/admin/users/{userId}/orders', 'Admin\AdminUsersController@getUserOrders');

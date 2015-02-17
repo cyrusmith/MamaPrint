@@ -11,6 +11,7 @@ namespace Admin;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Paginator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use Order\Order;
@@ -54,6 +55,18 @@ class AdminStatsController extends AdminController
         return $this->makeView('admin.stats.order', [
             'order' => $order
         ]);
+    }
+
+    public function getCatalogitems()
+    {
+        $items = DB::select('select * from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=?', [Order::STATUS_COMPLETE]);
+
+        var_dump();
+
+        /* return $this->makeView('admin.stats.catalogitems', [
+            'items' => $items
+        ]);*/
+
     }
 
 }

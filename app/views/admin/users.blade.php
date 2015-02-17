@@ -14,10 +14,11 @@
         <button type="submit" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-search"></span></button>
     </form>
 
+    <p style="padding-top: 1em;"><label>Всего:</label> {{$count}}</p>
+
     <table class="table table-condensed">
 
         <tr>
-            <th>#</th>
             <th>Имя</th>
             <th>Email</th>
             <th>Дата регистрации</th>
@@ -26,13 +27,16 @@
 
         @foreach($users as $user)
             <tr>
-                <td>
-                    <a href="/admin/users/{{$user->id}}" class="btn btn-primary btn-xs">{{$user->id}}</a>
-                </td>
-                <td>{{$user->name}}</td>
+                <td><a href="/admin/users/{{$user->id}}" class="btn btn-primary btn-xs">{{$user->name}}</a></td>
                 <td>{{$user->email}}</td>
                 <td>{{$user->created_at}}</td>
-                <td><a href="/admin/users/{{$user->id}}/orders" class="btn btn-info btn-xs">({{$user->orders->count()}}) Просмотр <span class="glyphicon glyphicon-eye-open"></span></a>
+                <td>
+                    @if($user->orders->count() == 0)
+                        -
+                    @else
+                        <span class="label label-default">{{$user->orders->count()}}</span><a
+                                href="/admin/users/{{$user->id}}/orders" class="btn btn-link btn-xs">Просмотр</a>
+                    @endif
                 </td>
             </tr>
         @endforeach
