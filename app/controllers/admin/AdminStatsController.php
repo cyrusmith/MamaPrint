@@ -59,13 +59,22 @@ class AdminStatsController extends AdminController
 
     public function getCatalogitems()
     {
-        $items = DB::select('select * from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=?', [Order::STATUS_COMPLETE]);
+        $page = intval(Input::get('page'));
+        if ($page == 0) {
+            $page = 1;
+        }
 
-        var_dump();
+        $perPage = 50;
 
-        /* return $this->makeView('admin.stats.catalogitems', [
-            'items' => $items
-        ]);*/
+        $total = count(DB::select('select count(catalog_items.id) as count from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=? group by catalog_items.id', [Order::STATUS_COMPLETE]));
+
+        $items = DB::select('select catalog_items.id, catalog_items.price, count(catalog_items.id) as count, sum(order_items.price) as sum, catalog_items.title, order_items.price, orders.updated_at from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=? group by catalog_items.id order by sum desc limit ' . (($page - 1)*$perPage) . ', ' . $perPage, [Order::STATUS_COMPLETE]);
+
+        $pagedItems = Paginator::make($items, $total, $perPage);
+
+        return $this->makeView('admin.stats.catalogitems', [
+            'items' => $pagedItems
+        ]);
 
     }
 

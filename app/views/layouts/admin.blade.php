@@ -39,6 +39,7 @@ use \Illuminate\Support\Facades\Lang;
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="/admin/stats/orders">Заказы</a></li>
+                            <li><a href="/admin/stats/catalogitems">Материалы</a></li>
                         </ul>
                     </li>
                 </ul>

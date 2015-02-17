@@ -19,16 +19,16 @@
 
             <tr>
                 <td>
-                    {{$item->title}}
+                    <a href="{{action('Admin\AdminCatalogController@getItem', ['id'=>$item->id])}}">{{$item->title}}</a>
                 </td>
                 <td>
-                    {{$item->price}}
+                    {{$item->price/100}}
                 </td>
                 <td>
                     {{$item->count}}
                 </td>
                 <td>
-                    {{$item->sum}}
+                    {{$item->sum/100}}
                 </td>
             </tr>
 
