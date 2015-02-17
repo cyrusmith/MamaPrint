@@ -76,6 +76,9 @@ class AdminStatsController extends AdminController
 
     public function getCatalogitems()
     {
+
+        $this->setPageTitle('Статистика по материалам');
+
         $page = intval(Input::get('page'));
         if ($page == 0) {
             $page = 1;
