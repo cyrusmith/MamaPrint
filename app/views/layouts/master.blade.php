@@ -83,7 +83,6 @@ use \Illuminate\Support\Facades\App;
             <a href="/about" class="{{Request::is('about')?'active':''}}">О нас</a>
             <span>/</span>
             <a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a>
-            <span>/</span>
         </div>
 
         @define $msg = null
