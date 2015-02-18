@@ -128,7 +128,29 @@ class AuthController extends BaseController
             $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($userPending->email, $userPending->name)->subject('Регистрация на сайте mama-print.ru');
         });
 
-        return Redirect::to('/register/regcomplete');
+        list($address, $domain) = explode('@', $form["email"]);
+        $emailLink = null;
+
+        $emailsMap = [
+            'mail.ru' => 'https://e.mail.ru/messages/inbox/',
+            'bk.ru' => 'https://e.mail.ru/messages/inbox/',
+            'inbox.ru' => 'https://e.mail.ru/messages/inbox/',
+            'list.ru' => 'https://e.mail.ru/messages/inbox/',
+            'gmail.com' => 'http://mail.google.com',
+            'yandex.ru' => 'https://mail.yandex.ru',
+            'rambler.ru' => 'https://mail.rambler.ru/',
+            'lenta.ru' => 'https://mail.rambler.ru/',
+            'autorambler.ru' => 'https://mail.rambler.ru/',
+            'myrambler.ru' => 'https://mail.rambler.ru/',
+            'ro.ru' => 'https://mail.rambler.ru/',
+            'r0.ru' => 'https://mail.rambler.ru/',
+        ];
+
+        if (array_key_exists($domain, $emailsMap)) {
+            $emailLink = $emailsMap[$domain];
+        }
+
+        return Redirect::to('/register/regcomplete')->with('emailLink', $emailLink);
 
     }
 

@@ -7,5 +7,6 @@
     baseUrl: "js",
     mainConfigFile: "js/main.js",
     findNestedDependencies: true,
+    preserveLicenseComments: false,
     out: "all.js"
 })
