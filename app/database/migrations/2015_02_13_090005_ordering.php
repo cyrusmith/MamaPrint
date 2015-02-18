@@ -15,6 +15,9 @@ class Ordering extends Migration {
 		Schema::table('catalog_items', function (Blueprint $table) {
 			$table->integer('weight')->default(0);
 		});
+		Schema::table('articles', function (Blueprint $table) {
+			$table->boolean('isblog')->default(true);
+		});
 	}
 
 	/**

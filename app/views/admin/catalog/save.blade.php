@@ -179,10 +179,25 @@
             <legend><span class="glyphicon glyphicon-info-sign"></span> Доп. информация</legend>
             <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
                 <label for="catitemage" class="control-label">{{Lang::get('static.admin.catitem.age')}}</label>
-                <input type="text" class="form-control" id="catitemage"
-                       placeholder="{{Lang::get('static.admin.catitem.age.help')}}"
-                       name="info_age"
-                       value="{{$data['info_age'] or ''}}">
+                <select class="form-control" id="catitemage"
+                        name="info_age"
+                        value="{{$data['info_age'] or ''}}">
+                    <option value="малыш" @if($data['info_age']=='малыш') selected="selected" @endif>малыш</option>
+                    <option value="детский сад" @if($data['info_age']=='детский сад') selected="selected" @endif>детский
+                        сад
+                    </option>
+                    <option value="дошкольник" @if($data['info_age']=='дошкольник') selected="selected" @endif>
+                        дошкольник
+                    </option>
+                    <option value="1 класс" @if($data['info_age']=='1 класс') selected="selected" @endif>1 класс
+                    </option>
+                    <option value="2 класс" @if($data['info_age']=='2 класс') selected="selected" @endif>2 класс
+                    </option>
+                    <option value="3 класс" @if($data['info_age']=='3 класс') selected="selected" @endif>3 класс
+                    </option>
+                    <option value="4 класс" @if($data['info_age']=='4 класс') selected="selected" @endif>4 класс
+                    </option>
+                </select>
                 @if($errors->has('info_age'))
                     <p class="text-danger">{{$errors->first('info_age')}}</p>
                 @endif
@@ -223,6 +238,8 @@
 
 
 
+
+
     </script>
 
     <script type="x-tpl" id="gallery-images-json">
@@ -232,10 +249,14 @@
 
 
 
+
+
     </script>
 
     <script type="x-tpl" id="related-json">
         {{$data['related'] or '[]'}}
+
+
 
     </script>
 
@@ -255,6 +276,8 @@
                 <span class="control-delete btn btn-xs btn-danger glyphicon glyphicon-trash"></span>
             </a>
         </li>
+
+
 
 
 
@@ -324,6 +347,8 @@
                         </div>
                          <% }  %>
                     </li>
+
+
 
 
 
