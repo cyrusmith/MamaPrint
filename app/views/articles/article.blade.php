@@ -14,6 +14,8 @@
                 {{$article->content}}
             </article>
 
+            @include('disqus')
+
         </div>
     </div>
 

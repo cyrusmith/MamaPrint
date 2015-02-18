@@ -28,12 +28,15 @@ use \Illuminate\Support\Facades\App;
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <div class="container">
-                <ul class="menu col-sm-8">
+                <ul class="menu col-sm-4">
                     <li><a href="/howto" class="{{Request::is('howto')?'active':''}}">Как оформить заказ</a></li>
                     <li><a href="/public_offer" class="{{Request::is('public_offer')?'active':''}}">Публичная оферта</a>
                     </li>
                     <li><a href="/contacts" class="{{Request::is('contacts')?'active':''}}">Контакты</a></li>
                 </ul>
+                <div class="col-sm-4">
+                    <input/>
+                </div>
                 <div class="cart col-sm-4" data-widget="cartlink">
                     <a class="btn btn-info" href="{{URL::action('CartController@userCart')}}"><span
                                 class="glyphicon glyphicon-shopping-cart"></span> Корзина (<span
