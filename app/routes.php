@@ -127,6 +127,8 @@ Route::get('/api/v1/cart', 'CartController@items');
 Route::get('/api/v1/cart/{itemId}', 'CartController@viewItem');
 Route::delete('/api/v1/cart/{itemId}', 'CartController@deleteItem');
 
+Route::get('/api/v1/tags', 'CatalogController@getTags');
+
 Route::get('/images/{id}', 'GalleryController@view');
 
 Route::group(array('before' => 'test'), function () {

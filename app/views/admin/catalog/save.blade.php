@@ -152,9 +152,10 @@
 
         <div class="form-group {{$errors->has('tags')?'has-error':''}}">
             <label for="catitemtags" class="control-label">{{Lang::get('static.admin.catitem.tags')}}</label>
-            <input type="text" class="form-control" id="catitemtags"
-                   name="tags"
-                   placeholder="{{Lang::get('static.admin.catitem.tags.help')}}" value="{{$data['tags'] or ''}}">
+            <br>
+            <input type="text" class="form-control" id="catitemtags" data-widget="tagsinput"
+                   data-url="{{action('CatalogController@getTags')}}"
+                   name="tags" value="{{$data['tags'] or ''}}">
             @if($errors->has('tags'))
                 <p class="text-danger">{{$errors->first('tags')}}</p>
             @endif
@@ -163,11 +164,10 @@
         <fieldset>
             <legend><span class="glyphicon glyphicon-list"></span> {{Lang::get('static.admin.catalogitem.related')}}
             </legend>
-            <div class="form-group {{$errors->has('info_age')?'has-error':''}}" data-widget="autocomplete"
-                 data-url="{{action('Admin\AdminCatalogController@index')}}" data-exclude="{{$data['id'] or ''}}">
+            <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
                 <input type="text" class="form-control"
-                       value="{{$data['relatedtitles']}}"/>
-                <input type="hidden" name="related" value="{{$data['relatedids']}}"/>
+                       value="{{$data['relatedtitles'] or ''}}" data-widget="relativesinput" />
+                <input type="hidden" name="related" value="{{$data['relatedids'] or ''}}"/>
 
                 <p>
                     <small>Начните вводить название материала</small>
@@ -241,6 +241,7 @@
 
 
 
+
     </script>
 
     <script type="x-tpl" id="gallery-images-json">
@@ -252,10 +253,12 @@
 
 
 
+
     </script>
 
     <script type="x-tpl" id="related-json">
         {{$data['related'] or '[]'}}
+
 
 
 
@@ -277,6 +280,7 @@
                 <span class="control-delete btn btn-xs btn-danger glyphicon glyphicon-trash"></span>
             </a>
         </li>
+
 
 
 
@@ -348,6 +352,7 @@
                         </div>
                          <% }  %>
                     </li>
+
 
 
 

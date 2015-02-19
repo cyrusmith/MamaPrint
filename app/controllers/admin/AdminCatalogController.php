@@ -30,16 +30,11 @@ class AdminCatalogController extends AdminController
     {
 
         $search = Input::get('search');
-        $exclude = Input::get('exclude');
         $query = CatalogItem::orderBy('weight', 'desc');
-        if (!empty($search) || !empty($exclude)) {
+        if (!empty($search)) {
             if (!empty($search)) {
                 $query->where('title', 'LIKE', '%' . $search . '%');
             }
-            if (!empty($exclude)) {
-                $query->where('id', '<>', $exclude);
-            }
-
         }
 
         $items = $query->paginate(100);
@@ -117,7 +112,7 @@ class AdminCatalogController extends AdminController
         foreach ($item->relatedItems as $relItem) {
             $titles[] = $relItem->title;
         }
-        return implode(", ", $titles) . (count($titles) > 0 ? ', ' : '');
+        return implode(",", $titles);
     }
 
     public function postReorder()

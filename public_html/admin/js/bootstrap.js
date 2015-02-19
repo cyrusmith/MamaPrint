@@ -3,6 +3,7 @@ require([
     'tinymce',
     'editform',
     'twitterbootstrap',
+    'bootstrapTagsinput',
     'datetimepicker',
     'jqueryui'], function ($,
                            tinymce,
@@ -11,9 +12,10 @@ require([
     'use strict';
 
     require([
-        'autocomplete.widget',
         'attachments/attachments.widget',
-        'gallery/gallery.widget'
+        'gallery/gallery.widget',
+        'tagsinput.widget',
+        'relativesinput.widget'
     ], function () {
         var args = Array.prototype.slice.call(arguments, 0);
 
