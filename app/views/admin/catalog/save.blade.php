@@ -156,7 +156,6 @@
             <input type="text" class="form-control" id="catitemtags" data-widget="tagsinput"
                    data-url="{{action('CatalogController@getTags')}}"
                    name="tags" value="{{$data['tags'] or ''}}">
-
             @if($errors->has('tags'))
                 <p class="text-danger">{{$errors->first('tags')}}</p>
             @endif
@@ -198,6 +197,7 @@
                     <option value="3 класс" @if(!empty($data['info_age']) && $data['info_age']=='3 класс') selected="selected" @endif>3 класс
                     </option>
                     <option value="4 класс" @if(!empty($data['info_age']) && $data['info_age']=='4 класс') selected="selected" @endif>4 класс
+
                     </option>
                 </select>
                 @if($errors->has('info_age'))
