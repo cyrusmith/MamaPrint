@@ -104,6 +104,7 @@ class PaymentsController extends BaseController
                 $fromAmount = Input::get('order.from_amount');
                 $fromAmount = intval($fromAmount * 100) / 100.0;
 
+
                 $balanceAmount = Input::get('balance.amount');
                 $balanceAmount = intval($balanceAmount * 100) / 100.0;
                 $balanceAmountStr = $this->amountStr($balanceAmount);
@@ -123,12 +124,10 @@ class PaymentsController extends BaseController
                 Log::debug("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
                 $checkSignature = sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
                 if (empty($order)
-                    || ($order->total !== intval(100 * $fromAmount))
                     || ($currency != "RUR" && $currency != "TST")
                     || $signature != $checkSignature
                 ) {
                     Log::debug("Payment verification fail");
-                    Log::debug("order->total=" . $order->total . " fromAmount=" . $fromAmount);
                     Log::debug("currency=" . $currency);
                     Log::debug("signatures: " . $signature . " " . $checkSignature);
                     return Response::json(array(
