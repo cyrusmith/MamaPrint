@@ -79,6 +79,11 @@ Route::group(array('before' => 'admin'), function () {
     Route::post('/admin/catalog/save', 'Admin\AdminCatalogController@postItem');
     Route::post('/admin/catalog/reorder', 'Admin\AdminCatalogController@postReorder');
 
+    Route::get('/admin/customtemplates', 'Admin\CustomTemplatesController@getTemplates');
+    Route::get('/admin/customtemplates/{id}', 'Admin\CustomTemplatesController@getTemplate');
+    Route::get('/admin/customtemplates/{id}/image', 'Admin\CustomTemplatesController@getImage');
+    Route::post('/admin/customtemplates', 'Admin\CustomTemplatesController@postTemplate');
+
     Route::get('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@view');
     Route::put('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@update');
     Route::delete('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@delete');

@@ -33,11 +33,12 @@ use \Illuminate\Support\Facades\Lang;
                                     class="sr-only">(current)</span></a></li>
                     <li><a href="{{action('Admin\AdminArticlesController@getArticles')}}"><span class="glyphicon glyphicon-copyright-mark"></span> {{Lang::get('static.admin.articles')}} <span
                                     class="sr-only">(current)</span></a></li>
-                    <li><a href="/admin/users"><span class="glyphicon glyphicon-user"></span>Пользователи</a></li>
+                    <li><a href="{{action('Admin\CustomTemplatesController@getTemplates')}}"><span class="glyphicon glyphicon-adjust"></span> Шаблоны</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Статистика
                             <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
+                            <li><a href="/admin/users"><span class="glyphicon glyphicon-user"></span>Пользователи</a></li>
                             <li><a href="/admin/stats/orders">Заказы</a></li>
                             <li><a href="/admin/stats/catalogitems">Материалы</a></li>
                         </ul>
