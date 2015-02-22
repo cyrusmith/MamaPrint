@@ -182,6 +182,7 @@
                 <select class="form-control" id="catitemage"
                         name="info_age"
                         value="{{$data['info_age'] or ''}}">
+                    <option value="малыш" @if($data['info_age']=='любой') selected="selected" @endif>любой</option>
                     <option value="малыш" @if($data['info_age']=='малыш') selected="selected" @endif>малыш</option>
                     <option value="детский сад" @if($data['info_age']=='детский сад') selected="selected" @endif>детский
                         сад
