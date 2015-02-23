@@ -25,7 +25,8 @@ require([
             'cart/cart.items.widget',
             'cart/cart.itemcartbuttons.widget',
             'catalog/catalog.item.widget',
-            'gallery.widget'
+            'gallery.widget',
+            'colorselector.widget'
         ], function () {
             var args = Array.prototype.slice.call(arguments, 0);
 

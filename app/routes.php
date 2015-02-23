@@ -29,6 +29,9 @@ Route::group(array('before' => 'guest_create'), function () {
     Route::get('/blog', 'ArticlesController@getArticles');
     Route::get('/blog/{path}', 'ArticlesController@getArticle')->where('path', '(.+)');
 
+    Route::get('/customtemplates/{id}', 'CustomTemplatesController@getGeneratorForm');
+    Route::get('/customtemplates/{id}/image', 'CustomTemplatesController@getImage');
+
 });
 
 Route::group(array('before' => 'auth'), function () {
@@ -81,7 +84,6 @@ Route::group(array('before' => 'admin'), function () {
 
     Route::get('/admin/customtemplates', 'Admin\CustomTemplatesController@getTemplates');
     Route::get('/admin/customtemplates/{id}', 'Admin\CustomTemplatesController@getTemplate');
-    Route::get('/admin/customtemplates/{id}/image', 'Admin\CustomTemplatesController@getImage');
     Route::post('/admin/customtemplates', 'Admin\CustomTemplatesController@postTemplate');
 
     Route::get('/admin/api/v1/attachments/{id}', 'Admin\AdminAttachmentController@view');

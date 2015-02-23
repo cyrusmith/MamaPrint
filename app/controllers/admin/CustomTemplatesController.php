@@ -20,33 +20,6 @@ use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 class CustomTemplatesController extends AdminController
 {
 
-    public function getImage($id)
-    {
-
-        $width = intval(Input::get('width'));
-        $height = intval(Input::get('height'));
-
-        $tpl = \CustomTemplate::find($id);
-        if (empty($tpl) || empty($tpl->extension)) {
-            App::abort(404);
-        }
-        $path = Config::get('mamaprint.custom_templates_dir') . DIRECTORY_SEPARATOR . $id . DIRECTORY_SEPARATOR . 'original.' . $tpl->extension;
-        if (!file_exists($path)) {
-            App::abort(404);
-        }
-
-        $img = new \Imagick($path);
-
-        if ($width > 0 || $height > 0) {
-            $img->scaleImage($width, $height);
-        }
-
-        header('Content-Type: image/' . $img->getImageFormat());
-        header('Cache-Control: max-age=86400');
-        echo $img;
-        App::abort(200);
-    }
-
     public function getTemplates()
     {
         $this->addToolbarAction('add', 'Новый', 'customtemplates/0');

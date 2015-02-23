@@ -14,8 +14,8 @@ class Customs extends Migration {
 	{
 		Schema::create('custom_templates', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('name');
-			$table->text('colors')->nullable();
+			$table->string('font');
+			$table->string('');
 			$table->string('extension');
 		});
 	}
