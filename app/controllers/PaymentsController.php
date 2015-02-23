@@ -106,7 +106,7 @@ class PaymentsController extends BaseController
 
 
                 $balanceAmount = Input::get('balance.amount');
-                $balanceAmount = intval($balanceAmount * 100) / 100.0;
+                //$balanceAmount = intval($balanceAmount * 100) / 100.0;
                 $balanceAmountStr = $this->amountStr($balanceAmount);
 
                 $currency = Input::get('balance.way');
@@ -114,7 +114,7 @@ class PaymentsController extends BaseController
 
                 $paymentId = Input::get('payment.id');
                 $paymentAmount = Input::get('payment.amount');
-                $paymentAmount = intval($paymentAmount * 100) / 100.0;
+                //$paymentAmount = intval($paymentAmount * 100) / 100.0;
                 $paymentAmountStr = $this->amountStr($paymentAmount);
 
                 $paymentWay = Input::get('payment.way');
