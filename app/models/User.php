@@ -64,7 +64,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     public function hasItem($catalogItem)
     {
-        foreach ($this->catalogItems() as $item) {
+        foreach ($this->catalogItems as $item) {
             if ($item->id == $catalogItem->id) {
                 return true;
             }
