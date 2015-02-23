@@ -22,7 +22,7 @@
     <li><a href="api/v1/payments/onpay"
            data-method="post"
            data-params='[{"name":"user[email]", "value":"someeamil@mail.ru"},{"name":"type", "value":"pay"},{"name":"pay_for"}, {"name":"order[from_amount]"}, {"name": "balance[amount]"}, {"name": "balance[way]", "value":"RUR"}, {"name":"signature"}, {"name":"payment[id]", "value":"666"}, {"name": "payment[amount]"}, {"name":"payment[way]", "value":"RUR"}]'
-                >PayOrder</a></li>
+                >PayOrderOnpay</a></li>
 </ul>
 
 <div class="params"></div>

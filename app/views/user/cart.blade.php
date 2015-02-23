@@ -33,7 +33,7 @@
 
                         <form class="payform" action="{{URL::action('OrdersController@createOrder')}}"
                               method="post" @if($total < ($site_config->getMinOrderPrice()*100))
-                              style="display: none;" @endif>
+                              style="display: none;" @endif target="_blank">
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                             <button type="submit" class="btn btn-success"
                                     onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('to_pay'); return true;"

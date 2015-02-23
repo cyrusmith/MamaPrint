@@ -120,7 +120,7 @@ class OrdersController extends BaseController
             $order->total = $total;
             $order->save();
             $order->items()->saveMany($orderItems);
-            $cart->items()->delete();
+
             DB::commit();
             //TODO
             return Redirect::to("https://secure.onpay.ru/pay/mamaprint_ru?price_final=true&ticker=RUR&pay_mode=fix&price=" . ((float)($order->total / 100.0)) . "&pay_for=" . $order->id . "&user_email=" . (Auth::check() ? Auth::user()->email : '') . "&url_success=" . URL::to('/pay/success/' . $order->id) . "&url_fail=" . URL::to('/pay/fail') . "&ln=ru");

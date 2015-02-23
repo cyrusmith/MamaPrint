@@ -27,6 +27,9 @@ class OrderService
             $sum = intval($order->total);
 
             $user = User::find($order->user->id);
+            $cart = $user->cart;
+            $cart->items()->delete();
+
             $account = $user->accounts()->first();
 
             $purchase = new \Account\OperationPurchase();
