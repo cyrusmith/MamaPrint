@@ -17,7 +17,7 @@
             @endforeach
         </table>
 
-        <div class="text-center confirmcontrols">
+        <div class="text-center">
 
             <a class="btn btn-success"
                onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('to_pay'); return true;"
@@ -26,7 +26,15 @@
 
             <p style="padding-top: 1em;"><span style="position: relative;top: 4px;">Оплата с помощью</span> <img
                         src="/img/onpay-logo.png" width="80"></p>
+
         </div>
+
+        @if(!empty($text))
+            <article>
+                {{$text}}
+            </article>
+        @endif
+
 
     </div>
 

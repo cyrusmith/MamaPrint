@@ -29,7 +29,8 @@ class PaymentsController extends BaseController
         }
 
         return Response::view('payments.pay', [
-            'order' => $order
+            'order' => $order,
+            'text' => Article::getArticleContent('paymentinstructions')
         ]);
 
     }

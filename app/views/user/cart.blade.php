@@ -62,6 +62,12 @@
         <p class="emptycart-message" @if(count($items) > 0) style="display:none;" @endif>Корзина пуста. <a href="/">Продолжить
                 покупки</a></p>
 
+        @if(!empty($text))
+        <article>
+            {{$text}}
+        </article>
+        @endif
+
     </div>
 
 
