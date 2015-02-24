@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Lang;
                 <th>Заголовок</th>
                 <th>Цена</th>
                 <th>Цена для залогиненых</th>
+                <th>Возраст</th>
                 <th>Активен</th>
                 <th>Теги</th>
                 <th>Вес <button type="submit" class="btn btn-xs"><span class="glyphicon glyphicon-ok"></span></button></th>
@@ -44,6 +45,7 @@ use Illuminate\Support\Facades\Lang;
                         @endif</td>
                     <td>{{$item->registered_price/100}}
                     </td>
+                    <td>{{$item->info_age}}</td>
                     <td>
                         @if($item->active)
                             {{Lang::get('static.admin.catitem.active')}}
