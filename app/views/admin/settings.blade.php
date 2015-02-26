@@ -1,9 +1,5 @@
 @extends('layouts.admin')
 
-@section('pagetitle')
-
-@stop
-
 @section('content')
 
     <form role="form" action="{{URL::action('Admin\AdminSettingsController@edit')}}" method="post">

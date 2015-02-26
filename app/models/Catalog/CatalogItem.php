@@ -44,6 +44,16 @@ class CatalogItem extends Eloquent
         return $this->belongsToMany('Catalog\Tag', 'tag_catalog_item');
     }
 
+    public function ages()
+    {
+        return $this->belongsToMany('Info\InfoAges', 'info_ages_catalog_item');
+    }
+
+    public function targets()
+    {
+        return $this->belongsToMany('Info\InfoDevelopTargets', 'info_develop_targets');
+    }
+
     public function getTagsAsString($separator = ',')
     {
         if ($this->tags->isEmpty()) {
