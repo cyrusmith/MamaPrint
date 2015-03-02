@@ -22,7 +22,7 @@ class CatalogController extends BaseController
     public function getTags()
     {
 
-        $query = Catalog\Tag::distinct();
+        $query = Catalog\Tag::where('type', '=', \Catalog\Tag::TYPE_TAG);
 
         $q = mb_strtolower(trim(\Illuminate\Support\Facades\Input::get('q')));
         if (!empty($q)) {

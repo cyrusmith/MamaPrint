@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use \Exception;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminCatalogController extends AdminController
 {
