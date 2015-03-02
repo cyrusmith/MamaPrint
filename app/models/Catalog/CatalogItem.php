@@ -39,24 +39,6 @@ class CatalogItem extends Eloquent
         return $this->getOrderPrice() >= ($siteConfig->getMinOrderPrice() * 100);
     }
 
-<<<<<<< HEAD
-=======
-    public function tags()
-    {
-        return $this->belongsToMany('Catalog\Tag', 'tag_catalog_item');
-    }
-
-    public function ages()
-    {
-        return $this->belongsToMany('Info\InfoAges', 'info_ages_catalog_item');
-    }
-
-    public function targets()
-    {
-        return $this->belongsToMany('Info\InfoDevelopTargets', 'info_develop_targets');
-    }
-
->>>>>>> +info ages tables and seed
     public function getTagsAsString($separator = ',')
     {
         if ($this->tags->isEmpty()) {
