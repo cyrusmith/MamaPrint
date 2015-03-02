@@ -24,6 +24,8 @@ class AdminSeedController extends AdminController
 
         DB::transaction(function () {
 
+            //taggables - tags, ages, targets
+
             $ages = InfoAges::get();
             if (empty($ages) || $ages->isEmpty()) {
 

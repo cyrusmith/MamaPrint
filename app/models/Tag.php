@@ -13,13 +13,17 @@ use Eloquent;
 class Tag extends Eloquent
 {
 
+    const TYPE_TAG = 'tag';
+    const TYPE_AGE = 'age';
+    const TYPE_GOAL = 'goal';
+
     protected $table = 'tags';
 
     public $timestamps = false;
 
     public function catalogItems()
     {
-        return $this->belongsToMany('Catalog\CatalogItem', 'tag_catalog_item');
+        return $this->morphedByMany('Catalog\CatalogItem', 'taggable');
     }
 
 }

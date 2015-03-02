@@ -39,21 +39,6 @@ class CatalogItem extends Eloquent
         return $this->getOrderPrice() >= ($siteConfig->getMinOrderPrice() * 100);
     }
 
-    public function tags()
-    {
-        return $this->belongsToMany('Catalog\Tag', 'tag_catalog_item');
-    }
-
-    public function ages()
-    {
-        return $this->belongsToMany('Info\InfoAges', 'info_ages_catalog_item');
-    }
-
-    public function targets()
-    {
-        return $this->belongsToMany('Info\InfoDevelopTargets', 'info_develop_targets');
-    }
-
     public function getTagsAsString($separator = ',')
     {
         if ($this->tags->isEmpty()) {
@@ -72,7 +57,15 @@ class CatalogItem extends Eloquent
         return $this->belongsToMany('Catalog\CatalogItem', 'catalogitem_relations', 'owner_id', 'relation_id');
     }
 
-    public function updateTags($tagTags)
+    public function tags()
+    {
+        $relation = $this->morphToMany('Catalog\Tag', 'taggable');
+        $query = $relation->getQuery();
+        $query->where('type', '=', Tag::TYPE_TAG);
+        return $relation;
+    }
+
+    public function updateTags($tagTags, $type)
     {
         try {
             DB::beginTransaction();
@@ -83,6 +76,7 @@ class CatalogItem extends Eloquent
                 if (empty($tag)) {
                     $tag = new Tag;
                     $tag->tag = $tagTag;
+                    $tag->type = $type;
                     $tag->save();
                 }
                 $tags[] = $tag;

@@ -9,6 +9,7 @@
 namespace Admin;
 
 
+use Catalog\Tag;
 use Gallery\Gallery;
 use Gallery\GalleryImage;
 use Gallery\GalleryRelation;
@@ -244,7 +245,7 @@ class AdminCatalogController extends AdminController
 
             }
 
-            $item->updateTags($tags);
+            $item->updateTags($tags, Tag::TYPE_TAG);
 
             if ($isNew) {
                 $gallery = new Gallery();
