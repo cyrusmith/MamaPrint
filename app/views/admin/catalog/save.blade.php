@@ -156,6 +156,7 @@
             <input type="text" class="form-control" id="catitemtags" data-widget="tagsinput"
                    data-url="{{action('CatalogController@getTags')}}"
                    name="tags" value="{{$data['tags'] or ''}}">
+
             @if($errors->has('tags'))
                 <p class="text-danger">{{$errors->first('tags')}}</p>
             @endif

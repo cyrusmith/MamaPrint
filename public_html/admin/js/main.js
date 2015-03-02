@@ -10,8 +10,12 @@ require.config({
         'jqueryuii18n-en': '../../bower_components/jquery-ui/ui/i18n/datepicker-en-GB',
         'jqueryuii18n-ru': '../../bower_components/jquery-ui/ui/i18n/datepicker-ru',
         'twitterbootstrap': '../../bower_components/bootstrap/dist/js/bootstrap',
+<<<<<<< HEAD
         'bootstrapTagsinput': '../../bower_components/bootstrap-tagsinput/src/bootstrap-tagsinput',
         'typeahead':'../../bower_components/typeahead.js/dist/typeahead.bundle',
+=======
+        'bootstrapTagsinput': '../../bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput',
+>>>>>>> +tagsinput
         'backbone': '../../bower_components/backbone/backbone',
         'datetimepicker': '../../bower_components/datetimepicker/jquery.datetimepicker',
         'underscore': '../../bower_components/underscore/underscore',
@@ -27,15 +31,20 @@ require.config({
         'jqueryuii18n-en': ['jqueryui'],
         'jqueryuii18n-ru': ['jqueryui'],
         'datetimepicker': ['$'],
+<<<<<<< HEAD
         'twitterbootstrap': ['$'],
         'bootstrapTagsinput': ['twitterbootstrap', 'typeahead'],
         'typeahead': ['$'],
+=======
+        twitterbootstrap: ['$'],
+        bootstrapTagsinput: ['twitterbootstrap'],
+>>>>>>> +tagsinput
         tinymce: {
             exports: 'tinymce',
-			init: function () {
+            init: function () {
                 this.tinyMCE.DOM.events.domLoaded = true;
                 return this.tinyMCE;
-            }			
+            }
         },
         backbone: {
             deps: ['$', 'underscore'],
