@@ -88,6 +88,7 @@ class AdminCatalogController extends AdminController
                 'related' => $item->relatedItems,
                 'tags' => $item->tagsAsCommaDelimeted(),
                 'info_ages' => $item->agesAsCommaDelimeted(),
+                'info_goals' => $item->goalsAsCommaDelimeted(),
                 'relatedids' => $this->getRelatedIdsString($item),
                 'relatedtitles' => $this->getRelatedTitlesString($item)
 
@@ -189,6 +190,12 @@ class AdminCatalogController extends AdminController
             return !empty($age);
         });
 
+        $goals = array_filter(array_map(function ($goal) {
+            return trim($goal);
+        }, explode(",", Input::get('info_goals'))), function ($goal) {
+            return !empty($goal);
+        });
+
         $messages = [];
 
         try {
@@ -248,6 +255,7 @@ class AdminCatalogController extends AdminController
 
             $item->updateAges($ages);
             $item->updateTags($tags);
+            $item->updateGoals($goals);
 
             if ($isNew) {
                 $gallery = new Gallery();

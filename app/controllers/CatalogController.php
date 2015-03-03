@@ -45,6 +45,19 @@ class CatalogController extends BaseController
         return Response::json($query->get(), 200);
     }
 
+    public function getGoals()
+    {
+
+        $query = Tag::where('type', '=', Tag::TYPE_GOAL);
+
+        $q = mb_strtolower(trim(\Illuminate\Support\Facades\Input::get('q')));
+        if (!empty($q)) {
+            $query->where('tag', 'LIKE', "%$q%");
+        }
+
+        return Response::json($query->get(), 200);
+    }
+
     public function getItemsFree()
     {
         $items = CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->where('registered_price', '=', 0)->paginate(50);

@@ -73,6 +73,14 @@ class CatalogItem extends Eloquent
         return $relation;
     }
 
+    public function goals()
+    {
+        $relation = $this->morphToMany('Tag', 'taggable');
+        $query = $relation->getQuery();
+        $query->where('type', '=', Tag::TYPE_GOAL);
+        return $relation;
+    }
+
     public function agesAsCommaDelimeted()
     {
         $names = [];
@@ -91,6 +99,15 @@ class CatalogItem extends Eloquent
         return implode(",", $names);
     }
 
+    public function goalsAsCommaDelimeted()
+    {
+        $names = [];
+        foreach ($this->goals as $age) {
+            $names[] = $age->tag;
+        }
+        return implode(",", $names);
+    }
+
     public function updateTags($values)
     {
         $this->updateTagsForType($values, Tag::TYPE_TAG);
@@ -99,6 +116,11 @@ class CatalogItem extends Eloquent
     public function updateAges($values)
     {
         $this->updateTagsForType($values, Tag::TYPE_AGE);
+    }
+
+    public function updateGoals($values)
+    {
+        $this->updateTagsForType($values, Tag::TYPE_GOAL);
     }
 
     private function updateTagsForType($values, $type)

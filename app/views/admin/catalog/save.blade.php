@@ -182,20 +182,22 @@
 
                 <input type="text" class="form-control" id="catitemage" data-widget="tagsinput"
                        data-url="/api/v1/ages"
+                       data-tagclass="label label-success"
                        name="info_ages" value="{{$data['info_ages'] or ''}}">
+
                 @if($errors->has('info_ages'))
                     <p class="text-danger">{{$errors->first('info_ages')}}</p>
                 @endif
             </div>
 
-            <div class="form-group {{$errors->has('info_targets')?'has-error':''}}">
+            <div class="form-group {{$errors->has('info_goals')?'has-error':''}}">
                 <label for="catitemtargets" class="control-label">{{Lang::get('static.admin.catitem.targets')}}</label>
-                <input type="text" class="form-control" id="catitemtargets"
-                       placeholder="{{Lang::get('static.admin.catitem.targets.help')}}"
-                       name="info_targets"
-                       value="{{$data['info_targets'] or ''}}">
-                @if($errors->has('info_targets'))
-                    <p class="text-danger">{{$errors->first('info_targets')}}</p>
+                <input type="text" class="form-control" id="info_goals" data-widget="tagsinput"
+                       data-url="/api/v1/goals"
+                       data-tagclass="label label-default"
+                       name="info_goals" value="{{$data['info_goals'] or ''}}">
+                @if($errors->has('info_goals'))
+                    <p class="text-danger">{{$errors->first('info_goals')}}</p>
                 @endif
             </div>
 

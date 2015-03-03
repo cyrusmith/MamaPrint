@@ -12,6 +12,7 @@ define([
     function init($el) {
 
         var url = $el.attr('data-url');
+        var tagClass = $el.attr('data-tagclass');
 
         var tags = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('tag'),
@@ -24,6 +25,7 @@ define([
         tags.initialize();
 
         $el.tagsinput({
+            tagClass: tagClass || 'label label-primary',
             typeaheadjs: {
                 name: 'tags',
                 displayKey: 'tag',
