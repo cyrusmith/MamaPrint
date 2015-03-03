@@ -182,21 +182,21 @@
                 <select class="form-control" id="catitemage"
                         name="info_age"
                         value="{{$data['info_age'] or ''}}">
-                    <option value="любой" @if($data['info_age']=='любой') selected="selected" @endif>любой</option>
-                    <option value="малыш" @if($data['info_age']=='малыш') selected="selected" @endif>малыш</option>
-                    <option value="детский сад" @if($data['info_age']=='детский сад') selected="selected" @endif>детский
+                    <option value="любой" @if(!empty($data['info_age']) && $data['info_age']=='любой') selected="selected" @endif>любой</option>
+                    <option value="малыш" @if(!empty($data['info_age']) && $data['info_age']=='малыш') selected="selected" @endif>малыш</option>
+                    <option value="детский сад" @if(!empty($data['info_age'])) && $data['info_age']=='детский сад') selected="selected" @endif>детский
                         сад
                     </option>
-                    <option value="дошкольник" @if($data['info_age']=='дошкольник') selected="selected" @endif>
+                    <option value="дошкольник" @if(!empty($data['info_age']) && $data['info_age']=='дошкольник') selected="selected" @endif>
                         дошкольник
                     </option>
-                    <option value="1 класс" @if($data['info_age']=='1 класс') selected="selected" @endif>1 класс
+                    <option value="1 класс" @if(!empty($data['info_age']) && $data['info_age']=='1 класс') selected="selected" @endif>1 класс
                     </option>
-                    <option value="2 класс" @if($data['info_age']=='2 класс') selected="selected" @endif>2 класс
+                    <option value="2 класс" @if(!empty($data['info_age'])&& $data['info_age']=='2 класс') selected="selected" @endif>2 класс
                     </option>
-                    <option value="3 класс" @if($data['info_age']=='3 класс') selected="selected" @endif>3 класс
+                    <option value="3 класс" @if(!empty($data['info_age']) && $data['info_age']=='3 класс') selected="selected" @endif>3 класс
                     </option>
-                    <option value="4 класс" @if($data['info_age']=='4 класс') selected="selected" @endif>4 класс
+                    <option value="4 класс" @if(!empty($data['info_age']) && $data['info_age']=='4 класс') selected="selected" @endif>4 класс
                     </option>
                 </select>
                 @if($errors->has('info_age'))
