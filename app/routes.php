@@ -128,6 +128,7 @@ Route::get('/api/v1/cart/{itemId}', 'CartController@viewItem');
 Route::delete('/api/v1/cart/{itemId}', 'CartController@deleteItem');
 
 Route::get('/api/v1/tags', 'CatalogController@getTags');
+Route::get('/api/v1/ages', 'CatalogController@getAges');
 
 Route::get('/images/{id}', 'GalleryController@view');
 

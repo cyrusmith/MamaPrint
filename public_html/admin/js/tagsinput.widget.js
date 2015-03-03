@@ -11,12 +11,14 @@ define([
 
     function init($el) {
 
+        var url = $el.attr('data-url');
+
         var tags = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('tag'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            remote: "/api/v1/tags?q=%QUERY",
+            remote: url + "?q=%QUERY",
             prefetch: {
-                url: "/api/v1/tags"
+                url: url
             }
         });
         tags.initialize();

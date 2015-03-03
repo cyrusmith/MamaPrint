@@ -9,7 +9,6 @@
 namespace Admin;
 
 use Illuminate\Support\Facades\View;
-use Info\InfoAges;
 
 class AdminSeedController extends AdminController
 {

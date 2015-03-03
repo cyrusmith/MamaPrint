@@ -6,10 +6,6 @@
  * Time: 21:24
  */
 
-namespace Catalog;
-
-use Eloquent;
-
 class Tag extends Eloquent
 {
 

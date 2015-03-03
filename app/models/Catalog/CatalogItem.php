@@ -13,7 +13,7 @@ use Eloquent;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+use Tag;
 
 class CatalogItem extends Eloquent
 {
@@ -59,29 +59,76 @@ class CatalogItem extends Eloquent
 
     public function tags()
     {
-        $relation = $this->morphToMany('Catalog\Tag', 'taggable');
+        $relation = $this->morphToMany('Tag', 'taggable');
         $query = $relation->getQuery();
         $query->where('type', '=', Tag::TYPE_TAG);
         return $relation;
     }
 
-    public function updateTags($tagTags, $type)
+    public function ages()
+    {
+        $relation = $this->morphToMany('Tag', 'taggable');
+        $query = $relation->getQuery();
+        $query->where('type', '=', Tag::TYPE_AGE);
+        return $relation;
+    }
+
+    public function agesAsCommaDelimeted()
+    {
+        $names = [];
+        foreach ($this->ages as $age) {
+            $names[] = $age->tag;
+        }
+        return implode(",", $names);
+    }
+
+    public function tagsAsCommaDelimeted()
+    {
+        $names = [];
+        foreach ($this->tags as $age) {
+            $names[] = $age->tag;
+        }
+        return implode(",", $names);
+    }
+
+    public function updateTags($values)
+    {
+        $this->updateTagsForType($values, Tag::TYPE_TAG);
+    }
+
+    public function updateAges($values)
+    {
+        $this->updateTagsForType($values, Tag::TYPE_AGE);
+    }
+
+    private function updateTagsForType($values, $type)
     {
         try {
+
             DB::beginTransaction();
-            $this->tags()->detach();
+
+            $idObjs = DB::select('select tags.id from taggables, tags  where taggables.tag_id = tags.id and tags.type=?', array($type));
+
+            $ids = [];
+            foreach ($idObjs as $obj) {
+                $ids[] = $obj->id;
+            }
+
+            if (count($ids) > 0) {
+                $this->tags()->detach($ids);
+            }
+
             $tags = [];
-            foreach ($tagTags as $tagTag) {
-                $tag = Tag::whereTag($tagTag)->first();
+            foreach ($values as $val) {
+                $tag = Tag::whereTag($val)->first();
                 if (empty($tag)) {
                     $tag = new Tag;
-                    $tag->tag = $tagTag;
+                    $tag->tag = $val;
                     $tag->type = $type;
                     $tag->save();
                 }
                 $tags[] = $tag;
             }
-
             $this->tags()->saveMany($tags);
             DB::commit();
         } catch (Exception $e) {

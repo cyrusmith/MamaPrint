@@ -22,7 +22,20 @@ class CatalogController extends BaseController
     public function getTags()
     {
 
-        $query = Catalog\Tag::where('type', '=', \Catalog\Tag::TYPE_TAG);
+        $query = Tag::where('type', '=', Tag::TYPE_TAG);
+
+        $q = mb_strtolower(trim(\Illuminate\Support\Facades\Input::get('q')));
+        if (!empty($q)) {
+            $query->where('tag', 'LIKE', "%$q%");
+        }
+
+        return Response::json($query->get(), 200);
+    }
+
+    public function getAges()
+    {
+
+        $query = Tag::where('type', '=', Tag::TYPE_AGE);
 
         $q = mb_strtolower(trim(\Illuminate\Support\Facades\Input::get('q')));
         if (!empty($q)) {

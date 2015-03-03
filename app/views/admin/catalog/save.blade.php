@@ -149,12 +149,11 @@
             @endif
         </div>
 
-
         <div class="form-group {{$errors->has('tags')?'has-error':''}}">
             <label for="catitemtags" class="control-label">{{Lang::get('static.admin.catitem.tags')}}</label>
             <br>
             <input type="text" class="form-control" id="catitemtags" data-widget="tagsinput"
-                   data-url="{{action('CatalogController@getTags')}}"
+                   data-url="/api/v1/tags"
                    name="tags" value="{{$data['tags'] or ''}}">
 
             @if($errors->has('tags'))
@@ -167,7 +166,7 @@
             </legend>
             <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
                 <input type="text" class="form-control"
-                       value="{{$data['relatedtitles'] or ''}}" data-widget="relativesinput" />
+                       value="{{$data['relatedtitles'] or ''}}" data-widget="relativesinput"/>
                 <input type="hidden" name="related" value="{{$data['relatedids'] or ''}}"/>
 
                 <p>
@@ -178,31 +177,14 @@
 
         <fieldset>
             <legend><span class="glyphicon glyphicon-info-sign"></span> Доп. информация</legend>
-            <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
+            <div class="form-group {{$errors->has('info_ages')?'has-error':''}}">
                 <label for="catitemage" class="control-label">{{Lang::get('static.admin.catitem.age')}}</label>
-                <select class="form-control" id="catitemage"
-                        name="info_age"
-                        value="{{$data['info_age'] or ''}}">
-                    <option value="любой" @if(!empty($data['info_age']) && $data['info_age']=='любой') selected="selected" @endif>любой</option>
-                    <option value="малыш" @if(!empty($data['info_age']) && $data['info_age']=='малыш') selected="selected" @endif>малыш</option>
-                    <option value="детский сад" @if(!empty($data['info_age'])) && $data['info_age']=='детский сад') selected="selected" @endif>детский
-                        сад
-                    </option>
-                    <option value="дошкольник" @if(!empty($data['info_age']) && $data['info_age']=='дошкольник') selected="selected" @endif>
-                        дошкольник
-                    </option>
-                    <option value="1 класс" @if(!empty($data['info_age']) && $data['info_age']=='1 класс') selected="selected" @endif>1 класс
-                    </option>
-                    <option value="2 класс" @if(!empty($data['info_age'])&& $data['info_age']=='2 класс') selected="selected" @endif>2 класс
-                    </option>
-                    <option value="3 класс" @if(!empty($data['info_age']) && $data['info_age']=='3 класс') selected="selected" @endif>3 класс
-                    </option>
-                    <option value="4 класс" @if(!empty($data['info_age']) && $data['info_age']=='4 класс') selected="selected" @endif>4 класс
 
-                    </option>
-                </select>
-                @if($errors->has('info_age'))
-                    <p class="text-danger">{{$errors->first('info_age')}}</p>
+                <input type="text" class="form-control" id="catitemage" data-widget="tagsinput"
+                       data-url="/api/v1/ages"
+                       name="info_ages" value="{{$data['info_ages'] or ''}}">
+                @if($errors->has('info_ages'))
+                    <p class="text-danger">{{$errors->first('info_ages')}}</p>
                 @endif
             </div>
 
@@ -234,154 +216,101 @@
     </form>
 
 
-    <script type="x-tpl" id="attachment-item-models-json">
+    <script type="text/template" id="attachment-item-models-json">
         {{$attachments or '[]'}}
-
-
-
-
-
-
-
-
     </script>
 
-    <script type="x-tpl" id="gallery-images-json">
+    <script type="text/template" id="gallery-images-json">
         {{$images or '[]'}}
-
-
-
-
-
-
-
-
     </script>
 
-    <script type="x-tpl" id="related-json">
+    <script type="text/template" id="related-json">
         {{$data['related'] or '[]'}}
-
-
-
-
     </script>
 
-    <script type="x-tpl" id="gallery-item-tpl">
+    <script type="text/template" id="gallery-item-tpl">
         <li>
             <a href="/images/<%= id %>"
                class="img-rounded"
                style="background:url(/images/<%= id %>?width=200&height=220&crop=1) no-repeat 50% 50%;background-size: auto 100%;"
                target="_blank">
-               <% if(!id) { %>
+                <% if(!id) { %>
 
-               <div class="text-center file">
+                <div class="text-center file">
                     <input type="file" name="gallery_image[]">
-               </div>
+                </div>
 
-               <% } %>
+                <% } %>
                 <span class="control-delete btn btn-xs btn-danger glyphicon glyphicon-trash"></span>
             </a>
         </li>
-
-
-
-
-
-
-
-
     </script>
-    <script type="x-tpl" id="attachment-item-tpl">
+    <script type="text/template" id="attachment-item-tpl">
         <li class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <h4>{{Lang::get('static.admin.catitem.attachment')}}</h4>
-                                </div>
-                                <div class="col-sm-6 text-right">
-                                    <a class="btn btn-default btn-danger btn-xs" data-control="removefile"><span
-                                                class="glyphicon glyphicon-trash"></span> {{Lang::get('static.admin.removeattachment')}}
-                                    </a>
-                                </div>
-                            </div>
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h4>{{Lang::get('static.admin.catitem.attachment')}}</h4>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <a class="btn btn-default btn-danger btn-xs" data-control="removefile"><span
+                                    class="glyphicon glyphicon-trash"></span> {{Lang::get('static.admin.removeattachment')}}
+                        </a>
+                    </div>
+                </div>
 
-                        </div>
-                        <div class="panel-body">
-                            <div class="form-group">
-                                <label for="attachment<%= id %>title"
-                                       class="control-label">{{Lang::get('static.admin.catitem.attachmenttitle')}}</label>
-                                <input data-field="title" type="text" class="form-control" id="attachment<%= id %>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="attachment<%= id %>title"
+                           class="control-label">{{Lang::get('static.admin.catitem.attachmenttitle')}}</label>
+                    <input data-field="title" type="text" class="form-control" id="attachment<%= id %>
         title" name="attachment_title[]" value="<%= title %>">
-                            </div>
-                            <div class="form-group">
-                                <label for="attachment<%= id %>description"
-                                       class="control-label">{{Lang::get('static.admin.catitem.attachmentdescription')}}</label>
+                </div>
+                <div class="form-group">
+                    <label for="attachment<%= id %>description"
+                           class="control-label">{{Lang::get('static.admin.catitem.attachmentdescription')}}</label>
                                 <textarea data-field="description" id="attachment<%= id %>description"
-                                          class="form-control" name="attachment_description[]"><%= description %></textarea>
-                            </div>
-                            <% if (!id) { %>
-                            <div class="form-group">
-                                <label for="attachment1"
-                                       class="control-label">{{Lang::get('static.admin.catitem.choosefile')}}</label>
-                                <input type="file" name="attachment[]" id="attachment<%= id %>" required>
-                            </div>
-                            <% } else { %>
-                                <div class="downloadlink">
-                                    <span class="glyphicon glyphicon-download"></span><a href="/admin/attachments/<%= id %>/download">Скачать</a>
-                                </div>
-                            <% }  %>
-                            <dl>
-                                <dl>
-                                    <dt>{{Lang::get('static.admin.catitem.attachment.extension')}}</dt>
-                                    <dd><%= extension %></dd>
-                                    <dt>{{Lang::get('static.admin.catitem.attachment.mime')}}</dt>
-                                    <dd><%= mime %></dd>
-                                    <dt>{{Lang::get('static.admin.catitem.attachment.size')}}</dt>
-                                    <dd><%= size %></dd>
-                                </dl>
-                            </dl>
-                        </div>
-                         <% if (!!id) { %>
-                        <div class="savecontrols text-right">
-                                        <a class="btn btn-primary btn-xs" data-control="savefile"><span
-                                                    class="glyphicon glyphicon-check"></span> {{Lang::get('static.admin.saveattachment')}}
-                                        </a>
-                               <div class="progress">
-                                  <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                    <span class="sr-only">In progress</span>
-                                  </div>
-                               </div>
-                        </div>
-                         <% }  %>
-                    </li>
+                                          class="form-control"
+                                          name="attachment_description[]"><%= description %></textarea>
+                </div>
+                <% if (!id) { %>
+                <div class="form-group">
+                    <label for="attachment1"
+                           class="control-label">{{Lang::get('static.admin.catitem.choosefile')}}</label>
+                    <input type="file" name="attachment[]" id="attachment<%= id %>" required>
+                </div>
+                <% } else { %>
+                <div class="downloadlink">
+                    <span class="glyphicon glyphicon-download"></span><a href="/admin/attachments/<%= id %>/download">Скачать</a>
+                </div>
+                <% }  %>
+                <dl>
+                    <dl>
+                        <dt>{{Lang::get('static.admin.catitem.attachment.extension')}}</dt>
+                        <dd><%= extension %></dd>
+                        <dt>{{Lang::get('static.admin.catitem.attachment.mime')}}</dt>
+                        <dd><%= mime %></dd>
+                        <dt>{{Lang::get('static.admin.catitem.attachment.size')}}</dt>
+                        <dd><%= size %></dd>
+                    </dl>
+                </dl>
+            </div>
+            <% if (!!id) { %>
+            <div class="savecontrols text-right">
+                <a class="btn btn-primary btn-xs" data-control="savefile"><span
+                            class="glyphicon glyphicon-check"></span> {{Lang::get('static.admin.saveattachment')}}
+                </a>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                <div class="progress">
+                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        <span class="sr-only">In progress</span>
+                    </div>
+                </div>
+            </div>
+            <% }  %>
+        </li>
 
 
     </script>

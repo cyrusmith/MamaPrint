@@ -22,8 +22,11 @@ require([
         for (var i = 0; i < args.length; i++) {
             if (typeof args[i].init === "function" && !!args[i].name) {
                 var parentNode = $('[data-widget="' + args[i].name + '"]');
+
                 if (parentNode.length > 0) {
-                    args[i].init(parentNode);
+                    parentNode.each(function() {
+                        args[i].init($(this));
+                    });
                 }
             }
         }
@@ -45,7 +48,7 @@ require([
         $('[data-datepicker]').datetimepicker({
             format: 'Y-m-d',
             lang: 'ru',
-            timepicker:false
+            timepicker: false
         });
 
         tinyMCE.baseURL = 'http://' + location.hostname + '/admin/lib/tinymce/js/tinymce';

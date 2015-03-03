@@ -9,9 +9,7 @@
 namespace Admin;
 
 
-use Catalog\Tag;
 use Gallery\Gallery;
-use Gallery\GalleryImage;
 use Gallery\GalleryRelation;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
@@ -88,6 +86,8 @@ class AdminCatalogController extends AdminController
             'data' => array_merge($item->toArray(), [
                 'tags' => $item->getTagsAsString(),
                 'related' => $item->relatedItems,
+                'tags' => $item->tagsAsCommaDelimeted(),
+                'info_ages' => $item->agesAsCommaDelimeted(),
                 'relatedids' => $this->getRelatedIdsString($item),
                 'relatedtitles' => $this->getRelatedTitlesString($item)
 
@@ -183,9 +183,11 @@ class AdminCatalogController extends AdminController
             return !empty($tag);
         });
 
-        if (empty($tags)) {
-            $tags = [];
-        }
+        $ages = array_filter(array_map(function ($age) {
+            return trim($age);
+        }, explode(",", Input::get('info_ages'))), function ($age) {
+            return !empty($age);
+        });
 
         $messages = [];
 
@@ -244,7 +246,8 @@ class AdminCatalogController extends AdminController
 
             }
 
-            $item->updateTags($tags, Tag::TYPE_TAG);
+            $item->updateAges($ages);
+            $item->updateTags($tags);
 
             if ($isNew) {
                 $gallery = new Gallery();
@@ -276,7 +279,7 @@ class AdminCatalogController extends AdminController
 
         } catch (Exception $e) {
             DB::rollback();
-            return $this->withErrorMessage(Redirect::action('Admin\AdminCatalogController@' . ($form['id'] ? 'edit' : 'add'), [
+            return $this->withErrorMessage(Redirect::action('Admin\AdminCatalogController@' . ($form['id'] ? 'getItem' : 'add'), [
                 'id' => $id
             ]), $e->getMessage());
         }
