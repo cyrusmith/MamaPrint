@@ -110,6 +110,7 @@
         <delete file="${path.clone}/phpunit.xml"/>
         <delete file="${path.clone}/readme.md"/>
         <delete file="${path.clone}/server.php"/>
+        <delete file="${path.clone}/build.xml"/>
 
         <delete>
             <fileset dir="${path.clone}" includes="**/.gitkeep"/>
