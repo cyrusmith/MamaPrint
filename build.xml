@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="compile" name="rocketmobileclient">
+
+    <property name="propertyfile" value="build.properties"/>
+    <property file="${propertyfile}"/>
+
+    <macrodef name="composer">
+        <attribute name="command"/>
+        <attribute name="dir"/>
+        <element name="args" optional="true"/>
+        <sequential>
+            <echo message="composer @{command}"/>
+            <exec executable="${path.composer}/composer.bat" dir="@{dir}">
+                <arg value="@{command}"/>
+                <args/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="git">
+        <attribute name="command"/>
+        <attribute name="dir" default=""/>
+        <element name="args" optional="true"/>
+        <sequential>
+            <echo message="git @{command}"/>
+            <exec executable="git" dir="@{dir}">
+                <arg value="@{command}"/>
+                <args/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="git-clone-pull">
+        <attribute name="repository"/>
+        <attribute name="dest"/>
+        <sequential>
+            <git command="clone">
+                <args>
+                    <arg value="@{repository}"/>
+                    <arg value="@{dest}"/>
+                </args>
+            </git>
+            <git command="pull" dir="@{dest}"/>
+        </sequential>
+    </macrodef>
+
+    <target name="clean">
+        <delete dir="${path.clone}"/>
+        <mkdir dir="${path.clone}"/>
+    </target>
+
+    <target name="clone">
+        <git command="clone">
+            <args>
+                <arg value="https://github.com/cyrusmith/MamaPrint.git"/>
+                <arg value="${path.clone}"/>
+            </args>
+        </git>
+    </target>
+
+    <target name="composer">
+        <composer command="install" dir="${path.clone}">
+        </composer>
+    </target>
+
+    <target name="units">
+        <!-- TODO -->
+    </target>
+
+    <target name="cssjs">
+        <exec executable="${path.bower}" dir="${path.clone}/public_html">
+            <arg value="install"/>
+        </exec>
+
+        <exec executable="${path.lessc}" dir="${path.clone}/public_html">
+            <arg value="--compress"/>
+            <arg value="less/styles.less"/>
+            <arg value="styles.css"/>
+        </exec>
+
+        <exec executable="${path.lessc}" dir="${path.clone}/public_html/admin">
+            <arg value="--compress"/>
+            <arg value="less/styles.less"/>
+            <arg value="styles.css"/>
+        </exec>
+
+        <exec executable="${path.r}" dir="${path.clone}/public_html/">
+            <arg value="-o"/>
+            <arg value="build.js"/>
+        </exec>
+
+        <exec executable="${path.r}" dir="${path.clone}/public_html/admin/">
+            <arg value="-o"/>
+            <arg value="build.js"/>
+        </exec>
+
+    </target>
+
+    <target name="filter">
+        <delete dir="${path.clone}/.git"/>
+
+        <delete file="${path.clone}/.gitattributes"/>
+        <delete file="${path.clone}/.gitignore"/>
+        <delete file="${path.clone}/artisan"/>
+        <delete file="${path.clone}/composer.json"/>
+        <delete file="${path.clone}/composer.lock"/>
+        <delete file="${path.clone}/phpunit.xml"/>
+        <delete file="${path.clone}/readme.md"/>
+        <delete file="${path.clone}/server.php"/>
+
+        <delete>
+            <fileset dir="${path.clone}" includes="**/.gitkeep"/>
+            <fileset dir="${path.clone}" includes="**/.gitignore"/>
+        </delete>
+
+        <delete includeemptydirs="true">
+            <fileset dir="${path.clone}/app/storage/" includes="**/*"  defaultexcludes="false"/>
+        </delete>
+
+        <delete includeemptydirs="true">
+            <fileset dir="${path.clone}/app/config/" includes="**/*"/>
+        </delete>
+
+        <delete dir="${path.clone}/public_html/bower_components"/>
+        <delete dir="${path.clone}/public_html/js"/>
+        <delete dir="${path.clone}/public_html/jscript"/>
+        <delete dir="${path.clone}/public_html/less"/>
+        <delete dir="${path.clone}/public_html/packages"/>
+        <delete file="${path.clone}/public_html/bower.json"/>
+        <delete file="${path.clone}/public_html/build.js"/>
+        <delete file="${path.clone}/public_html/admin/build.js"/>
+
+        <delete dir="${path.clone}/public_html/admin/js"/>
+        <delete dir="${path.clone}/public_html/admin/less"/>
+    </target>
+
+    <target name="package">
+
+        <delete>
+            <fileset dir="${path.clone}" includes="**/.gitignore" defaultexcludes="false" />
+        </delete>
+
+        <delete>
+            <fileset dir="${path.clone}" includes="**/.gitkeep"/>
+        </delete>
+
+        <tstamp>
+            <format property="timestamp" pattern="yyyyMMddHHmmss"/>
+        </tstamp>
+        <zip destfile="${path.clone}/mamaprint${timestamp}.zip"
+             basedir="${path.clone}"/>
+
+    </target>
+
+    <target name="compile" depends="clean, clone, composer, units, cssjs, filter, package">
+    </target>
+
+</project>

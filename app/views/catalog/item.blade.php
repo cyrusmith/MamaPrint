@@ -9,7 +9,7 @@
                 <div class="gallery" data-widget="gallery">
                     <div class="mainimage">
                         @if(count($images) === 0)
-                            <img src="/assets/noimage.png"/>
+                            <img src="/img/noimage.png"/>
                         @else
                             <a href="/images/{{$images[0]->id}}" class="gallery-image">
                                 <img src="/images/{{$images[0]->id}}"/> {{--?width=400&height=400&crop=1--}}
@@ -166,7 +166,7 @@
                                     @define $img = $relItem->galleries()->first()->images()->first()
                                     <a href="{{action('CatalogController@item', ['path'=>$relItem->slug])}}">
                                         @if(empty($img))
-                                            <img src="/assets/noimage.png"/>
+                                            <img src="/img/noimage.png"/>
                                         @else
                                             <img src="/images/{{$img->id}}?width=200&height=200&crop=1"/>
                                         @endif

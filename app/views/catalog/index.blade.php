@@ -21,7 +21,7 @@
 
                             <a href="{{action('CatalogController@item', ['path'=>$item->slug])}}" class="img">
                                 @if(empty($image))
-                                    <img src="/assets/noimage.png" title="" alt=""/>
+                                    <img src="/img/noimage.png" title="" alt=""/>
                                 @else
                                     <img src="/images/{{$image->id}}" {{--?width=360&height=360&crop=1--}}
                                          title="{{$item->title}}" alt="{{$item->short_description}}"/>
