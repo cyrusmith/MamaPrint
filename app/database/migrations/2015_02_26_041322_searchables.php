@@ -15,6 +15,7 @@ class Searchables extends Migration
     {
         Schema::table('tags', function (Blueprint $table) {
             $table->string('type');
+            $table->integer('weight');
         });
 
       Schema::table('tag_catalog_item', function (Blueprint $table) {

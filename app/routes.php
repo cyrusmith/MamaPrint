@@ -106,6 +106,10 @@ Route::group(array('before' => 'admin'), function () {
     Route::post('/admin/articles', 'Admin\AdminArticlesController@postArticle');
     Route::post('/admin/articles/{id}/delete', 'Admin\AdminArticlesController@deleteArticle');
 
+    Route::get('/admin/tags', 'Admin\AdminTagsController@getTags');
+    Route::post('/admin/tags/reorder', 'Admin\AdminTagsController@postReorder');
+    Route::get('/admin/tags/{id}/delete', 'Admin\AdminTagsController@deleteTag');
+
 });
 
 Route::post('/buyitem/{itemId}', array('before' => 'csrf', 'uses' => 'OrdersController@buyitem'));
