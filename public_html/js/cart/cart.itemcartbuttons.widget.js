@@ -1,5 +1,5 @@
 define([
-    '$',
+    'jquery',
     'backbone',
     'catalog/catalog.item.model',
     'auth/auth.service',

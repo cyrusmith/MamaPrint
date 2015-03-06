@@ -2,15 +2,17 @@ require([
     'domReady!',
     'headhesive',
     'magnific',
-    'twitterbootstrap'], function (doc) {
+    'twitterbootstrap',
+    '../bower_components/jquery-ui/ui/autocomplete'], function (doc) {
 
     require([
-        '$',
+        'jquery',
         'auth/auth.service',
         'auth/user.model',
         'cart/cart.model',
         'siteconfig',
-        'popup'
+        'popup',
+        'search'
     ], function ($,
                  authService,
                  User,

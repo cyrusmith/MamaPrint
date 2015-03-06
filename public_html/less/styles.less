@@ -3,6 +3,7 @@
  */
 @import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import "../bower_components/bootstrap/less/bootstrap.less";
+@import (less) "../bower_components/jquery-ui/themes/cupertino/jquery-ui.css";
 @import (less) "../bower_components/magnific-popup/dist/magnific-popup.css";
 
 @icon-font-path: 'fonts/';
@@ -42,6 +43,23 @@
 
 .progress-right:after {
   right: -24px;
+}
+
+.ui-autocomplete-input {
+  &.ui-autocomplete-loading {
+    background: url(images/ajax-loader.gif) no-repeat 99% 50%;
+  }
+}
+
+.ui-autocomplete {
+  .ui-state-focus {
+    font-weight: normal;
+    border: 1px solid @btn-primary-bg;
+    background: @btn-primary-bg;
+    * {
+      color: #FFF;
+    }
+  }
 }
 
 .font-hanwritten {
@@ -217,6 +235,10 @@ h1, h2, h3 {
 h4 {
   font-family: Georgia, 'Times New Roman';
   font-style: italic;
+}
+
+.searchform {
+  padding-bottom: 1em;
 }
 
 .user-area {

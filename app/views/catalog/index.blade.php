@@ -4,6 +4,22 @@
 
     <div class="container catalog-items">
 
+        <div class="row searchform">
+            <form class="col-sm-8 col-sm-offset-2">
+
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Искать материал...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>
+                            Найти
+                        </button>
+                    </span>
+                </div>
+
+            </form>
+
+        </div>
+
         @for($i=0; $i < $items->count(); $i++)
 
             @define $item = $items[$i]
@@ -49,7 +65,9 @@
                                 </p>
 
                                 <p class="text-right">
-                                    <a class="btn btn-link" href="{{action('CatalogController@item', ['path'=>$item->slug])}}">{{Lang::get('static.catalogitem.more')}}<span
+                                    <a class="btn btn-link"
+                                       href="{{action('CatalogController@item', ['path'=>$item->slug])}}">{{Lang::get('static.catalogitem.more')}}
+                                        <span
                                                 class="glyphicon glyphicon-menu-right"></span></a>
                                 </p>
 

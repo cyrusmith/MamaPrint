@@ -1,5 +1,5 @@
 define([
-    '$',
+    'jquery',
     './cart.link.view',
     './cart.model'
 ], function ($, CartLinkView, cartModel) {

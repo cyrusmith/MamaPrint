@@ -1,4 +1,4 @@
-define(['$', 'promise'], function ($, promise) {
+define(['jquery', 'promise'], function ($, promise) {
 
     return {
 

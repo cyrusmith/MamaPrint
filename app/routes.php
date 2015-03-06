@@ -17,6 +17,7 @@ Route::group(array('before' => 'guest_create'), function () {
 
     Route::get('/catalog/{path}/download', 'CatalogController@getAttachments')->where('path', '(.+)');
     Route::get('/catalog/{path}', 'CatalogController@item')->where('path', '(.+)');
+    Route::get('/catalog/', 'CatalogController@search');
 
     Route::get('/free', 'CatalogController@getItemsFree');
 

@@ -1,5 +1,5 @@
 define([
-    '$',
+    'jquery',
     'backbone',
     './cart.item.view',
     './cart.model',

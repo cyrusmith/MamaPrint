@@ -1,5 +1,5 @@
 define([
-    '$',
+    'jquery',
     './catalog.item.view',
     './catalog.item.model'
 ], function ($, CatalogItemView, CatalogItem) {

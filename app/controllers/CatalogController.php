@@ -7,6 +7,7 @@
  */
 
 use Catalog\CatalogItem;
+use \Illuminate\Support\Facades\Input;
 
 class CatalogController extends BaseController
 {
@@ -17,6 +18,27 @@ class CatalogController extends BaseController
         return View::make('catalog.index', [
             'items' => $items
         ]);
+    }
+
+    public function search()
+    {
+        $search = Input::get('search');
+
+        $query = CatalogItem::orderBy('weight', 'desc')->where('active', '=', true);
+
+        /*if(!empty($search)) {
+            $query->where(function ($query) use ($search) {
+                $query->orWhere('title', 'LIKE', "%$search%")
+                    ->orWhere('short_description', 'LIKE', "%$search%");
+            });
+        }*/
+        if (Request::ajax()) {
+            return Response::json($query->get(), 200);
+        } else {
+            return View::make('catalog.index', [
+                'items' => $query->paginate(50)
+            ]);
+        }
     }
 
     public function getTags()
