@@ -15,8 +15,12 @@ class CatalogController extends BaseController
     public function index()
     {
         $items = CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->paginate(50);
+        $tags = Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get();
+        $ages = Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get();
         return View::make('catalog.index', [
-            'items' => $items
+            'items' => $items,
+            'tags' => $tags,
+            'ages' => $ages,
         ]);
     }
 
@@ -25,18 +29,35 @@ class CatalogController extends BaseController
         $search = Input::get('search');
 
         $query = CatalogItem::orderBy('weight', 'desc')->where('active', '=', true);
+        $tags = array_filter(explode(",", Input::get('tags')));
+        $ages = array_filter(explode(",", Input::get('ages')));
 
-        /*if(!empty($search)) {
+        if (!empty($search)) {
             $query->where(function ($query) use ($search) {
                 $query->orWhere('title', 'LIKE', "%$search%")
                     ->orWhere('short_description', 'LIKE', "%$search%");
             });
-        }*/
+        }
+
+        $tags = array_merge($tags, $ages);
+
+        if (!empty($tags)) {
+            $taggedIds = array_map(function ($item) {
+                return $item->id;
+            }, DB::table('taggables')->distinct()->whereRaw('tag_id IN (' . implode(",", $tags) . ')')->select('taggable_id as id')->get());
+
+            if (count($taggedIds) > 0) {
+                $query->whereIn('id', $taggedIds);
+            }
+        }
+
         if (Request::ajax()) {
             return Response::json($query->get(), 200);
         } else {
             return View::make('catalog.index', [
-                'items' => $query->paginate(50)
+                'items' => $query->paginate(50),
+                'tags' => Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get(),
+                'ages' => Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get()
             ]);
         }
     }

@@ -25,6 +25,17 @@
   color: @item-title-color;
 }
 
+.pseudo-link {
+  display: inline-block;
+  font-size: .875em;
+  line-height: 1;
+  text-decoration: none !important;
+  border-bottom: 1px dashed @link-color;
+  &:hover {
+    border-bottom-color: #FFF;
+  }
+}
+
 .progress-left, .progress-right {
   position: relative;
   &:after {
@@ -239,6 +250,18 @@ h4 {
 
 .searchform {
   padding-bottom: 1em;
+  .advsearch {
+    padding: 0 1em;
+  }
+  #advserach {
+    display: none;
+  }
+  .pseudo-link {
+    margin: .5em 0;
+  }
+  .checkbox {
+    display: inline;
+  }
 }
 
 .user-area {

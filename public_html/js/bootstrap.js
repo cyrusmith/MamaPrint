@@ -12,7 +12,8 @@ require([
         'cart/cart.model',
         'siteconfig',
         'popup',
-        'search'
+        'search',
+        'toggle'
     ], function ($,
                  authService,
                  User,

@@ -5,7 +5,7 @@
     <div class="container catalog-items">
 
         <div class="row searchform">
-            <form class="col-sm-8 col-sm-offset-2">
+            <form action="{{action('CatalogController@search')}}" class="col-sm-8 col-sm-offset-2" method="get">
 
                 <div class="input-group">
                     <input type="text" class="form-control" name="search" placeholder="Искать материал...">
@@ -15,7 +15,42 @@
                         </button>
                     </span>
                 </div>
+                @if(!$tags->isEmpty() &&!$tags->isEmpty())
+                    <div class="advsearch">
+                        <a href="javascript:void(0)" class="pseudo-link" data-toggle="#advserach">Расширенный поиск</a>
 
+                        <div id="advserach">
+                            @if(!$tags->isEmpty())
+                                <div class="input-group">
+                                    <label>Теги</label>
+                                    <br>
+                                    @foreach($tags as $tag)
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" data-tag="{{$tag->id}}"/> {{$tag->tag}}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                    <input type="hidden" name="tags" value=""/>
+                                </div>
+                            @endif
+                            @if(!$ages->isEmpty())
+                                <div class="input-group">
+                                    <label>Возраст</label>
+                                    <br>
+                                    @foreach($ages as $age)
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" data-age="{{$age->id}}"/> {{$age->tag}}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                    <input type="hidden" name="ages" value=""/>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                @endif
             </form>
 
         </div>

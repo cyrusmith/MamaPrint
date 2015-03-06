@@ -29,6 +29,27 @@ define(['jquery'], function ($) {
                 .append("<a>" + item.title + "<br><small>" + desc + "</small></a>")
                 .appendTo(ul);
         };
+
+        $('.searchform button').click(function () {
+            var tags = [],
+                ages = [];
+            $('.searchform input[data-tag]').each(function () {
+                if ($(this).is(':checked'))
+                    tags.push($(this).attr('data-tag'));
+            });
+            $('.searchform input[data-age]').each(function () {
+                if ($(this).is(':checked'))
+                    ages.push($(this).attr('data-age'));
+            });
+            $('.searchform input[name=tags]').val(tags.join(','));
+            $('.searchform input[name=ages]').val(ages.join(','));
+
+            if (tags.length || ages.length || $('.searchform input[name=search]').val()) {
+                $('.searchform form').submit();
+            }
+
+        });
+
     }
 
 });
