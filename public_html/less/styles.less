@@ -1,7 +1,7 @@
 /**
  * Created by cyrusmith on 17.12.2014.
  */
-@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
+//@import url(http://fonts.googleapis.com/css?family=Ubuntu+Condensed);
 @import "../bower_components/bootstrap/less/bootstrap.less";
 @import (less) "../bower_components/jquery-ui/themes/cupertino/jquery-ui.css";
 @import (less) "../bower_components/magnific-popup/dist/magnific-popup.css";
@@ -264,6 +264,22 @@ h4 {
   }
   .checkbox {
     display: inline;
+  }
+
+  .input-group-tags,
+  .input-group-ages,
+  .input-group-goals {
+    margin-bottom: .5em;
+    display: block;
+    .checkbox {
+      margin-right: .5em;
+      label {
+        padding-right: 5px;
+      }
+      input {
+        margin-top: 0;
+      }
+    }
   }
 }
 

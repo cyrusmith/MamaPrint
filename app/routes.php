@@ -74,7 +74,7 @@ Route::group(array('before' => 'guest'), function () {
 Route::group(array('before' => 'admin'), function () {
 
     Route::get('/admin/seeds', 'Admin\AdminSeedController@getSeeders');
-    Route::post('/admin/seedsinfos', 'Admin\AdminSeedController@postInfos');
+    Route::post('/admin/seedtags', 'Admin\AdminSeedController@postTags');
 
     Route::get('/admin/catalog', 'Admin\AdminCatalogController@index');
 

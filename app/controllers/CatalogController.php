@@ -14,13 +14,11 @@ class CatalogController extends BaseController
 
     public function index()
     {
-        $items = CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->paginate(50);
-        $tags = Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get();
-        $ages = Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get();
         return View::make('catalog.index', [
-            'items' => $items,
-            'tags' => $tags,
-            'ages' => $ages,
+            'items' => CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->paginate(1),
+            'tags' => Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get(),
+            'ages' => Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get(),
+            'goals' => Tag::where('type', '=', Tag::TYPE_GOAL)->orderBy('weight', 'asc')->get(),
         ]);
     }
 
@@ -31,6 +29,7 @@ class CatalogController extends BaseController
         $query = CatalogItem::orderBy('weight', 'desc')->where('active', '=', true);
         $tags = array_filter(explode(",", Input::get('tags')));
         $ages = array_filter(explode(",", Input::get('ages')));
+        $goals = array_filter(explode(",", Input::get('goals')));
 
         if (!empty($search)) {
             $query->where(function ($query) use ($search) {
@@ -39,25 +38,33 @@ class CatalogController extends BaseController
             });
         }
 
-        $tags = array_merge($tags, $ages);
+        $tags = array_merge($tags, $ages, $goals);
 
         if (!empty($tags)) {
+
+            $ands = [];
+
+            foreach ($tags as $tag) {
+                $ands[] = "EXISTS (SELECT 1 FROM taggables WHERE taggables.taggable_id=catalog_items.id AND taggables.tag_id = $tag AND taggable_type LIKE 'Catalog\\\CatalogItem' ESCAPE '|')";
+            }
+
+            $taggedIds = DB::select('SELECT id FROM catalog_items WHERE ' . implode(" AND ", $ands));
+
             $taggedIds = array_map(function ($item) {
                 return $item->id;
-            }, DB::table('taggables')->distinct()->whereRaw('tag_id IN (' . implode(",", $tags) . ')')->select('taggable_id as id')->get());
+            }, $taggedIds);
 
-            if (count($taggedIds) > 0) {
-                $query->whereIn('id', $taggedIds);
-            }
+            $query->whereIn('id', $taggedIds);
         }
 
         if (Request::ajax()) {
             return Response::json($query->get(), 200);
         } else {
             return View::make('catalog.index', [
-                'items' => $query->paginate(50),
+                'items' => $query->paginate(1),
                 'tags' => Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get(),
                 'ages' => Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get(),
+                'goals' => Tag::where('type', '=', Tag::TYPE_GOAL)->orderBy('weight', 'asc')->get(),
                 'search' => $search,
                 'selected_tags' => $tags,
             ]);

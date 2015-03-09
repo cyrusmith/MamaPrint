@@ -22,11 +22,11 @@
 
                         <div id="advserach"  @if(!empty($selected_tags)) class="open" @endif>
                             @if(!$tags->isEmpty())
-                                <div class="input-group">
+                                <div class="input-group-tags">
                                     <label>Теги</label>
                                     <br>
                                     @foreach($tags as $tag)
-                                        <div class="checkbox">
+                                        <div class="checkbox label label-primary">
                                             <label>
                                                 <input type="checkbox" data-tag="{{$tag->id}}"
                                                        @if(!empty($selected_tags) && in_array($tag->id, $selected_tags)))
@@ -38,11 +38,11 @@
                                 </div>
                             @endif
                             @if(!$ages->isEmpty())
-                                <div class="input-group">
+                                <div class="input-group-ages">
                                     <label>Возраст</label>
                                     <br>
                                     @foreach($ages as $age)
-                                        <div class="checkbox">
+                                        <div class="checkbox label label-success">
                                             <label>
                                                 <input type="checkbox" data-age="{{$age->id}}"
                                                        @if(!empty($selected_tags) && in_array($age->id, $selected_tags)))
@@ -53,6 +53,23 @@
                                     <input type="hidden" name="ages" value=""/>
                                 </div>
                             @endif
+
+                            @if(!$goals->isEmpty())
+                                <div class="input-group-goals">
+                                    <label>Что развиваем</label>
+                                    <br>
+                                    @foreach($goals as $goal)
+                                        <div class="checkbox label label-info">
+                                            <label>
+                                                <input type="checkbox" data-goal="{{$goal->id}}"
+                                                       @if(!empty($selected_tags) && in_array($goal->id, $selected_tags)))
+                                                       checked="checked" @endif /> {{$goal->tag}}
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                    <input type="hidden" name="goals" value=""/>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 @endif
@@ -60,9 +77,12 @@
 
         </div>
 
-        @if(!$tags->isEmpty() || !$ages->isEmpty() || !empty($search))
+        @if(!empty($selected_tags) || !empty($search))
             <h2>Результаты поиска</h2>
             <hr>
+            @if($items->isEmpty())
+                <p class="map">По вашему запросу ничего не найдено</p>
+            @endif
         @endif
 
         @for($i=0; $i < $items->count(); $i++)

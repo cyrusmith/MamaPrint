@@ -57,6 +57,12 @@ class CatalogItem extends Eloquent
         return $this->belongsToMany('Catalog\CatalogItem', 'catalogitem_relations', 'owner_id', 'relation_id');
     }
 
+    public function taggableTags()
+    {
+        return $this->morphToMany('Tag', 'taggable');
+    }
+
+
     public function tags()
     {
         $relation = $this->morphToMany('Tag', 'taggable');

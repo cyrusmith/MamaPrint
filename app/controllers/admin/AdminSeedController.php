@@ -8,7 +8,10 @@
 
 namespace Admin;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use Tag;
+use Catalog\CatalogItem;
 
 class AdminSeedController extends AdminController
 {
@@ -18,51 +21,70 @@ class AdminSeedController extends AdminController
         return View::make("admin.seeders");
     }
 
-    public function postInfos()
+    public function postTags()
     {
 
         DB::transaction(function () {
 
-            //taggables - tags, ages, targets
 
-            $ages = InfoAges::get();
-            if (empty($ages) || $ages->isEmpty()) {
+            DB::table('tags')->update([
+                'type' => \Tag::TYPE_TAG
+            ]);
 
-                DB::table('info_ages')->insert(
-                    array('id' => InfoAges::BABY, 'title' => 'малыш'),
-                    array('id' => InfoAges::KINDERGARDEN, 'title' => 'десткий сад'),
-                    array('id' => InfoAges::PRESCHOOL, 'title' => 'дошкольник'),
-                    array('id' => InfoAges::FIRST, 'title' => '1 класс'),
-                    array('id' => InfoAges::SECOND, 'title' => '2 класс'),
-                    array('id' => InfoAges::THIRD, 'title' => '3 класс'),
-                    array('id' => InfoAges::FOURTH, 'title' => '4 класс')
-                );
+            DB::table('taggables')->update([
+                'taggable_type' => 'Catalog\CatalogItem'
+            ]);
 
-                $titleIdMap = [
-                    'малыш' => InfoAges::BABY,
-                    'десткий сад' => InfoAges::KINDERGARDEN,
-                    'дошкольник' => InfoAges::PRESCHOOL,
-                    '1 класс' => InfoAges::FIRST,
-                    '2 класс' => InfoAges::SECOND,
-                    '3 класс' => InfoAges::THIRD,
-                    '4 класс' => InfoAges::FOURTH,
-                ];
-
-                $items = CatalogItem::get();
-
-                $manyToManyData = [];
-                foreach ($items as $item) {
-                    if (!array_key_exists($item->info_age, $titleIdMap)) throw new \Exception($item->info_age . " is unknown");
-                    $manyToManyData[] = [
-                        'catalog_item_id' => $item->id,
-                        'info_age_id' => $titleIdMap[$item->info_age]
-                    ];
-                }
-
-                DB::table('info_ages_catalog_item')->insert($manyToManyData);
-
+            //ages
+            $ages = array_filter(array_map(function ($item) {
+                return $item->info_age;
+            }, DB::table('catalog_items')->select('info_age')->get()));
+            $agesMap = [];
+            foreach ($ages as $age) {
+                if (array_key_exists($age, $agesMap)) continue;
+                $ageTag = new Tag();
+                $ageTag->type = \Tag::TYPE_AGE;
+                $ageTag->tag = $age;
+                $ageTag->save();
+                $agesMap[$age] = $ageTag;
             }
 
+            //goals
+            $goals = array_filter(array_map(function ($item) {
+                return $item->info_targets;
+            }, DB::table('catalog_items')->select('info_targets')->get()));
+            $goalsMap = [];
+            foreach ($goals as $goal) {
+                $goalItems = array_filter(array_map(function ($item) {
+                    return trim($item);
+                }, explode(",", $goal)));
+                foreach ($goalItems as $goalItem) {
+                    if (array_key_exists($goalItem, $goalsMap)) continue;
+                    $goalTag = new Tag();
+                    $goalTag->type = \Tag::TYPE_GOAL;
+                    $goalTag->tag = $goalItem;
+                    $goalTag->save();
+                    $goalsMap[$goalItem] = $goalTag;
+                }
+            }
+
+            $items = CatalogItem::all();
+            foreach ($items as $item) {
+                $ageInfo = $item->info_age;
+                if (!empty($ageInfo)) {
+                    $item->taggableTags()->attach($agesMap[$ageInfo]);
+                }
+
+                $infoTargets = array_filter(array_map(function ($item) {
+                    return trim($item);
+                }, explode(",", $item->info_targets)));
+                foreach ($infoTargets as $infoTarget) {
+                    if (!array_key_exists($infoTarget, $goalsMap)) {
+                        throw new \Exception("goalsMap has no " . $infoTarget);
+                    }
+                    $item->taggableTags()->attach($goalsMap[$infoTarget]);
+                }
+            }
         });
 
         return View::make("admin.seeders");

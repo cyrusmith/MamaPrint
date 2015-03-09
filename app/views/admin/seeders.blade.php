@@ -4,8 +4,8 @@
 
     <ul>
         <li>
-            <form action="{{action('Admin\AdminSeedController@postInfos')}}" method="post">
-                <button class="btn btn-primary">Infos</button>
+            <form action="{{action('Admin\AdminSeedController@postTags')}}" method="post">
+                <button class="btn btn-primary">Tags</button>
             </form>
         </li>
 

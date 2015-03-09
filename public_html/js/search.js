@@ -32,7 +32,8 @@ define(['jquery'], function ($) {
 
         $('.searchform button').click(function () {
             var tags = [],
-                ages = [];
+                ages = [],
+                goals = [];
             $('.searchform input[data-tag]').each(function () {
                 if ($(this).is(':checked'))
                     tags.push($(this).attr('data-tag'));
@@ -41,10 +42,16 @@ define(['jquery'], function ($) {
                 if ($(this).is(':checked'))
                     ages.push($(this).attr('data-age'));
             });
+
+            $('.searchform input[data-goal]').each(function () {
+                if ($(this).is(':checked'))
+                    goals.push($(this).attr('data-goal'));
+            });
             $('.searchform input[name=tags]').val(tags.join(','));
             $('.searchform input[name=ages]').val(ages.join(','));
+            $('.searchform input[name=goals]').val(goals.join(','));
 
-            if (tags.length || ages.length || $('.searchform input[name=search]').val()) {
+            if (tags.length || ages.length || goals.length || $('.searchform input[name=search]').val()) {
                 $('.searchform form').submit();
             }
 

@@ -22,7 +22,7 @@ class AdminTagsController extends AdminController
 
         $search = Input::get('search');
         $type = Input::get('type');
-        if (mb_strlen($search) > 2) {
+        if (!empty($search)) {
             $query->where(function ($query) use ($search) {
                 $query->orWhere('tag', 'LIKE', "%$search%");
             });
@@ -45,10 +45,13 @@ class AdminTagsController extends AdminController
 
     public function deleteTag($id)
     {
-        $tag = \Tag::find($id);
-        if ($tag) {
-            $tag->delete($id);
-        }
+        DB::transaction(function () use ($id) {
+            $tag = \Tag::find($id);
+            if ($tag) {
+                $tag->delete($id);
+            }
+            DB::table('taggables')->where('tag_id', '=', $id)->delete();
+        });
 
         return Redirect::back();
     }
