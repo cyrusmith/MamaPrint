@@ -8,18 +8,19 @@
             <form action="{{action('CatalogController@search')}}" class="col-sm-8 col-sm-offset-2" method="get">
 
                 <div class="input-group">
-                    <input type="text" class="form-control" name="search" placeholder="Искать материал...">
+                    <input type="text" class="form-control" name="search" value="{{$search or ''}}"
+                           placeholder="Искать материал...">
                     <span class="input-group-btn">
                         <button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>
                             Найти
                         </button>
                     </span>
                 </div>
-                @if(!$tags->isEmpty() &&!$tags->isEmpty())
+                @if(!$tags->isEmpty() || !$ages->isEmpty())
                     <div class="advsearch">
                         <a href="javascript:void(0)" class="pseudo-link" data-toggle="#advserach">Расширенный поиск</a>
 
-                        <div id="advserach">
+                        <div id="advserach"  @if(!empty($selected_tags)) class="open" @endif>
                             @if(!$tags->isEmpty())
                                 <div class="input-group">
                                     <label>Теги</label>
@@ -27,7 +28,9 @@
                                     @foreach($tags as $tag)
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" data-tag="{{$tag->id}}"/> {{$tag->tag}}
+                                                <input type="checkbox" data-tag="{{$tag->id}}"
+                                                       @if(!empty($selected_tags) && in_array($tag->id, $selected_tags)))
+                                                       checked="checked" @endif/> {{$tag->tag}}
                                             </label>
                                         </div>
                                     @endforeach
@@ -41,7 +44,9 @@
                                     @foreach($ages as $age)
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" data-age="{{$age->id}}"/> {{$age->tag}}
+                                                <input type="checkbox" data-age="{{$age->id}}"
+                                                       @if(!empty($selected_tags) && in_array($age->id, $selected_tags)))
+                                                       checked="checked" @endif /> {{$age->tag}}
                                             </label>
                                         </div>
                                     @endforeach
@@ -54,6 +59,11 @@
             </form>
 
         </div>
+
+        @if(!$tags->isEmpty() || !$ages->isEmpty() || !empty($search))
+            <h2>Результаты поиска</h2>
+            <hr>
+        @endif
 
         @for($i=0; $i < $items->count(); $i++)
 

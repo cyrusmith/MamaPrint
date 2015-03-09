@@ -8,9 +8,9 @@ define(['jquery'], function ($) {
             if (rel.length) {
                 $(this).click(function () {
                     rel.toggle(400, function() {
-                        if(rel.is(':hidden')) {
+                        /*if(rel.is(':hidden')) {
                             rel.find('input[type=checkbox]').prop('checked', false);
-                        }
+                        }*/
                     });
                 });
             }

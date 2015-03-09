@@ -57,7 +57,9 @@ class CatalogController extends BaseController
             return View::make('catalog.index', [
                 'items' => $query->paginate(50),
                 'tags' => Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get(),
-                'ages' => Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get()
+                'ages' => Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get(),
+                'search' => $search,
+                'selected_tags' => $tags,
             ]);
         }
     }

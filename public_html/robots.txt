@@ -4,3 +4,4 @@ Disallow: /cart
 Disallow: /login
 Disallow: /register
 Disallow: /pay
+Disallow: /*?*
