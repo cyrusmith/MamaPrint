@@ -14,12 +14,8 @@
     "jquery": "1.11.1",
     "requirejs": "latest",
     "bootstrap": "latest",
-<<<<<<< HEAD
     "bootstrap-tagsinput": "latest",
     "typeahead.js": "latest",
-=======
-    "bootstrap-tagsinput": "0.4.2",
->>>>>>> +tagsinput
     "backbone": "1.1.2",
     "headhesive.js": "latest",
     "tinymce": "4.1.7",
