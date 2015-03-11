@@ -15,7 +15,7 @@ class CatalogController extends BaseController
     public function index()
     {
         return View::make('catalog.index', [
-            'items' => CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->paginate(1),
+            'items' => CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->paginate(20),
             'tags' => Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get(),
             'ages' => Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get(),
             'goals' => Tag::where('type', '=', Tag::TYPE_GOAL)->orderBy('weight', 'asc')->get(),
@@ -61,7 +61,7 @@ class CatalogController extends BaseController
             return Response::json($query->get(), 200);
         } else {
             return View::make('catalog.index', [
-                'items' => $query->paginate(1),
+                'items' => $query->paginate(20),
                 'tags' => Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get(),
                 'ages' => Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get(),
                 'goals' => Tag::where('type', '=', Tag::TYPE_GOAL)->orderBy('weight', 'asc')->get(),

@@ -9,7 +9,7 @@
 
                 <div class="input-group">
                     <input type="text" class="form-control" name="search" value="{{$search or ''}}"
-                           placeholder="Искать материал...">
+                           placeholder="Искать материал..." autocomplete="off">
                     <span class="input-group-btn">
                         <button class="btn btn-info" type="button"><span class="glyphicon glyphicon-search"></span>
                             Найти
