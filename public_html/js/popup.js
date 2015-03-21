@@ -1,4 +1,4 @@
-define(['jquery', 'promise'], function ($, promise) {
+define(['jquery'], function ($) {
 
     return {
 
@@ -12,24 +12,20 @@ define(['jquery', 'promise'], function ($, promise) {
         },
 
         showCartPrompt: function () {
-            return new promise.Promise(function (resolve, reject) {
 
-                $.magnificPopup.open({
-                    items: {
-                        src: '#cart-prompt-popup'
-                    },
-                    type: 'inline',
-                    mainClass: 'mfp-zoom-in',
-                    removalDelay: 500
-                }, 0);
+            $.magnificPopup.open({
+                items: {
+                    src: '#cart-prompt-popup'
+                },
+                type: 'inline',
+                mainClass: 'mfp-zoom-in',
+                removalDelay: 500
+            }, 0);
 
-                $("#cart-prompt-popup").find('.btn-default').one("click", function (e) {
-                    e.stopPropagation();
-                    e.preventDefault();
-                    $.magnificPopup.close();
-                });
-
-                resolve(true);
+            $("#cart-prompt-popup").find('.btn-default').one("click", function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                $.magnificPopup.close();
             });
         },
 

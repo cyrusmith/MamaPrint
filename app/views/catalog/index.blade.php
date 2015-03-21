@@ -104,7 +104,7 @@
                                 @if(empty($image))
                                     <img src="/img/noimage.png" title="" alt=""/>
                                 @else
-                                    <img src="/images/{{$image->id}}" {{--?width=360&height=360&crop=1--}}
+                                    <img class="lazy" data-src="/images/{{$image->id}}" src="" {{--?width=360&height=360&crop=1--}}
                                          title="{{$item->title}}" alt="{{$item->short_description}}"/>
                                 @endif
                             </a>

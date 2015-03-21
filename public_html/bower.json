@@ -21,6 +21,7 @@
     "tinymce": "4.1.7",
     "magnific-popup": "1.0.0",
     "es6-promise": "2.0.1",
+    "jquery-lazy": "0.4.0",
     "domReady": "https://github.com/requirejs/domReady.git",
     "jquery-ui": "1.11",
     "datetimepicker": "2.4.1"

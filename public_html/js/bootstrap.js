@@ -1,21 +1,21 @@
 require([
-    'domReady!',
+    'jquery',
+    'jqueryLazy',
     'headhesive',
     'magnific',
     'twitterbootstrap',
-    '../bower_components/jquery-ui/ui/autocomplete'], function (doc) {
+    '../bower_components/jquery-ui/ui/autocomplete',
+    'polyfills'], function ($) {
 
     require([
-        'jquery',
         'auth/auth.service',
         'auth/user.model',
         'cart/cart.model',
         'siteconfig',
         'popup',
         'search',
-        'toggle'
-    ], function ($,
-                 authService,
+        'toggle',
+    ], function (authService,
                  User,
                  cartModel,
                  siteConfig,
@@ -30,40 +30,53 @@ require([
             'catalog/catalog.item.widget',
             'gallery.widget'
         ], function () {
+
             var args = Array.prototype.slice.call(arguments, 0);
 
-            for (var i = 0; i < args.length; i++) {
-                if (typeof args[i].init === "function" && !!args[i].name) {
-                    var parentNode = $('[data-widget="' + args[i].name + '"]');
-                    if (parentNode.length > 0) {
-                        parentNode.each(function () {
-                            args[i].init($(this));
-                        });
+            $(function () {
+
+                for (var i = 0; i < args.length; i++) {
+                    if (typeof args[i].init === "function" && !!args[i].name) {
+                        var parentNode = $('[data-widget="' + args[i].name + '"]');
+                        if (parentNode.length > 0) {
+                            parentNode.each(function () {
+                                args[i].init($(this));
+                            });
+                        }
                     }
                 }
-            }
+            });
 
         });
 
-        var appConfig = JSON.parse($('#appconfig').text());
-        if (appConfig.user) {
-            authService.setUser(new User(appConfig.user));
-        }
+        $(function () {
 
-        siteConfig.init(appConfig.siteConfig);
-
-        var modelsJson = $('#cart-json').text();
-        var modelsData = JSON.parse(modelsJson);
-        if (_.isArray(modelsData)) {
-            for (var i = 0; i < modelsData.length; i++) {
-                cartModel.add(modelsData[i]);
+            var appConfig = JSON.parse($('#appconfig').text());
+            if (appConfig.user) {
+                authService.setUser(new User(appConfig.user));
             }
-        }
 
-        if (!navigator.cookieEnabled) {
-            popup.showCookiesWarning();
-        }
+            siteConfig.init(appConfig.siteConfig);
 
+            var modelsJson = $('#cart-json').text();
+            var modelsData = JSON.parse(modelsJson);
+            if (_.isArray(modelsData)) {
+                for (var i = 0; i < modelsData.length; i++) {
+                    cartModel.add(modelsData[i]);
+                }
+            }
+
+            if (!navigator.cookieEnabled) {
+                popup.showCookiesWarning();
+            }
+
+            $("img.lazy").lazy({
+                bind: "event"
+            });
+
+            $('#sitepreloader').remove();
+
+        });
 
     });
 

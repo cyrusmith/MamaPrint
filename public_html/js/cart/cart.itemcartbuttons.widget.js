@@ -51,10 +51,7 @@ define([
                         cartModel.add(this.model);
 
                         if (cartModel.getTotal() >= siteConfig.getMinOrderPrice() * 100) {
-                            popup.showCartPrompt()
-                                .then(function () {
-
-                                });
+                            popup.showCartPrompt();
                         }
                     }, this),
                     complete: _.bind(function () {

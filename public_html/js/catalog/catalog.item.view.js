@@ -1,11 +1,10 @@
 define([
     'backbone',
-    'underscore',
     'cart/cart.model',
     'auth/auth.service',
     'popup',
     'siteconfig'
-], function (Backbone, _, cartModel, authService, popup, siteConfig) {
+], function (Backbone, cartModel, authService, popup, siteConfig) {
 
     return Backbone.View.extend({
 
@@ -25,9 +24,9 @@ define([
 
         onCartModelChange: function () {
 
-            this.model.set('inCart', !!cartModel.find(_.bind(function (item) {
+            this.model.set('inCart', !!cartModel.find(function (item) {
                 return item.id === this.model.id;
-            }, this)));
+            }.bind(this)));
         },
 
         onModelChange: function () {
@@ -54,19 +53,16 @@ define([
                 this.$addToCartBtn.attr('disabled', 'disabled');
                 Backbone.sync("create", this.model, {
                     url: "/api/v1/cart",
-                    success: _.bind(function () {
+                    success: function () {
                         cartModel.add(this.model);
                         if (cartModel.getTotal() >= siteConfig.getMinOrderPrice() * 100) {
-                            popup.showCartPrompt()
-                                .then(function () {
-
-                                });
+                            popup.showCartPrompt();
                         }
-                    }, this),
-                    complete: _.bind(function () {
+                    }.bind(this),
+                    complete: function () {
                         this.$addToCartBtn.attr('disabled', null);
                         this.$addToCartBtn.removeClass('progress-left');
-                    }, this)
+                    }.bind(this)
                 });
             }
         }

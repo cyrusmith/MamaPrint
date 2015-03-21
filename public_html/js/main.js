@@ -15,7 +15,7 @@ require.config({
         'jqautocomplete': '../bower_components/jquery-ui/ui/autocomplete',
         'headhesive': '../bower_components/headhesive.js/dist/headhesive',
         'requireLib': '../bower_components/requirejs/require',
-        'promise': '../bower_components/es6-promise/promise'
+        'jqueryLazy' : '../bower_components/jquery-lazy/jquery.lazy'
     },
 
     urlArgs: "bust=" + Date.now(),
@@ -27,6 +27,7 @@ require.config({
         magnific: ['jquery'],
         twitterbootstrap: ['jquery'],
         jqautocomplete: ['jquery'],
+        jqueryLazy: ['jquery'],
         headhesive: {
             exports: 'Headhesive'
         },

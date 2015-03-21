@@ -115,7 +115,10 @@ class CatalogController extends BaseController
         $items = CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->where('registered_price', '=', 0)->paginate(50);
         return View::make('catalog.index', [
             'items' => $items,
-            'page_title' => 'Бесплатные материалы на сайте mama-print.ru'
+            'page_title' => 'Бесплатные материалы на сайте mama-print.ru',
+            'tags' => Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get(),
+            'ages' => Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get(),
+            'goals' => Tag::where('type', '=', Tag::TYPE_GOAL)->orderBy('weight', 'asc')->get()
         ]);
     }
 

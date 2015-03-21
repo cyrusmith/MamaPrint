@@ -1,5 +1,6 @@
 <?php
 use \Illuminate\Support\Facades\App;
+
 ?>
 <html>
 <head>
@@ -11,10 +12,22 @@ use \Illuminate\Support\Facades\App;
 
     <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
     <link rel="stylesheet" type="text/css" href="/styles.css?v={{Config::get('mamaprint.version')}}">
+    <style type="text/css">
+        #sitepreloader {
+            opacity: 0.7;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1000;
+            background: #FFF url(/img/preloader.gif) no-repeat 50% 50%;
+        }
+    </style>
 </head>
 
 <body>
-
+<div id="sitepreloader"></div>
 <div class="topbar">
     <nav class="navbar navbar-default">
         <div class="navbar-header">
@@ -143,18 +156,16 @@ use \Illuminate\Support\Facades\App;
 
 </div>
 
-<script type="x-tpl" id="cart-json">
-   {{json_encode($cart)}}
-
+<script type="javascript/template" id="cart-json">
+    {{json_encode($cart)}}
 </script>
 
 @define $user = App::make("UsersService")->getUser()
 
-<script type="x-tpl" id="appconfig">
+<script type="javascript/template" id="appconfig">
     {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
-     "siteConfig": {{$site_config->toJSON()}},
-     "token": "{{csrf_token()}}"}
-
+    "siteConfig": {{$site_config->toJSON()}},
+    "token": "{{csrf_token()}}"}
 </script>
 
 @if (Config::get('app.debug'))
