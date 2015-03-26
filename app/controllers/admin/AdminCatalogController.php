@@ -253,9 +253,9 @@ class AdminCatalogController extends AdminController
 
             }
 
-            $item->updateAges($ages);
             $item->updateTags($tags);
             $item->updateGoals($goals);
+            $item->updateAges($ages);
 
             if ($isNew) {
                 $gallery = new Gallery();

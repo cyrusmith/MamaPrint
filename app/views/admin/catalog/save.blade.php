@@ -164,6 +164,7 @@
         <fieldset>
             <legend><span class="glyphicon glyphicon-list"></span> {{Lang::get('static.admin.catalogitem.related')}}
             </legend>
+            {{$data['relatedtitles']}}
             <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
                 <input type="text" class="form-control"
                        value="{{$data['relatedtitles'] or ''}}" data-widget="relativesinput"/>

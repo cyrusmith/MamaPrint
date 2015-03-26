@@ -116,20 +116,20 @@ class CatalogItem extends Eloquent
 
     public function updateTags($values)
     {
-        $this->updateTagsForType($values, Tag::TYPE_TAG);
+        $this->updateTagsWithType($values, Tag::TYPE_TAG);
     }
 
     public function updateAges($values)
     {
-        $this->updateTagsForType($values, Tag::TYPE_AGE);
+        $this->updateTagsWithType($values, Tag::TYPE_AGE);
     }
 
     public function updateGoals($values)
     {
-        $this->updateTagsForType($values, Tag::TYPE_GOAL);
+        $this->updateTagsWithType($values, Tag::TYPE_GOAL);
     }
 
-    private function updateTagsForType($values, $type)
+    private function updateTagsWithType($values, $type)
     {
         try {
 
@@ -143,12 +143,13 @@ class CatalogItem extends Eloquent
             }
 
             if (count($ids) > 0) {
-                $this->tags()->detach($ids);
+                $this->taggableTags()->detach($ids);
             }
 
             $tags = [];
+            $tagIds = [];
             foreach ($values as $val) {
-                $tag = Tag::whereTag($val)->first();
+                $tag = Tag::whereTag($val)->where('type', '=', $type)->first();
                 if (empty($tag)) {
                     $tag = new Tag;
                     $tag->tag = $val;
@@ -156,8 +157,9 @@ class CatalogItem extends Eloquent
                     $tag->save();
                 }
                 $tags[] = $tag;
+                $tagIds[] = $tag->id;
             }
-            $this->tags()->saveMany($tags);
+            $this->taggableTags()->attach($tagIds);
             DB::commit();
         } catch (Exception $e) {
             DB::rollback();
