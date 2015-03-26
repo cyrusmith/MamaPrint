@@ -85,7 +85,7 @@ class AdminCatalogController extends AdminController
         return $this->makeView("admin.catalog.save", [
             'data' => array_merge($item->toArray(), [
                 'tags' => $item->getTagsAsString(),
-                'related' => $item->relatedItems,
+                'related' => $this->relatedItemsToLeanJson($item->relatedItems),
                 'tags' => $item->tagsAsCommaDelimeted(),
                 'info_ages' => $item->agesAsCommaDelimeted(),
                 'info_goals' => $item->goalsAsCommaDelimeted(),
@@ -96,6 +96,17 @@ class AdminCatalogController extends AdminController
             'attachments' => $attachments ? $attachments->toJSON() : json_encode([]),
             'images' => $gallery ? $gallery->images->toJSON() : json_encode([])
         ]);
+    }
+
+    private function relatedItemsToLeanJson($items) {
+        $json = [];
+        foreach($items as $item) {
+            $json[] = [
+                'id'=>$item->id,
+                'title'=>$item->title,
+            ];
+        }
+        return json_encode($json);
     }
 
     private function getRelatedIdsString($item)
