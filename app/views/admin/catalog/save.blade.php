@@ -235,9 +235,9 @@
 
     <script type="text/template" id="gallery-item-tpl">
         <li>
-            <a href="/images/<%= id %>"
+            <a href="/images/<%= id %>.<%= extension %>"
                class="img-rounded"
-               style="background:url(/images/<%= id %>?width=200&height=220&crop=1) no-repeat 50% 50%;background-size: auto 100%;"
+               style="background:url(/images/<%= id %>.<%= extension %>?width=200&height=220&crop=1) no-repeat 50% 50%;background-size: auto 100%;"
                target="_blank">
                 <% if(!id) { %>
 
