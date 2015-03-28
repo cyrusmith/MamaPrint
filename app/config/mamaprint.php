@@ -3,7 +3,7 @@
 define('DS', DIRECTORY_SEPARATOR);
 
 return array(
-    'version' => '0.2.4',
+    'version' => '0.2.5',
     'adminemail' => 'alexander.sutyagin@gmail.com',
     'supportemail' => 'info@mama-print.ru',
     'attachments_path' => __DIR__ . DS . '..' . DS . 'storage' . DS . 'attachments',
