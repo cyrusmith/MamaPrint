@@ -173,20 +173,27 @@ class GalleryService
 
                 $path = $cachePath;
 
+                $im = $typeToImageFunctions[$image->mime][0]($path);
+
+                header('Content-Type: ' . $image->mime);
+                header('Cache-Control: max-age=86400');
+                header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
+
+                if ($typeToImageFunctions[$image->mime][1] == 'imagejpeg') {
+                    $typeToImageFunctions[$image->mime][1]($im, null, 100);
+                } else if ($typeToImageFunctions[$image->mime][1] == 'imagepng') {
+                    $typeToImageFunctions[$image->mime][1]($im, null, 0);
+                } else {
+                    $typeToImageFunctions[$image->mime][1]($im);
+                }
+
             }
-
-            $im = $typeToImageFunctions[$image->mime][0]($path);
-
-            header('Content-Type: ' . $image->mime);
-            header('Cache-Control: max-age=86400');
-            header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
-
-            if ($typeToImageFunctions[$image->mime][1] == 'imagejpeg') {
-                $typeToImageFunctions[$image->mime][1]($im, null, 100);
-            } else if ($typeToImageFunctions[$image->mime][1] == 'imagepng') {
-                $typeToImageFunctions[$image->mime][1]($im, null, 0);
-            } else {
-                $typeToImageFunctions[$image->mime][1]($im);
+            else {
+                header('Content-Type: ' . $image->mime);
+                header('Cache-Control: max-age=86400');
+                header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 86400));
+                readfile($path);
+                exit;
             }
 
         } catch (Exception $e) {
