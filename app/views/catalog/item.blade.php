@@ -11,8 +11,9 @@
                         @if(count($images) === 0)
                             <img src="/img/noimage.png"/>
                         @else
-                            <a href="/images/{{$images[0]->id}}" class="gallery-image">
-                                <img src="/images/{{$images[0]->id}}"/> {{--?width=400&height=400&crop=1--}}
+                            <a href="{{action('GalleryController@view', ['id'=>$images[0]->id, 'ext'=>$images[0]->extension])}}"
+                               class="gallery-image">
+                                <img src="{{action('GalleryController@view', ['id'=>$images[0]->id, 'ext'=>$images[0]->extension])}}"/> {{--?width=400&height=400&crop=1--}}
                             </a>
                         @endif
                     </div>
@@ -36,6 +37,14 @@
 
                 <p>{{$item->short_description}}</p>
 
+                @if(!$item->tags->isEmpty())
+                    <p>
+                        @foreach($item->tags as $tag)
+                            <a class="label label-primary" href="/catalog?tags={{$tag->id}}">{{$tag->tag}}</a>
+                        @endforeach
+                    </p>
+                @endif
+
                 <p class="price">
 
                     @if(Auth::check())
@@ -46,7 +55,7 @@
                             @if(!empty($item->old_price))
                                 <span class="oldprice">{{$item->old_price/100}} руб.</span><br/>
                             @endif
-                            <span class="price text-primary">{{$item->getOrderPrice()/100}} руб.</span>
+                            <span class="price">{{$item->getOrderPrice()/100}} руб.</span>
                         @endif
                     @else
                         <span class="price">{{$item->getOrderPrice()/100}} руб.</span>
@@ -68,14 +77,22 @@
 
                 </p>
 
-                @if(!empty($item->info_age))
-                    <p><b>Возраст:</b> {{$item->info_age}}</p>
+                @if(!$item->ages->isEmpty())
+                    <p><b>Возраст:</b>
+                        @foreach($item->ages as $age)
+                            <a class="label label-info" href="/catalog?ages={{$age->id}}">{{$age->tag}}</a>
+                        @endforeach
+                    </p>
                 @endif
                 @if(!empty($item->info_level))
                     <p><b>Уровень сложности:</b> {{$item->info_level}}</p>
                 @endif
-                @if(!empty($item->info_targets))
-                    <p><b>Что развиваем:</b> {{$item->info_targets}}</p>
+                @if(!$item->goals->isEmpty())
+                    <p><b>Что развиваем:</b>
+                        @foreach($item->goals as $goal)
+                            <a class="label label-info" href="/catalog?goals={{$goal->id}}">{{$goal->tag}}</a>
+                        @endforeach
+                    </p>
                 @endif
 
                 @if(!Auth::check() || !$item->registered_price ==0)
@@ -103,7 +120,7 @@
                                style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
                                 заказ</a>
                             <br>
-                                <img src="/img/ic-payments.gif"/>
+                            <img src="/img/ic-payments.gif"/>
                         @endif
                     </div>
                 @endif
@@ -143,7 +160,7 @@
                                    class="btn btn-success" @if(!in_array($item->id, $cart_ids))
                                    style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
                                     заказ</a>
-                                    <br>
+                                <br>
                                 <img src="/img/ic-payments.gif"/>
                             @endif
                         </div>
@@ -168,7 +185,7 @@
                                         @if(empty($img))
                                             <img src="/img/noimage.png"/>
                                         @else
-                                            <img src="/images/{{$img->id}}?width=200&height=200&crop=1"/>
+                                            <img src="{{action('GalleryController@view', ['id'=>$img->id, 'ext'=>$img->extension])}}?width=200&height=200&crop=1"/>
                                         @endif
                                     </a>
                                     <h5>

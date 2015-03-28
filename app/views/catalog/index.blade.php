@@ -104,7 +104,9 @@
                                 @if(empty($image))
                                     <img src="/img/noimage.png" title="" alt=""/>
                                 @else
-                                    <img class="lazy" data-src="/images/{{$image->id}}" src="" {{--?width=360&height=360&crop=1--}}
+                                    <img class="lazy"
+                                         data-src="{{action('GalleryController@view', ['id'=>$image->id, 'ext'=>$image->extension])}}"
+                                         src="" {{--?width=360&height=360&crop=1--}}
                                          title="{{$item->title}}" alt="{{$item->short_description}}"/>
                                 @endif
                             </a>

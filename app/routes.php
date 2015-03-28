@@ -136,7 +136,7 @@ Route::get('/api/v1/tags', 'CatalogController@getTags');
 Route::get('/api/v1/ages', 'CatalogController@getAges');
 Route::get('/api/v1/goals', 'CatalogController@getGoals');
 
-Route::get('/images/{id}', 'GalleryController@view');
+Route::get('/images/{id}.{ext}', 'GalleryController@view');
 
 Route::group(array('before' => 'test'), function () {
 
