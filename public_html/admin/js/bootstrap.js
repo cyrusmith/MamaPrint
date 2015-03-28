@@ -5,7 +5,8 @@ require([
     'twitterbootstrap',
     'bootstrapTagsinput',
     'datetimepicker',
-    'jqueryui'], function ($,
+    'jqueryui',
+    'poly'], function ($,
                            tinymce,
                            editform) {
 

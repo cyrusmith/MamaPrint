@@ -164,15 +164,17 @@
         <fieldset>
             <legend><span class="glyphicon glyphicon-list"></span> {{Lang::get('static.admin.catalogitem.related')}}
             </legend>
-            {{$data['relatedtitles']}}
-            <div class="form-group {{$errors->has('info_age')?'has-error':''}}">
-                <input type="text" class="form-control"
-                       value="{{$data['relatedtitles'] or ''}}" data-widget="relativesinput"/>
-                <input type="hidden" name="related" value="{{$data['relatedids'] or ''}}"/>
+            <div data-widget="relativesinput" class="relativesinput">
+                <div class="form-group">
+                   <input type="text" class="form-control" placeholder="Начните вводить название материала"/>
+                </div>
+                <ol>
+                </ol>
 
-                <p>
-                    <small>Начните вводить название материала</small>
-                </p>
+                <script type="javascript/template" id="relativesinput-data">
+                    {{$data['related']}}
+                </script>
+
             </div>
         </fieldset>
 

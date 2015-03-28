@@ -287,7 +287,7 @@ class AdminCatalogController extends AdminController
 
             }
 
-            $relatedIds = array_filter(explode(",", Input::get('related')));
+            $relatedIds = Input::get('related');
 
             $item->relatedItems()->detach();
             if (is_array($relatedIds) && count($relatedIds) > 0) {
