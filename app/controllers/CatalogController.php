@@ -42,16 +42,16 @@ class CatalogController extends BaseController
 
         if (!empty($tags)) {
 
-            $ands = [];
+            /*$ands = [];
 
             foreach ($tags as $tag) {
                 $ands[] = "EXISTS (SELECT 1 FROM taggables WHERE taggables.taggable_id=catalog_items.id AND taggables.tag_id = $tag AND taggable_type LIKE 'Catalog\\\CatalogItem' ESCAPE '|')";
-            }
+            }*/
 
-            $taggedIds = DB::select('SELECT id FROM catalog_items WHERE ' . implode(" AND ", $ands));
+            $taggedIds = DB::select("SELECT t.taggable_id FROM taggables as t WHERE t.tag_id IN (" . implode(", ", $tags) . ") AND t.taggable_type LIKE 'Catalog\\\CatalogItem' ESCAPE '|'");
 
             $taggedIds = array_map(function ($item) {
-                return $item->id;
+                return $item->taggable_id;
             }, $taggedIds);
 
             $query->whereIn('id', $taggedIds);
