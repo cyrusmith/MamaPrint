@@ -158,6 +158,7 @@ class CatalogController extends BaseController
             'images' => $images,
             'page_title' => $item->title,
             'page_description' => $item->short_description,
+            'page_image' => !empty($images) ? action('GalleryController@view', ['id' => $images[0]->id, 'ext' => $images[0]->extension]) : null,
         ]);
 
     }

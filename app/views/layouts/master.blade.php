@@ -1,16 +1,17 @@
 <?php
 use \Illuminate\Support\Facades\App;
-
-?>
+?><!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{$page_title or $site_config->getDescriptor()}}</title>
     <meta name="description" content="{{$page_description or $site_config->getSeoDescription()}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
+    <meta property="og:image" content="{{$page_image or '/img/logobig.png'}}"/>
+    <link rel="image_src" href="{{$page_image or '/img/logobig.png'}}" />
     <link rel="stylesheet" type="text/css" href="/styles.css?v={{Config::get('mamaprint.version')}}">
     <style type="text/css">
         #sitepreloader {
