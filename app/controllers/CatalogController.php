@@ -16,9 +16,9 @@ class CatalogController extends BaseController
     {
         return View::make('catalog.index', [
             'items' => CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->paginate(20),
-            'tags' => Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get(),
-            'ages' => Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get(),
-            'goals' => Tag::where('type', '=', Tag::TYPE_GOAL)->orderBy('weight', 'asc')->get(),
+            'tags' => Tag::getExisting(Tag::TYPE_TAG),
+            'ages' => Tag::getExisting(Tag::TYPE_AGE),
+            'goals' => Tag::getExisting(Tag::TYPE_GOAL),
         ]);
     }
 
@@ -62,9 +62,9 @@ class CatalogController extends BaseController
         } else {
             return View::make('catalog.index', [
                 'items' => $query->paginate(20),
-                'tags' => Tag::where('type', '=', Tag::TYPE_TAG)->orderBy('weight', 'asc')->get(),
-                'ages' => Tag::where('type', '=', Tag::TYPE_AGE)->orderBy('weight', 'asc')->get(),
-                'goals' => Tag::where('type', '=', Tag::TYPE_GOAL)->orderBy('weight', 'asc')->get(),
+                'tags' => Tag::getExisting(Tag::TYPE_TAG),
+                'ages' => Tag::getExisting(Tag::TYPE_AGE),
+                'goals' => Tag::getExisting(Tag::TYPE_GOAL),
                 'search' => $search,
                 'selected_tags' => $tags,
             ]);
