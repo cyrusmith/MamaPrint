@@ -17,29 +17,9 @@ class CartController extends BaseController
         if (empty($user)) {
             App::abort(400);
         }
-
         $cart = $user->getOrCreateCart();
-
-        $items = [];
-        $total = 0;
-        foreach ($cart->items as $item) {
-            $gallery = $item->catalogItem->galleries()->first();
-            $price = $item->catalogItem->getOrderPrice();
-            $image = $gallery->images()->first();
-            $items[] = [
-                'id' => $item->catalog_item_id,
-                'title' => $item->catalogItem->title,
-                'slug' => $item->catalogItem->slug,
-                'registered_price' => $item->catalogItem->registered_price,
-                'price' => $price,
-                'thumb' => !empty($image) ? '/images/' . $image->id : null
-            ];
-            $total += $price;
-        }
-
         return View::make('user.cart', [
-            'items' => $items,
-            'total' => $total,
+            'items' => $cart->items,
             'page_title' => 'Корзина',
             'text' => Article::getArticleContent('paymentinstructions')
         ]);

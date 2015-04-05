@@ -7,10 +7,17 @@
  * Time: 0:09
  */
 use \Illuminate\Support\Facades\DB;
+use \Illuminate\Support\Facades\App;
+use \User\User;
 
 class AuthService
 {
 
+    /**
+     * Creates new guest User if it does not exists yet
+     * @param $guestid
+     * @return null|User
+     */
     public function registerGuest($guestid)
     {
 
@@ -39,13 +46,6 @@ class AuthService
                 $user->password = $guestid;
                 $user->guestid = $guestid;
                 $user->save();
-
-                $account = new \Account\Account();
-                $account->balance = 0;
-                $account->currency = "RUR";
-                $user->accounts()->save($account);
-                $user->save();
-
             }
             DB::commit();
 
@@ -55,6 +55,60 @@ class AuthService
         }
 
         return $user;
+
+    }
+
+    /**
+     * Registers user replacing guest user
+     * @throws Exception
+     */
+    public function registerUser(
+        $name,
+        $email,
+        $password,
+        $phone = null)
+    {
+        if (empty($name) || empty($email) || empty($password)) {
+            throw new Exception("Illegal arguments of registerUser");
+        }
+        try {
+            DB::beginTransaction();
+
+            $existingUser = User::where('email', '=', $email)->first();
+
+            if (!empty($existingUser)) {
+                throw new Exception('Illegal state: user ' . $existingUser->name . ' already confirmed');
+            }
+
+            $user = App::make('UsersService')->getUser();
+            if (!$user) {
+                $user = new User;
+            } else if (!$user->isGuest()) {
+                throw new Exception("Illegal state: current user is not guest.");
+            }
+            $user->guestid = null;
+            $user->name = $name;
+            $user->email = $email;
+            $user->password = $password;
+            $user->save();
+
+            UserPending::where('email', '=', $user->email)->delete();
+
+            $cart = $user->getOrCreateCart();
+
+            $itemPricePolicy = App::make("\Policy\OrderItemPricePolicy");
+            foreach ($cart->items as $cartItem) {
+                if ($itemPricePolicy->catalogItemPriceForUser($user, $cartItem->catalogItem) == 0) {
+                    $cartItem->delete();
+                }
+            }
+
+            DB::commit();
+            return $user;
+        } catch (Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
 
     }
 

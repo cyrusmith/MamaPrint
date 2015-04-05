@@ -74,59 +74,11 @@ class OrdersController extends BaseController
             App::abort(400, Lang::get('messages.error.usernotfound'));
         }
 
-        $cart = $user->cart;
-
-        if (empty($cart)) {
-            App::abort(400, Lang::get('messages.error.cart_is_empty'));
-        }
-
-        $cartItems = $cart->items;
-
-        $userCatalogItemIds = [];
-        foreach ($user->catalogItems as $userCatalogItem) {
-            $userCatalogItemIds[] = $userCatalogItem->id;
-        }
-
-        if ($cartItems->isEmpty()) {
-            App::abort(400, Lang::get('messages.error.cart_is_empty'));
-        }
-
-        $siteConfig = \Illuminate\Support\Facades\App::make("SiteConfigProvider")->getSiteConfig();
-
         try {
-
-            DB::beginTransaction();
-            $total = 0;
-
-            $order = new Order;
-            $order->user()->associate($user);
-            $order->status = Order::STATUS_PENDING;
-
-            $orderItems = [];
-            foreach ($cart->items as $item) {
-                if (Auth::check() && in_array($item->catalogItem->id, $userCatalogItemIds)) continue;
-                $price = $item->catalogItem->getOrderPrice();
-                $orderItem = new OrderItem;
-                $orderItem->price = $price;
-                $orderItem->catalogItem()->associate($item->catalogItem);
-                $orderItems[] = $orderItem;
-                $total += $price;
-            }
-
-            if ($total == 0 || $total < ($siteConfig->getMinOrderPrice() * 100)) {
-                throw new Exception("Минимальная сумма заказа - " . $siteConfig->getMinOrderPrice() . " P.");
-            }
-
-            $order->total = $total;
-            $order->save();
-            $order->items()->saveMany($orderItems);
-
-            DB::commit();
-            //TODO
-            return Redirect::to("https://secure.onpay.ru/pay/mamaprint_ru?price_final=true&ticker=RUR&pay_mode=fix&price=" . ((float)($order->total / 100.0)) . "&pay_for=" . $order->id . "&user_email=" . (Auth::check() ? Auth::user()->email : '') . "&url_success=" . URL::to('/pay/success/' . $order->id) . "&url_fail=" . URL::to('/pay/fail') . "&ln=ru");
+            $order = App::make("OrderService")->createOrderFromCart($user);
+            return Redirect::to("https://secure.onpay.ru/pay/mamaprint_ru?price_final=true&ticker=RUR&pay_mode=fix&price=" . ((float)($order->total / 100.0)) . "&pay_for=" . $order->id . "&user_email=" . ($user->isGuest() ? '' : $user->email) . "&url_success=" . URL::to('/pay/success/' . $order->id) . "&url_fail=" . URL::to('/pay/fail') . "&ln=ru");
         } catch (Exception $e) {
             Log::error($e);
-            DB::rollback();
             App::abort(500, Lang::get('messages.error.could_not_create_order') . ": " . $e->getMessage());
         }
 

@@ -28,12 +28,6 @@ class DatabaseSeeder extends Seeder
             $user->roles()->save(Role::getByName(Role::ROLE_USER));
             $user->save();
 
-            $acc = new \Account\Account();
-            $acc->currency = 'RUR';
-            $acc->balance = 0;
-            $acc->user()->associate($user);
-            $acc->save();
-
             $winterBook = new CatalogItem();
             $winterBook->title = 'Зимняя тетрадка';
             $winterBook->price = 9900;

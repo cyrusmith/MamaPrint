@@ -24,6 +24,10 @@ class CatalogItem extends Eloquent
         return (int)$value;
     }
 
+    /**
+     * @deprecate
+     * @return int
+     */
     public function getOrderPrice()
     {
         $user = Auth::user();

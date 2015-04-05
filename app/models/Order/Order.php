@@ -12,7 +12,6 @@ use Eloquent;
 class Order extends Eloquent
 {
 
-    const STATUS_CART = 'cart';
     const STATUS_PENDING = 'pending';
     const STATUS_COMPLETE = 'complete';
 
@@ -25,7 +24,7 @@ class Order extends Eloquent
 
     public function user()
     {
-        return $this->belongsTo('User');
+        return $this->belongsTo('\User\User');
     }
 
     public function getTotalAttribute($value)

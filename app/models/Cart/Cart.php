@@ -1,12 +1,5 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: cyrusmith
- * Date: 19.01.2015
- * Time: 12:48
- */
+<?php namespace Cart;
 
-namespace Cart;
 
 use Eloquent;
 use Cart\CartItem;

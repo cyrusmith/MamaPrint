@@ -1,22 +1,32 @@
+<?php
+$itemPricePolicy = Illuminate\Support\Facades\App::make('\Policy\OrderItemPricePolicy');
+?>
 @extends('layouts.master')
 
 @section('content')
 
     <div class="col-sm-8 col-sm-offset-2">
         <h3><span class="glyphicon glyphicon-shopping-cart text-primary"></span> Корзина</h3>
-        @if(count($items) > 0)
+        @if(!$items->isEmpty())
             <table class="table table-hover" data-widget="cartitems">
+                @define $total = 0
                 @foreach($items as $item)
-                    <tr data-cart-item data-cart-item-id="{{$item['id']}}">
+                    @define $price = $itemPricePolicy->catalogItemPriceForUser($user, $item->catalogItem)
+                    @define $total+=$price
+                    <tr data-cart-item data-cart-item-id="{{$item->catalogItem->id}}">
                         <td>
-                            <a href="{{URL::action('CatalogController@item', ['path'=>$item['slug']])}}"
-                               data-cart-item-title>{{$item['title']}}</a>
+                            <a href="{{URL::action('CatalogController@item', ['path'=>$item->catalogItem->slug])}}"
+                               data-cart-item-title>{{$item->catalogItem->title}}</a>
                         </td>
                         <td>
-                            <span data-cart-item-price>{{$item['price']/100}}</span> P
-                            @if($item['registered_price'] ==0)
-                                <a href="/login" class="btn btn-xs btn-default">Войти</a> и скачать бесплатно
-                                @endif
+
+                            <span data-cart-item-price>{{$price/100}}</span> P
+                            @if($item->catalogItem->registered_price == 0)
+                                <small><a href="{{action('AuthController@login')}}"
+                                          class="btn btn-xs btn-default">Войти</a> и скачать бесплатно
+                                </small>
+                            @endif
+
                         </td>
                         <th class="text-right"><a class="btn btn-danger btn-sm"
                                                   href="javascript:void(0);"
@@ -39,7 +49,9 @@
                               style="display: none;" @endif target="_blank">
                             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                             <button type="submit" class="btn btn-success"
+                            @if (!Config::get('app.debug'))
                                     onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('to_pay'); return true;"
+                                    @endif
                                     href="javascript:void(0);">
                                 Оплатить <span class="glyphicon glyphicon-chevron-right"></span></button>
                         </form>
@@ -66,9 +78,9 @@
                 покупки</a></p>
 
         @if(!empty($text))
-        <article>
-            {{$text}}
-        </article>
+            <article>
+                {{$text}}
+            </article>
         @endif
 
     </div>

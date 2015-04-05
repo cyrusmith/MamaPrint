@@ -1,10 +1,11 @@
-<?php
+<?php namespace User;
 
 use Illuminate\Auth\UserTrait;
 use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Cart\Cart;
+use Eloquent;
 
 class User extends Eloquent implements UserInterface, RemindableInterface
 {
@@ -100,6 +101,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface
         return $cart;
     }
 
+    /**
+     * @deprecated - move to UsersService
+     * @param $catalogItems
+     * @throws Exception
+     * @throws \Exception
+     */
     public function attachCatalogItems($catalogItems)
     {
 

@@ -115,7 +115,9 @@
                                 </form>
                             @endif
                             <a data-addtocart="data-addtocart"
+                               @if(!Config::get('app.debug')))
                                onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('to_basket'); return true;"
+                               @endif
                                class="btn btn-success" @if(in_array($item->id, $cart_ids))
                                style="display:none;"@endif data><span class="glyphicon glyphicon-shopping-cart"></span>
                                 Добавить
@@ -168,7 +170,9 @@
                                     </form>
                                 @endif
                                 <a data-addtocart
+                                   @if(!Config::get('app.debug')))
                                    onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('to_basket'); return true;"
+                                   @endif
                                    class="btn btn-success" @if(in_array($item->id, $cart_ids))
                                    style="display:none;"@endif data><span
                                             class="glyphicon glyphicon-shopping-cart"></span>

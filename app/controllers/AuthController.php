@@ -1,13 +1,7 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: cyrusmith
- * Date: 21.12.2014
- * Time: 20:23
- */
-
 use Cart\CartItem;
+use \User\User;
 
 class AuthController extends BaseController
 {
@@ -16,53 +10,29 @@ class AuthController extends BaseController
     {
 
         $hash = Input::get('hash');
-
         if (empty($hash)) {
             Response::view('auth.confirm', array(
                 'error' => 'Неверный запрос'
             ), 400);
         }
+        $pendingUser = UserPending::where('hash', '=', $hash)->first();
+        if (empty($pendingUser)) {
+            return Response::view('auth.confirm', array(
+                'error' => 'Устаревший запрос'
+            ), 400);
+        }
 
         try {
-
-            DB::beginTransaction();
-
-            $pendingUser = UserPending::where('hash', '=', $hash)->first();
-            if (empty($pendingUser)) {
-                return Response::view('auth.confirm', array(
-                    'error' => 'Устаревший запрос'
-                ), 400);
-            }
-
-            $user = User::where('email', '=', $pendingUser->email)->first();
-
-            if (!empty($user)) {
-                return Response::view('auth.confirm', array(
-                    'error' => 'Пользователь уже подтвержден'
-                ), 400);
-            }
-
-            $user = new User;
-            $user->email = $pendingUser->email;
-            $user->name = $pendingUser->name;
-            $user->password = $pendingUser->password;
-            $user->save();
-
-            $account = new \Account\Account();
-            $account->balance = 0;
-            $account->currency = "RUR";
-            $user->accounts()->save($account);
-
-            $user->roles()->save(Role::getByName(Role::ROLE_USER));
-
-            UserPending::where('email', '=', $user->email)->delete();
-
-            DB::commit();
-
+            App::make("AuthService")->registerUser(
+                $pendingUser->name,
+                $pendingUser->email,
+                $pendingUser->password);
             return Redirect::to('/login')->with('message', Lang::get('messages.thankyou_registration'));
-
-        } catch (Exception $e) {
-            DB::rollback();
+        }
+        catch(Exception $e) {
+            return Response::view('auth.confirm', array(
+                'error' => $e->getMessage()
+            ), 400);
         }
     }
 
@@ -160,7 +130,6 @@ class AuthController extends BaseController
         $password = Input::get('password');
 
         if (Auth::attempt(array('email' => $email, 'password' => $password))) {
-            App::make('UsersService')->moveInfoFromGuest();
             if (Auth::user()->hasRole(Role::getByName(Role::ROLE_ADMIN))) {
                 return Redirect::intended('/admin/catalog');
             } else {
