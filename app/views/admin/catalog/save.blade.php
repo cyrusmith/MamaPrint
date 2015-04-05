@@ -172,7 +172,7 @@
                 </ol>
 
                 <script type="javascript/template" id="relativesinput-data">
-                    {{$data['related']}}
+                    {{$data['related'] or ''}}
                 </script>
 
             </div>
@@ -227,10 +227,6 @@
 
     <script type="text/template" id="gallery-images-json">
         {{$images or '[]'}}
-    </script>
-
-    <script type="text/template" id="related-json">
-        {{$data['related'] or '[]'}}
     </script>
 
     <script type="text/template" id="gallery-item-tpl">
