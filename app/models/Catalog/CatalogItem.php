@@ -27,7 +27,7 @@ class CatalogItem extends Eloquent
     public function getOrderPrice()
     {
         $user = Auth::user();
-        if (!empty($user) && !$user->isGuest() && !empty($this->registered_price)) {
+        if (!empty($user) && !$user->isGuest()) {
             return (int)$this->registered_price;
         }
         return (int)$this->price;

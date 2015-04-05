@@ -14,6 +14,9 @@
                         </td>
                         <td>
                             <span data-cart-item-price>{{$item['price']/100}}</span> P
+                            @if($item['registered_price'] ==0)
+                                <a href="/login" class="btn btn-xs btn-default">Войти</a> и скачать бесплатно
+                                @endif
                         </td>
                         <th class="text-right"><a class="btn btn-danger btn-sm"
                                                   href="javascript:void(0);"

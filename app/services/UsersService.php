@@ -39,7 +39,9 @@ class UsersService
                     if (!empty($tmpUser)) {
 
                         foreach ($tmpUser->orders as $order) {
-                            $guestOrders[] = $order;
+                            if ($order->status == \Order\Order::STATUS_COMPLETE) {
+                                $guestOrders[] = $order;
+                            }
                         }
 
                         $tmpCart = $tmpUser->cart;
@@ -48,8 +50,10 @@ class UsersService
                             $authUserCart = $authUser->getOrCreateCart();
                             foreach ($tmpUser->cart->items as $tmpCartItem) {
                                 $cartItem = new \Cart\CartItem();
-                                $cartItem->catalogItem()->associate($tmpCartItem->catalogItem);
-                                $authUserCart->items()->save($cartItem);
+                                if ($tmpCartItem->catalogItem->getOrderPrice() > 0) {
+                                    $cartItem->catalogItem()->associate($tmpCartItem->catalogItem);
+                                    $authUserCart->items()->save($cartItem);
+                                }
                             }
                             $tmpUser->cart->delete();
 

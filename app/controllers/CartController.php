@@ -30,6 +30,7 @@ class CartController extends BaseController
                 'id' => $item->catalog_item_id,
                 'title' => $item->catalogItem->title,
                 'slug' => $item->catalogItem->slug,
+                'registered_price' => $item->catalogItem->registered_price,
                 'price' => $price,
                 'thumb' => !empty($image) ? '/images/' . $image->id : null
             ];
