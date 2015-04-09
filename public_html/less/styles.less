@@ -5,10 +5,29 @@
 @import "../bower_components/bootstrap/less/bootstrap.less";
 @import (less) "../bower_components/jquery-ui/themes/cupertino/jquery-ui.css";
 @import (less) "../bower_components/magnific-popup/dist/magnific-popup.css";
+//@import (less)"../bower_components/social-likes/social-likes_birman.css";
+@import (less)"../bower_components/social-likes/social-likes_classic.css";
+//@import (less)"../bower_components/social-likes/social-likes_flat.css";
 
 @icon-font-path: 'fonts/';
 
 @item-title-color: #e95312;
+
+
+.social-likes_notext .social-likes__button  {
+  width: 21px;
+}
+
+.social-likes {
+  padding: 1em 0 2em;
+  .btn {
+    padding-top: .2em;
+  }
+}
+
+#disqus_thread {
+  padding: 2em 0;
+}
 
 @font-face {
   font-family: 'mon_amour_twomedium';
@@ -516,7 +535,7 @@ h4 {
   }
 
   .buttons {
-    padding: 1em 0;
+    padding: 2em 0;
     .oneclickorder {
       display: inline-block;
     }

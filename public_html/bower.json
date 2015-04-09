@@ -24,7 +24,8 @@
     "jquery-lazy": "0.4.0",
     "domReady": "https://github.com/requirejs/domReady.git",
     "jquery-ui": "1.11",
-    "datetimepicker": "2.4.1"
+    "datetimepicker": "2.4.1",
+    "social-likes": "3.0.14"
   },
   "resolutions": {
     "jquery": "1.11.1"

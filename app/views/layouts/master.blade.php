@@ -10,8 +10,18 @@ use \Illuminate\Support\Facades\App;
     <meta name="description" content="{{$page_description or $site_config->getSeoDescription()}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
-    <meta property="og:image" content="{{$page_image or '/img/logobig.png'}}"/>
+
     <link rel="image_src" href="{{$page_image or '/img/logobig.png'}}" />
+
+    <meta property="og:type" content="{{$og_type or 'article'}}">
+    <meta property="og:url" content="{{Request::url()}}">
+    <meta property="og:title" content="{{$page_title or $site_config->getDescriptor()}}">
+    <meta property="og:description" content="{{$page_description or $site_config->getSeoDescription()}}">
+    <meta property="og:image" content="{{$page_image or '/img/logobig.png'}}"/>
+    <meta name="twitter:card" content="{{$page_title or $site_config->getDescriptor()}}">
+    <meta name="twitter:site" content="@mamaprint">
+    <meta name="twitter:creator" content="@mamaprint">
+
     <link rel="stylesheet" type="text/css" href="/styles.css?v={{Config::get('mamaprint.version')}}">
     <style type="text/css">
         #sitepreloader {

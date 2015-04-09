@@ -15,7 +15,8 @@ require.config({
         'jqautocomplete': '../bower_components/jquery-ui/ui/autocomplete',
         'headhesive': '../bower_components/headhesive.js/dist/headhesive',
         'requireLib': '../bower_components/requirejs/require',
-        'jqueryLazy' : '../bower_components/jquery-lazy/jquery.lazy'
+        'jqueryLazy' : '../bower_components/jquery-lazy/jquery.lazy',
+        'socialLikes': '../bower_components/social-likes/social-likes.min'
     },
 
     urlArgs: "bust=" + Date.now(),
@@ -28,6 +29,7 @@ require.config({
         twitterbootstrap: ['jquery'],
         jqautocomplete: ['jquery'],
         jqueryLazy: ['jquery'],
+        socialLikes: ['jquery'],
         headhesive: {
             exports: 'Headhesive'
         },

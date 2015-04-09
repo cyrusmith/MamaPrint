@@ -1,6 +1,7 @@
 require([
     'jquery',
     'jqueryLazy',
+    'socialLikes',
     'headhesive',
     'magnific',
     'twitterbootstrap',
@@ -75,6 +76,8 @@ require([
             });
 
             $('#sitepreloader').remove();
+
+            $('.social-likes').socialLikes();
 
         });
 

@@ -6,6 +6,7 @@
 
         <div class="row">
             <div class="col-sm-6">
+                <!-- Image -->
                 <div class="gallery" data-widget="gallery">
                     <div class="mainimage">
                         @if(count($images) === 0)
@@ -30,6 +31,8 @@
                     @endif
 
                 </div>
+                <!-- End Image-->
+
             </div>
             <div class="col-sm-6">
 
@@ -38,9 +41,9 @@
                 <p>{{$item->short_description}}</p>
 
                 @if(!$item->tags->isEmpty())
-                    <p>
+                    <p><span>Тэги: </span>
                         @foreach($item->tags as $tag)
-                            <a class="label label-primary" href="/catalog?tags={{$tag->id}}">{{$tag->tag}}</a>
+                            <a class="btn btn-xs btn-default" href="/catalog?tags={{$tag->id}}">{{$tag->tag}}</a>
                         @endforeach
                     </p>
                 @endif
@@ -80,17 +83,19 @@
                 @if(!$item->ages->isEmpty())
                     <p><b>Возраст:</b>
                         @foreach($item->ages as $age)
-                            <a class="label label-info" href="/catalog?ages={{$age->id}}">{{$age->tag}}</a>
+                            <a class="btn btn-xs btn-default" href="/catalog?ages={{$age->id}}">{{$age->tag}}</a>
                         @endforeach
                     </p>
                 @endif
+                {{--  }}
                 @if(!empty($item->info_level))
                     <p><b>Уровень сложности:</b> {{$item->info_level}}</p>
                 @endif
+                {{  --}}
                 @if(!$item->goals->isEmpty())
                     <p><b>Что развиваем:</b>
                         @foreach($item->goals as $goal)
-                            <a class="label label-info" href="/catalog?goals={{$goal->id}}">{{$goal->tag}}</a>
+                            <a class="btn btn-xs btn-default" href="/catalog?goals={{$goal->id}}">{{$goal->tag}}</a>
                         @endforeach
                     </p>
                 @endif
@@ -124,6 +129,18 @@
                         @endif
                     </div>
                 @endif
+
+
+                <div class="social-likes social-likes_notext" data-url="{{Request::url()}}">
+                    <span class="btn btn-xs">Поделиться:</span>
+                    <div class="vkontakte" title="Поделитесь в VK.com">&nbsp;&nbsp;&nbsp;</div>
+                    <div class="odnoklassniki" title="Поделитесь в Одноклассниках"></div>
+                    <div class="pinterest" title="Поделитесь в Pinterest"></div>
+                    <div class="facebook" title="Поделитесь в Facebook"></div>
+                    <div class="twitter" title="Поделитесь в Twitter"></div>
+                    <div class="plusone" title="Поделитесь в Google+"></div>
+                    <div class="mailru" title="Поделитесь в Mailru"></div>
+                </div>
 
             </div>
         </div>
