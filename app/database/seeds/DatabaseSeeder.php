@@ -1,6 +1,7 @@
 <?php
 
 use Catalog\CatalogItem;
+use User\User;
 
 class DatabaseSeeder extends Seeder
 {

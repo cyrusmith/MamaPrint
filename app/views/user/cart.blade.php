@@ -25,6 +25,10 @@ $itemPricePolicy = Illuminate\Support\Facades\App::make('\Policy\OrderItemPriceP
                                 <small><a href="{{action('AuthController@login')}}"
                                           class="btn btn-xs btn-default">Войти</a> и скачать бесплатно
                                 </small>
+                            @elseif($item->catalogItem->registered_price < $price)
+                                <small><a href="{{action('AuthController@login')}}"
+                                          class="btn btn-xs btn-default">Войти</a> и скачать за {{$item->catalogItem->registered_price/100}} руб.
+                                </small>
                             @endif
 
                         </td>
