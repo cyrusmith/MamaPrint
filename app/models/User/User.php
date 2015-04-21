@@ -6,6 +6,7 @@ use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Cart\Cart;
 use Eloquent;
+use Illuminate\Support\Facades\DB;
 
 class User extends Eloquent implements UserInterface, RemindableInterface
 {
@@ -102,7 +103,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface
     }
 
     /**
-     * @deprecated - move to UsersService
+     * @deprecated - make it eventually consistent via UserService
      * @param $catalogItems
      * @throws Exception
      * @throws \Exception

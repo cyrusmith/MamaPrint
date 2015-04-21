@@ -1,21 +1,13 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: cyrusmith
- * Date: 25.12.2014
- * Time: 12:14
- */
 use \Illuminate\Support\Facades\DB;
 use \Order\Order;
 use \Order\OrderItem;
+use User\User;
 
 class OrderService
 {
 
-    /**
-     * Creates order from cart items
-     */
     public function createOrderFromCart($user)
     {
         try {
@@ -26,8 +18,8 @@ class OrderService
                 throw new Exception("Невозможно создать заказ т.к. корзина пуста");
             }
 
-            $itemPricePolicy = App::make("\Policy\OrderItemPricePolicy");
-            $orderLimitPolicy = App::make("\Policy\OrderLimitPolicy");
+            $itemPricePolicy = App::make('\Policy\OrderItemPricePolicy');
+            $orderLimitPolicy = App::make('\Policy\OrderLimitPolicy');
 
             $total = 0;
 
@@ -65,8 +57,9 @@ class OrderService
         }
     }
 
-    public function completeOrder($orderId)
+    public function completeOrder($orderId, $email = null)
     {
+        $order = null;
         DB::beginTransaction();
         try {
 
@@ -101,6 +94,7 @@ class OrderService
             $user->attachCatalogItems($catalogItems);
 
             DB::commit();
+
             return $order;
 
         } catch (Exception $e) {
@@ -108,6 +102,11 @@ class OrderService
             DB::rollback();
             throw $e;
         }
+
+        if ($order != null && $order->user->isGuest() && !empty($email)) {
+            App::make('DownloadLinkService')->createAndSendLink($order->id, $email);
+        }
+
     }
 
     public function createOrderArchive($orderId)

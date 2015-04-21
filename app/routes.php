@@ -148,6 +148,7 @@ Route::group(array('before' => 'test'), function () {
 
     Route::post('/test/orders/payorder', 'Test\OrdersTestController@testPayOrder');
     Route::post('/test/orders/downloadlink', 'Test\OrdersTestController@testDownloadLink');
+    Route::get('/test/orders/complete', 'Test\OrdersTestController@testCompleteOrder');
 
 });
 

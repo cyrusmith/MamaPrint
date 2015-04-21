@@ -65,4 +65,19 @@ class OrdersTestController extends \BaseController
         }
     }
 
+    public function testCompleteOrder()
+    {
+        $orderId = Input::get('order_id');
+        try {
+            return Response::json([
+                'order' => App::make('OrderService')->completeOrder($orderId, Input::get('user.email'))
+            ], 200);
+        } catch (\Exception $e) {
+            return Response::json([
+                'error' => $e->getMessage()
+            ], 200);
+        }
+    }
+
+
 }
