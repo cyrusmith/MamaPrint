@@ -14,11 +14,13 @@ class OnpayService
         $mode,
         $signature)
     {
+
         $amount = floatval($amount);
         $amount = intval($amount * 100) / 100.0;
         $amountStr = $this->amountStr($amount);
 
         $order = Order::find($payFor);
+
         return (!empty($order)
             && ($order->total === intval(100 * $amount))
             && ($currency == "RUR" || $currency == "TST")
@@ -51,6 +53,15 @@ class OnpayService
         }
 
         return true;
+    }
+
+    private function amountStr($amount)
+    {
+        $str = strval($amount);
+        if ($amount == intval($amount)) {
+            $str = $str . ".0";
+        }
+        return $str;
     }
 
 }

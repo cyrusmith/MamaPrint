@@ -149,13 +149,4 @@ class PaymentsController extends BaseController
 
     }
 
-    private function amountStr($amount)
-    {
-        $str = strval($amount);
-        if ($amount == intval($amount)) {
-            $str = $str . ".0";
-        }
-        return $str;
-    }
-
 }
