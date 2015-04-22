@@ -9,6 +9,7 @@
 
 use Order\Order;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 
 class PaymentsController extends BaseController
 {
@@ -86,6 +87,7 @@ class PaymentsController extends BaseController
                     ), 200);
 
                 } else {
+                    Log::error("Check validation failed");
                     return Response::json(array(
                         "status" => false,
                         "pay_for" => $payFor,
@@ -110,17 +112,24 @@ class PaymentsController extends BaseController
                     $currency,
                     $paymentAmount,
                     $paymentWay,
-                    $signature)) {
+                    $signature)
+                ) {
+                    Log::error("Pay validation failed");
                     return Response::json(array(
                         "code" => false,
                         "pay_for" => $payFor,
                         "signature" => sha1("pay;false;$payFor;" . Config::get('services.onpay.secret'))
                     ), 400);
                 }
-                
+
 
                 try {
                     App::make('OrderService')->completeOrder($payFor, Input::get('user.email'));
+                    return Response::json(array(
+                        "status" => true,
+                        "pay_for" => $payFor,
+                        "signature" => sha1("pay;true;$payFor;" . Config::get('services.onpay.secret'))
+                    ), 200);
                 } catch (Exception $e) {
                     Log::error('Fail to pay order: ' . $e->getMessage());
                     return Response::json(array(
@@ -132,7 +141,7 @@ class PaymentsController extends BaseController
 
                 break;
         }
-
+        Log::error("Unknown onpay method");
         return Response::json(array(
             "Error"
         ), 404);
