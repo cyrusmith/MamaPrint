@@ -8,7 +8,7 @@
  */
 
 use Order\Order;
-use Account\OperationRefill;
+use Illuminate\Support\Facades\App;
 
 class PaymentsController extends BaseController
 {
@@ -62,76 +62,65 @@ class PaymentsController extends BaseController
         Log::debug("onpayApi:");
         Log::debug(Input::get());
 
+        $onpayService = App::make('OnpayService');
+
         switch (Input::get('type')) {
             case 'check':
 
                 $payFor = Input::get('pay_for');
-
-                $amount = floatval(Input::get('amount'));
-                $amount = intval($amount * 100) / 100.0;
-                $amountStr = $this->amountStr($amount);
-
+                $amount = Input::get('amount');
                 $currency = Input::get('way');
                 $mode = Input::get('mode');
                 $signature = Input::get('signature');
 
-                $order = Order::find($payFor);
-                if (empty($order)
-                    || ($order->total !== intval(100 * $amount))
-                    || ($currency != "RUR" && $currency != "TST")
-                    || $mode != "fix"
-                    || $signature != sha1("check;$payFor;$amountStr;$currency;$mode;" . Config::get('services.onpay.secret'))
+                if ($onpayService->validateCheckRequest($payFor,
+                    $amount,
+                    $currency,
+                    $mode,
+                    $signature)
                 ) {
+                    return Response::json(array(
+                        "status" => true,
+                        "pay_for" => $payFor,
+                        "signature" => sha1("check;true;$payFor;" . Config::get('services.onpay.secret'))
+                    ), 200);
 
+                } else {
                     return Response::json(array(
                         "status" => false,
                         "pay_for" => $payFor,
                         "signature" => sha1("check;false;$payFor;" . Config::get('services.onpay.secret'))
                     ), 400);
-                }
 
-                return Response::json(array(
-                    "status" => true,
-                    "pay_for" => $payFor,
-                    "signature" => sha1("check;true;$payFor;" . Config::get('services.onpay.secret'))
-                ), 200);
+                }
 
                 break;
 
             case 'pay':
 
                 $payFor = Input::get('pay_for');
-                $orderId = $payFor;
-
                 $balanceAmount = Input::get('balance.amount');
-                $balanceAmountStr = $this->amountStr($balanceAmount);
-
                 $currency = Input::get('balance.way');
+                $paymentAmount = Input::get('payment.amount');
+                $paymentWay = Input::get('payment.way');
                 $signature = Input::get('signature');
 
-                $paymentAmount = Input::get('payment.amount');
-                $paymentAmountStr = $this->amountStr($paymentAmount);
-
-                $paymentWay = Input::get('payment.way');
-                $balanceWay = $currency;
-
-                Log::debug("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
-                $checkSignature = sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
-                if (($currency != "RUR" && $currency != "TST")
-                    || $signature != $checkSignature
-                ) {
-                    Log::debug("Payment verification fail");
-                    Log::debug("currency=" . $currency);
-                    Log::debug("signatures: " . $signature . " " . $checkSignature);
+                if (!$onpayService->validatePayRequest($payFor,
+                    $balanceAmount,
+                    $currency,
+                    $paymentAmount,
+                    $paymentWay,
+                    $signature)) {
                     return Response::json(array(
                         "code" => false,
                         "pay_for" => $payFor,
                         "signature" => sha1("pay;false;$payFor;" . Config::get('services.onpay.secret'))
                     ), 400);
                 }
+                
 
                 try {
-                    App::make('OrderService')->completeOrder($orderId, Input::get('user.email'));
+                    App::make('OrderService')->completeOrder($payFor, Input::get('user.email'));
                 } catch (Exception $e) {
                     Log::error('Fail to pay order: ' . $e->getMessage());
                     return Response::json(array(
