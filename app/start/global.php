@@ -120,10 +120,6 @@ App::singleton('\Policy\OrderLimitPolicy', function ($app) {
     return new \Policy\OrderLimitPolicy();
 });
 
-App::singleton('OnpayService', function ($app) {
-    return new OnpayService();
-});
-
 Blade::extend(function ($value) {
     return preg_replace('/\@define(.+)/', '<?php ${1}; ?>', $value);
 });

@@ -4,14 +4,15 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Order\Order;
 
+
 class PaymentsTest extends TestCase
 {
 
     public function setUp()
     {
         parent::setUp();
-        $this->mock  = Mockery::mock('Order');
-        $this->app->instance('Order', $this->mock);
+        $this->orderMock = Mockery::mock('mamaprint\repositories\OrderRepositoryInterface');
+        $this->app->instance('mamaprint\repositories\OrderRepositoryInterface', $this->orderMock);
     }
 
     public function tearDown()
@@ -20,15 +21,16 @@ class PaymentsTest extends TestCase
         Mockery::close();
     }
 
-    public function testSomethingIsTrue()
+    public function testCheckRequest()
     {
 
         $dummySecret = "secret";
 
-        Config::shouldReceive('get')->with('services.onpay.secret')->andReturn($dummySecret);
-        Config::shouldReceive('offsetGet')->andReturn(true);
+        $dummyOrder = new Order();
+        $dummyOrder->total = 1205;
+        $this->orderMock->shouldReceive('find')->once()->andReturn($dummyOrder);
 
-        $this->mock->shouldReceive('find')->with("123")->once()->andReturn(123);
+        Config::shouldReceive('get')->with('services.onpay.secret')->andReturn($dummySecret);
 
         $service = App::make('OnpayService');
 
@@ -45,6 +47,42 @@ class PaymentsTest extends TestCase
             $currency,
             $mode,
             $signature);
+
+        $this->assertTrue($result);
+
+    }
+
+    public function testPayRequest()
+    {
+
+        //TODO test that order is not payed
+
+        $dummySecret = "secret";
+
+        $dummyOrder = new Order();
+        $dummyOrder->total = 1205;
+        $this->orderMock->shouldReceive('find')->once()->andReturn($dummyOrder);
+
+        Config::shouldReceive('get')->with('services.onpay.secret')->andReturn($dummySecret);
+
+        $service = App::make('OnpayService');
+
+        $payFor = "123";
+        $balanceAmount = "12.05";
+        $paymentAmount = "13.0";
+        $balanceWay = "RUR";
+        $paymentWay = "RUR";
+
+        $signature = sha1("pay;$payFor;13.0;$paymentWay;12.05;$balanceWay;" . $dummySecret);;
+
+        $result = $service->validatePayRequest(
+            $payFor,
+            $balanceAmount,
+            $balanceWay,
+            $paymentAmount,
+            $paymentWay,
+            $signature
+        );
 
         $this->assertTrue($result);
 

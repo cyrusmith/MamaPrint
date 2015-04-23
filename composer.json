@@ -23,7 +23,10 @@
       "app/database/migrations",
       "app/database/seeds",
       "app/tests/TestCase.php"
-    ]
+    ],
+    "psr-4": {
+      "mamaprint\\": "app/mamaprint"
+    }
   },
   "scripts": {
     "post-install-cmd": [

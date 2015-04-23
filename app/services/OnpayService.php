@@ -3,9 +3,15 @@
 use Order\Order;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use mamaprint\repositories\OrderRepositoryInterface;
 
 class OnpayService
 {
+
+    public function __construct(OrderRepositoryInterface $orderRepository)
+    {
+        $this->orderRepository = $orderRepository;
+    }
 
     public function validateCheckRequest(
         $payFor,
@@ -19,8 +25,7 @@ class OnpayService
         $amount = intval($amount * 100) / 100.0;
         $amountStr = $this->amountStr($amount);
 
-        $order = Order::find($payFor);
-
+        $order = $this->orderRepository->find($payFor);
         return (!empty($order)
             && ($order->total === intval(100 * $amount))
             && ($currency == "RUR" || $currency == "TST")
@@ -32,22 +37,21 @@ class OnpayService
     public function validatePayRequest(
         $payFor,
         $balanceAmount,
-        $currency,
+        $balanceWay,
         $paymentAmount,
         $paymentWay,
         $signature
     ) {
         $balanceAmountStr = $this->amountStr($balanceAmount);
         $paymentAmountStr = $this->amountStr($paymentAmount);
-        $balanceWay = $currency;
 
         Log::debug("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
         $checkSignature = sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
-        if (($currency != "RUR" && $currency != "TST")
+        if (($balanceWay != "RUR" && $balanceWay != "TST")
             || $signature != $checkSignature
         ) {
             Log::debug("Payment verification fail");
-            Log::debug("currency=" . $currency);
+            Log::debug("currency=" . $balanceWay);
             Log::debug("signatures: " . $signature . " " . $checkSignature);
             return false;
         }

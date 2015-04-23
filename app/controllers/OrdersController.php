@@ -11,9 +11,15 @@ use Order\Order;
 use Order\OrderItem;
 use Catalog\CatalogItem;
 use \Illuminate\Support\Facades\Log;
+use mamaprint\repositories\OrderRepositoryInterface;
 
 class OrdersController extends BaseController
 {
+
+    public function __construct(OrderRepositoryInterface $orderRepository)
+    {
+        $this->orderRepository = $orderRepository;
+    }
 
     public function buyitem($itemId)
     {
