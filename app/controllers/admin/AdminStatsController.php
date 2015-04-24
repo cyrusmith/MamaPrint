@@ -86,9 +86,33 @@ class AdminStatsController extends AdminController
 
         $perPage = 50;
 
-        $total = count(DB::select('select count(catalog_items.id) as count from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=? group by catalog_items.id', [Order::STATUS_COMPLETE]));
+        $total = count(DB::select("select
+  catalog_items.id
+from order_items
+left join orders on orders.id=order_items.order_id
+left join catalog_items on order_items.catalog_item_id=catalog_items.id
+where
+  orders.status=?
+group by catalog_items.id", [Order::STATUS_COMPLETE]));
 
-        $items = DB::select('select catalog_items.id, catalog_items.price, count(catalog_items.id) as count, sum(order_items.price) as sum, catalog_items.title, order_items.price, orders.updated_at from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=? group by catalog_items.id order by sum desc limit ' . (($page - 1) * $perPage) . ', ' . $perPage, [Order::STATUS_COMPLETE]);
+        //$items = DB::select('select catalog_items.id, catalog_items.price, count(catalog_items.id) as count, sum(order_items.price) as sum, catalog_items.title, order_items.price, orders.updated_at from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=? group by catalog_items.id order by sum desc limit ' . (($page - 1) * $perPage) . ', ' . $perPage, [Order::STATUS_COMPLETE]);
+        $items = DB::select("select
+  catalog_items.id,
+  catalog_items.price,
+  catalog_items.registered_price,
+  catalog_items.old_price,
+  catalog_items.title,
+  catalog_items.slug,
+  count(catalog_items.id) as number_bought,
+  sum(order_items.price) as total,
+  (select group_concat(t0.tag separator ',') from taggables as tbl0 left join tags as t0 on t0.id=tbl0.tag_id where t0.type like 'tag' and tbl0.taggable_id=catalog_items.id and tbl0.taggable_type like 'Catalog\\\CatalogItem' ESCAPE '|' group by tbl0.taggable_id)
+  as tags
+from order_items
+left join orders on orders.id=order_items.order_id
+left join catalog_items on order_items.catalog_item_id=catalog_items.id
+where
+  orders.status=?
+group by catalog_items.id order by total desc limit ". (($page - 1) * $perPage) . ', ' . $perPage, [Order::STATUS_COMPLETE]);
 
         $pagedItems = Paginator::make($items, $total, $perPage);
 

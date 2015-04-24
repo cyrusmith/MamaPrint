@@ -10,9 +10,11 @@
 
         <tr>
             <th>Название</th>
+            <th>Тэги</th>
             <th>Цена</th>
+            <th>Цена для зарегиных</th>
             <th>Кол-во покупок</th>
-            <th>Сумма</th>
+            <th>Сумма по товару</th>
         </tr>
 
         @foreach($items as $item)
@@ -21,14 +23,18 @@
                 <td>
                     <a href="{{action('Admin\AdminCatalogController@getItem', ['id'=>$item->id])}}">{{$item->title}}</a>
                 </td>
+                <td width="100"><small>{{implode(", ",explode(",", $item->tags))}}</small></td>
                 <td>
                     {{$item->price/100}}
                 </td>
                 <td>
-                    {{$item->count}}
+                    {{$item->registered_price/100}}
                 </td>
                 <td>
-                    {{$item->sum/100}}
+                    {{$item->number_bought}}
+                </td>
+                <td>
+                    {{$item->total/100}}
                 </td>
             </tr>
 
