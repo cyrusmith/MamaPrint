@@ -55,12 +55,11 @@ class PaymentsTest extends TestCase
     public function testPayRequest()
     {
 
-        //TODO test that order is not payed
-
         $dummySecret = "secret";
 
         $dummyOrder = new Order();
         $dummyOrder->total = 1205;
+        $dummyOrder->status = Order::STATUS_PENDING;
         $this->orderMock->shouldReceive('find')->once()->andReturn($dummyOrder);
 
         Config::shouldReceive('get')->with('services.onpay.secret')->andReturn($dummySecret);
@@ -73,8 +72,7 @@ class PaymentsTest extends TestCase
         $balanceWay = "RUR";
         $paymentWay = "RUR";
 
-        $signature = sha1("pay;$payFor;13.0;$paymentWay;12.05;$balanceWay;" . $dummySecret);;
-
+        $signature = sha1("pay;$payFor;13.0;$paymentWay;12.05;$balanceWay;" . $dummySecret);
         $result = $service->validatePayRequest(
             $payFor,
             $balanceAmount,
@@ -86,6 +84,16 @@ class PaymentsTest extends TestCase
 
         $this->assertTrue($result);
 
+    }
+
+    public function testPayFractionalSums()
+    {
+        //TODO
+    }
+
+    public function testOrderAlreadyPayed()
+    {
+        //TODO
     }
 
 }

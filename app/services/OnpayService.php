@@ -42,12 +42,20 @@ class OnpayService
         $paymentWay,
         $signature
     ) {
+        $balanceAmount = floatval($balanceAmount);
+        $balanceAmount = intval($balanceAmount * 100) / 100.0;
+
+        $paymentAmount = floatval($paymentAmount);
+        $paymentAmount = intval($paymentAmount * 100) / 100.0;
+
         $balanceAmountStr = $this->amountStr($balanceAmount);
         $paymentAmountStr = $this->amountStr($paymentAmount);
 
+        $order = $this->orderRepository->find($payFor);
+
         Log::debug("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
         $checkSignature = sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
-        if (($balanceWay != "RUR" && $balanceWay != "TST")
+        if (empty($order) || $order->status!=Order::STATUS_PENDING || ($balanceWay != "RUR" && $balanceWay != "TST")
             || $signature != $checkSignature
         ) {
             Log::debug("Payment verification fail");
