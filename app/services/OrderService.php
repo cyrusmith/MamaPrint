@@ -4,9 +4,17 @@ use \Illuminate\Support\Facades\DB;
 use \Order\Order;
 use \Order\OrderItem;
 use User\User;
+use mamaprint\domain\user\UserRepositoryInterface;
+use mamaprint\domain\order\OrderRepositoryInterface;
 
 class OrderService
 {
+
+    public function __construct(OrderRepositoryInterface $orderRepository, UserRepositoryInterface $userRepository)
+    {
+        $this->orderRepository = $orderRepository;
+        $this->userRepository = $userRepository;
+    }
 
     public function createOrderFromCart($user)
     {
@@ -63,7 +71,7 @@ class OrderService
         DB::beginTransaction();
         try {
 
-            $order = Order::find($orderId);
+            $order = $this->orderRepository->find($orderId);
 
             if (empty($order)) {
                 throw new InvalidArgumentException("Order #$orderId not found");
@@ -73,7 +81,7 @@ class OrderService
                 throw new InvalidArgumentException("Order #$orderId already payed");
             }
 
-            $user = User::find($order->user->id);
+            $user = $this->userRepository->find($order->user->id);
             $cart = $user->cart;
             $cart->items()->delete();
             $order->status = Order::STATUS_COMPLETE;

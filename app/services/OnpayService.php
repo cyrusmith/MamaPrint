@@ -41,7 +41,8 @@ class OnpayService
         $paymentAmount,
         $paymentWay,
         $signature
-    ) {
+    )
+    {
         $balanceAmount = floatval($balanceAmount);
         $balanceAmount = intval($balanceAmount * 100) / 100.0;
 
@@ -55,7 +56,7 @@ class OnpayService
 
         Log::debug("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
         $checkSignature = sha1("pay;$payFor;$paymentAmountStr;$paymentWay;$balanceAmountStr;$balanceWay;" . Config::get('services.onpay.secret'));
-        if (empty($order) || $order->status!=Order::STATUS_PENDING || ($balanceWay != "RUR" && $balanceWay != "TST")
+        if (empty($order) || ($order->status != Order::STATUS_PENDING) || ($balanceWay != "RUR" && $balanceWay != "TST")
             || $signature != $checkSignature
         ) {
             Log::debug("Payment verification fail");

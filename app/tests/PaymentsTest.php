@@ -88,12 +88,66 @@ class PaymentsTest extends TestCase
 
     public function testPayFractionalSums()
     {
-        //TODO
+        $dummySecret = "secret";
+
+        $dummyOrder = new Order();
+        $dummyOrder->total = 1205;
+        $dummyOrder->status = Order::STATUS_PENDING;
+        $this->orderMock->shouldReceive('find')->once()->andReturn($dummyOrder);
+
+        Config::shouldReceive('get')->with('services.onpay.secret')->andReturn($dummySecret);
+
+        $service = App::make('OnpayService');
+
+        $payFor = "123";
+        $balanceAmount = "12.5";
+        $paymentAmount = 13.0;
+        $balanceWay = "RUR";
+        $paymentWay = "RUR";
+
+        $signature = sha1("pay;$payFor;13.0;$paymentWay;12.5;$balanceWay;" . $dummySecret);
+        $result = $service->validatePayRequest(
+            $payFor,
+            $balanceAmount,
+            $balanceWay,
+            $paymentAmount,
+            $paymentWay,
+            $signature
+        );
+
+        $this->assertTrue($result);
     }
 
     public function testOrderAlreadyPayed()
     {
-        //TODO
+        $dummySecret = "secret";
+
+        $dummyOrder = new Order();
+        $dummyOrder->total = 1205;
+        $dummyOrder->status = Order::STATUS_COMPLETE;
+        $this->orderMock->shouldReceive('find')->once()->andReturn($dummyOrder);
+
+        Config::shouldReceive('get')->with('services.onpay.secret')->andReturn($dummySecret);
+
+        $service = App::make('OnpayService');
+
+        $payFor = "123";
+        $balanceAmount = "12.5";
+        $paymentAmount = 13.0;
+        $balanceWay = "RUR";
+        $paymentWay = "RUR";
+
+        $signature = sha1("pay;$payFor;13.0;$paymentWay;12.5;$balanceWay;" . $dummySecret);
+        $result = $service->validatePayRequest(
+            $payFor,
+            $balanceAmount,
+            $balanceWay,
+            $paymentAmount,
+            $paymentWay,
+            $signature
+        );
+
+        $this->assertFalse($result);
     }
 
 }
