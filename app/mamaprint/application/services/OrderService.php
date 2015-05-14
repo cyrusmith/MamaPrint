@@ -4,6 +4,7 @@ namespace mamaprint\application\services;
 
 use Illuminate\Support\Facades\DB;
 use mamaprint\domain\order\OrderRepositoryInterface;
+use mamaprint\infrastructure\events\AppEvent;
 use Order\Order;
 use Order\OrderItem;
 
@@ -22,10 +23,10 @@ class OrderService
             DB::beginTransaction();
             $order = $this->orderRepository->find($orderId);
             if (empty($order)) {
-                throw new InvalidArgumentException("Order #$orderId not found");
+                throw new \InvalidArgumentException("Order #$orderId not found");
             }
             if ($order->status !== Order::STATUS_PENDING) {
-                throw new InvalidArgumentException("Order #$orderId already payed");
+                throw new \InvalidArgumentException("Order #$orderId already payed");
             }
             $order->status = Order::STATUS_COMPLETE;
             $this->orderRepository->save($order);

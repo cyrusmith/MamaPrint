@@ -22,6 +22,11 @@ class Order extends Eloquent
 
     protected $table = 'orders';
 
+    public function __construct($attributes = array())  {
+        parent::__construct($attributes); // Eloquent
+        $this->status = self::STATUS_PENDING;
+    }
+
     public function items()
     {
         return $this->hasMany('Order\OrderItem');
