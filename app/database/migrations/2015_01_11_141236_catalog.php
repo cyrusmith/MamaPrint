@@ -130,7 +130,29 @@ class Catalog extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('download_links');
+        Schema::drop('password_reminders');
+        Schema::drop('site_config');
+        Schema::drop('user_catalog_items_access');
+        Schema::drop('cart_items');
+        Schema::drop('carts');
+        Schema::drop('gallery_images');
+        Schema::drop('gallery_relations');
+        Schema::drop('galleries');
+        Schema::drop('attachment_relations');
+        Schema::drop('attachments');
+        Schema::drop('tag_catalog_item');
+        Schema::drop('tags');
+
+        Schema::table('catalog_items', function (Blueprint $table) {
+            $table->dropColumn('active');
+            $table->dropColumn('old_price');
+            $table->dropColumn('info_age');
+            $table->dropColumn('info_targets');
+            $table->dropColumn('info_level');
+            $table->string('asset_extension');
+            $table->string('asset_name');
+        });
     }
 
 }

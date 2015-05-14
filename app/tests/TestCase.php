@@ -1,7 +1,11 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
+
 class TestCase extends Illuminate\Foundation\Testing\TestCase
 {
+
+    protected $useDb = false;
 
     /**
      * Creates the application.
@@ -20,12 +24,25 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     public function setUp()
     {
         parent::setUp(); // Don't forget this!
+
         $this->prepareForTests();
+
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown(); // Don't forget this!
+        Mockery::close();
+        if ($this->useDb) {
+            Artisan::call('migrate:reset');
+        }
     }
 
     private function prepareForTests()
     {
-        //Artisan::call('migrate');
+        if ($this->useDb) {
+            Artisan::call('migrate');
+        }
         //DatabaseSeeder::seedRoles();
         Mail::pretend(true);
     }

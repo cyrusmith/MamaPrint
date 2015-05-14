@@ -1,11 +1,7 @@
 <?php
 
-use Order\Order;
-
-use Illuminate\Support\Facades\DB;
-use mamaprint\infrastructure\events\AppEvent;
-use \Illuminate\Support\Facades\Event;
-use \Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\App;
+use mamaprint\domain\order\OrderCompleteEvent;
 use mamaprint\infrastructure\events\Events;
 
 class EventsTest extends TestCase
@@ -27,14 +23,10 @@ class EventsTest extends TestCase
     public function testFireEvents()
     {
 
-        $EVENT_KEY = "some.event.key";
-
-        $appEvent = Mockery::mock('mamaprint\infrastructure\events\AppEvent');
-        $appEvent->shouldReceive('getKey')->andReturn($EVENT_KEY);
-
+        $appEvent = new OrderCompleteEvent(1);
         $this->stdMock->shouldReceive('handleEvent')->once()->withArgs([$appEvent])->andReturn(null);
 
-        Events::listen($appEvent, 'EventsTestService@handleEvent');
+        Events::listen("OrderCompleteEvent", 'EventsTestService@handleEvent');
 
         Events::fire($appEvent);
 

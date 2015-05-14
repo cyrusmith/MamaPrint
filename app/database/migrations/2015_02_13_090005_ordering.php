@@ -27,7 +27,12 @@ class Ordering extends Migration {
 	 */
 	public function down()
 	{
-		//
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropColumn('isblog');
+        });
+        Schema::table('catalog_items', function (Blueprint $table) {
+            $table->dropColumn('weight');
+        });
 	}
 
 }

@@ -18,7 +18,7 @@ class Searchables extends Migration
             $table->integer('weight');
         });
 
-      Schema::table('tag_catalog_item', function (Blueprint $table) {
+        Schema::table('tag_catalog_item', function (Blueprint $table) {
             $table->dropColumn('id');
             $table->renameColumn('catalog_item_id', 'taggable_id');
             $table->string('taggable_type');
@@ -35,7 +35,19 @@ class Searchables extends Migration
      */
     public function down()
     {
-        //
+        Schema::rename('taggables', 'tag_catalog_item');
+
+        Schema::table('tag_catalog_item', function (Blueprint $table) {
+            $table->increments('id');
+            $table->renameColumn('taggable_id', 'catalog_item_id');
+            $table->dropColumn('taggable_type');
+        });
+
+        Schema::table('tags', function (Blueprint $table) {
+            $table->dropColumn('type');
+            $table->dropColumn('weight');
+        });
+
     }
 
 }

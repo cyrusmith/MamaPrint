@@ -80,6 +80,8 @@ App::down(function () {
 |
 */
 
+include_once 'events.php';
+
 App::singleton('DownloadLinkService', function ($app) {
     return new DownloadLinkService();
 });

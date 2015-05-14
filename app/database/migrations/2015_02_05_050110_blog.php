@@ -35,7 +35,7 @@ class Blog extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('articles');
     }
 
 }

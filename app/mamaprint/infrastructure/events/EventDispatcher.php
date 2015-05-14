@@ -12,6 +12,6 @@ namespace mamaprint\infrastructure\events;
 interface EventDispatcher {
 
     function fire(AppEvent $event);
-    function listen(AppEvent $event, $listener);
+    function listen($eventClassName, $listener);
 
 }

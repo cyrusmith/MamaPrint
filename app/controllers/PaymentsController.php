@@ -10,6 +10,7 @@
 use Order\Order;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use mamaprint\infrastructure\events\Events;
 
 class PaymentsController extends BaseController
 {
@@ -139,6 +140,7 @@ class PaymentsController extends BaseController
                      */
 
                     App::make('OrderService')->completeOrder($payFor, Input::get('user.email'));
+
                     return Response::json(array(
                         "status" => true,
                         "pay_for" => $payFor,

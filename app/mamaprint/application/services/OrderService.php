@@ -7,6 +7,8 @@ use mamaprint\domain\order\OrderRepositoryInterface;
 use mamaprint\infrastructure\events\AppEvent;
 use Order\Order;
 use Order\OrderItem;
+use mamaprint\infrastructure\events\Events;
+use mamaprint\domain\order\OrderCompleteEvent;
 
 class OrderService
 {
@@ -31,6 +33,7 @@ class OrderService
             $order->status = Order::STATUS_COMPLETE;
             $this->orderRepository->save($order);
             DB::commit();
+            Events::fire(new OrderCompleteEvent($orderId));
             return $order;
         } catch (Exception $e) {
             Log::error($e->getMessage());

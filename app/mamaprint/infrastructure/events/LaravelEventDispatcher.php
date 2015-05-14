@@ -15,12 +15,13 @@ class LaravelEventDispatcher implements EventDispatcher
 {
     function fire(AppEvent $event)
     {
-        Event::fire($event->getKey(), array($event));
+        $parts = explode('\\', trim(get_class($event), '\\'));
+        Event::fire($parts[count($parts) - 1], array($event));
     }
 
-    function listen(AppEvent $event, $listener)
+    function listen($eventClassName, $listener)
     {
         if (!is_string($listener)) throw new \InvalidArgumentException("Listener directive should be string");
-        Event::listen($event->getKey(), $listener);
+        Event::listen($eventClassName, $listener);
     }
 }

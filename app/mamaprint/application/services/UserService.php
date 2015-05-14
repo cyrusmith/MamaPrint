@@ -6,14 +6,20 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use mamaprint\domain\order\OrderCompleteEvent;
+use mamaprint\domain\order\OrderRepositoryInterface;
 use mamaprint\domain\user\UserRepositoryInterface;
+use Order\Order;
 
 class UserService
 {
 
-    public function __construct(UserRepositoryInterface $userRepository)
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        OrderRepositoryInterface $orderRepository)
     {
         $this->userRepository = $userRepository;
+        $this->orderRepository = $orderRepository;
     }
 
     /**
@@ -32,17 +38,21 @@ class UserService
         }
     }
 
-    public function clearCart($userId)
+    public function clearCart(OrderCompleteEvent $orderCompleteEvent)
     {
         try {
             DB::beginTransaction();
-            $user = $this->userRepository->find($userId);
-            $user->cart->delete();
+            $orderId = $orderCompleteEvent->getOrderId();
+            $order = $this->orderRepository->find($orderId);
+            if ($order->status == Order::STATUS_COMPLETE) {
+                $user = $this->userRepository->find($order->user_id);
+                $user->cart->delete();
+            }
             DB::commit();
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
             Log::error($e);
+            throw $e;
         }
     }
 
