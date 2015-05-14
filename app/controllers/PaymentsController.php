@@ -23,7 +23,7 @@ class PaymentsController extends BaseController
             App::abort(404);
         }
 
-        $user = App::make('UsersService')->getUser();
+        $user = App::make('UserService')->getUser();
 
         if ($order->user->id !== $user->id) {
             App::abort(404);
@@ -45,7 +45,7 @@ class PaymentsController extends BaseController
             return Redirect::to('/');
         }
 
-        $user = App::make('UsersService')->getUser();
+        $user = App::make('UserService')->getUser();
 
         if ($order->user->id !== $user->id) {
             return Redirect::to('/');
@@ -124,6 +124,20 @@ class PaymentsController extends BaseController
 
 
                 try {
+
+                    /**
+                     *       orderComplete();
+                    clearCart();
+                    attachItems()
+                    sendLink:
+                     *
+                     *         if ($order != null && $order->user->isGuest() && !empty($email)) {
+                    App::make('DownloadLinkService')->createAndSendLink($order->id, $email);
+                    }
+
+
+                     */
+
                     App::make('OrderService')->completeOrder($payFor, Input::get('user.email'));
                     return Response::json(array(
                         "status" => true,

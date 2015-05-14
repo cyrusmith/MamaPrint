@@ -27,11 +27,6 @@ class Order extends Eloquent
         return $this->hasMany('Order\OrderItem');
     }
 
-    public function user()
-    {
-        return $this->belongsTo('\User\User');
-    }
-
     public function getTotalAttribute($value)
     {
         return intval($value);

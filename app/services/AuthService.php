@@ -80,7 +80,7 @@ class AuthService
                 throw new Exception('Illegal state: user ' . $existingUser->name . ' already confirmed');
             }
 
-            $user = App::make('UsersService')->getUser();
+            $user = App::make('UserService')->getUser();
             if (!$user) {
                 $user = new User;
             } else if (!$user->isGuest()) {

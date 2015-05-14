@@ -182,7 +182,7 @@ class CatalogController extends BaseController
             App::abort(404);
         }
 
-        $user = App::make('UsersService')->getUser();
+        $user = App::make('UserService')->getUser();
         if (empty($user)) {
             App::abort(401, 'Нет доступа');
         }

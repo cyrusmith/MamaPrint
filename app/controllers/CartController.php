@@ -13,7 +13,7 @@ class CartController extends BaseController
 
     public function userCart()
     {
-        $user = App::make("UsersService")->getUser();
+        $user = App::make("UserService")->getUser();
         if (empty($user)) {
             App::abort(400);
         }
@@ -28,7 +28,7 @@ class CartController extends BaseController
 
     public function items()
     {
-        $user = App::make("UsersService")->getUser();
+        $user = App::make("UserService")->getUser();
         if (empty($user)) {
             return Response::json([
                 'message' => Lang::get('messages.error.usernotfound'),
@@ -73,7 +73,7 @@ class CartController extends BaseController
     public function viewItem($itemId)
     {
 
-        $user = App::make("UsersService")->getUser();
+        $user = App::make("UserService")->getUser();
         if (empty($user)) {
             return Response::json([
                 'message' => Lang::get('messages.error.usernotfound'),
@@ -121,7 +121,7 @@ class CartController extends BaseController
             ], 400);
         }
 
-        $user = App::make("UsersService")->getUser();
+        $user = App::make("UserService")->getUser();
         if (empty($user)) {
             return Response::json([
                 'message' => Lang::get('messages.error.usernotfound'),
@@ -166,7 +166,7 @@ class CartController extends BaseController
     public function deleteItem($itemId)
     {
 
-        $user = App::make("UsersService")->getUser();
+        $user = App::make("UserService")->getUser();
         if (empty($user)) {
             return Response::json([
                 'message' => Lang::get('messages.error.usernotfound'),

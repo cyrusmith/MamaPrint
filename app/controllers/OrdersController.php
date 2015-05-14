@@ -33,7 +33,7 @@ class OrdersController extends BaseController
             App::abort(400, "Минимальная сумма покупки - " . \Illuminate\Support\Facades\App::make("SiteConfigProvider")->getSiteConfig()->getMinOrderPrice() . " Р.");
         }
 
-        $user = App::make('UsersService')->getUser();
+        $user = App::make('UserService')->getUser();
 
         if (empty($user)) {
             App::abort(500, 'Пользователь не задан. Войдите или зарегистрируйтесь.');
@@ -75,7 +75,7 @@ class OrdersController extends BaseController
     public function createOrder()
     {
 
-        $user = App::make('UsersService')->getUser();
+        $user = App::make('UserService')->getUser();
         if (empty($user)) {
             App::abort(400, Lang::get('messages.error.usernotfound'));
         }
@@ -144,7 +144,7 @@ class OrdersController extends BaseController
             App::abort(404, 'Заказ не найден.');
         }
 
-        $user = App::make('UsersService')->getUser();
+        $user = App::make('UserService')->getUser();
         if (empty($user)) {
             App::abort(400, 'Ошибка приложения - пользователь не задан. Обновите страницу. Если ошибка повторяется, то сообщите нам на email ' . \Illuminate\Support\Facades\Config::get('mamaprint.supportemail'));
         }

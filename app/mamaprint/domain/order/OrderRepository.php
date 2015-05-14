@@ -14,11 +14,17 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function save($entity)
     {
-        // TODO: Implement save() method.
+        if ($entity instanceof Order) {
+            $entity->save();
+            return $entity;
+        }
+        return null;
     }
 
     public function delete($entity)
     {
-        // TODO: Implement delete() method.
+        if ($entity instanceof Order) {
+            $entity->delete();
+        }
     }
 }

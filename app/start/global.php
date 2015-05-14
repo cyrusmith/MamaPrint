@@ -80,14 +80,6 @@ App::down(function () {
 |
 */
 
-App::singleton('UsersService', function ($app) {
-    return new UsersService;
-});
-
-App::singleton('OrderService', function ($app) {
-    return new OrderService;
-});
-
 App::singleton('DownloadLinkService', function ($app) {
     return new DownloadLinkService();
 });
@@ -130,7 +122,7 @@ App::missing(function ($exception) {
 
 View::composer('*', function ($view) {
 
-    $user = App::make("UsersService")->getUser();
+    $user = App::make("UserService")->getUser();
     $cartItems = [];
     $cartIds = [];
     $userCatalogItemIds = [];

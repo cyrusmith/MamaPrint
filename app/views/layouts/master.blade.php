@@ -225,7 +225,7 @@ use \Illuminate\Support\Facades\App;
     {{json_encode($cart)}}
 </script>
 
-@define $user = App::make("UsersService")->getUser()
+@define $user = App::make("UserService")->getUser()
 
 <script type="javascript/template" id="appconfig">
     { "siteBaseUrl": "{{URL::to('/')}}",

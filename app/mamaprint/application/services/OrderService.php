@@ -1,19 +1,41 @@
 <?php
 
-use \Illuminate\Support\Facades\DB;
-use \Order\Order;
-use \Order\OrderItem;
-use User\User;
-use mamaprint\domain\user\UserRepositoryInterface;
+namespace mamaprint\application\services;
+
+use Illuminate\Support\Facades\DB;
 use mamaprint\domain\order\OrderRepositoryInterface;
+use Order\Order;
+use Order\OrderItem;
 
 class OrderService
 {
 
-    public function __construct(OrderRepositoryInterface $orderRepository, UserRepositoryInterface $userRepository)
+    public function __construct(
+        OrderRepositoryInterface $orderRepository)
     {
         $this->orderRepository = $orderRepository;
-        $this->userRepository = $userRepository;
+    }
+
+    public function completeOrder($orderId)
+    {
+        try {
+            DB::beginTransaction();
+            $order = $this->orderRepository->find($orderId);
+            if (empty($order)) {
+                throw new InvalidArgumentException("Order #$orderId not found");
+            }
+            if ($order->status !== Order::STATUS_PENDING) {
+                throw new InvalidArgumentException("Order #$orderId already payed");
+            }
+            $order->status = Order::STATUS_COMPLETE;
+            $this->orderRepository->save($order);
+            DB::commit();
+            return $order;
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            DB::rollback();
+            throw $e;
+        }
     }
 
     public function createOrderFromCart($user)
@@ -63,58 +85,6 @@ class OrderService
             DB::rollback();
             throw $e;
         }
-    }
-
-    public function completeOrder($orderId, $email = null)
-    {
-        $order = null;
-        DB::beginTransaction();
-        try {
-
-            $order = $this->orderRepository->find($orderId);
-
-            if (empty($order)) {
-                throw new InvalidArgumentException("Order #$orderId not found");
-            }
-
-            if ($order->status !== Order::STATUS_PENDING) {
-                throw new InvalidArgumentException("Order #$orderId already payed");
-            }
-
-            $user = $this->userRepository->find($order->user->id);
-            $cart = $user->cart;
-            $cart->items()->delete();
-            $order->status = Order::STATUS_COMPLETE;
-            $order->save();
-
-            $userCatalogItemIds = [];
-            foreach ($user->catalogItems as $userCatalogItem) {
-                $userCatalogItemIds[] = $userCatalogItem->id;
-            }
-
-            $catalogItems = [];
-            foreach ($order->items as $item) {
-                if (!in_array($item->catalogItem->id, $userCatalogItemIds)) {
-                    $catalogItems[] = $item->catalogItem;
-                }
-            }
-
-            $user->attachCatalogItems($catalogItems);
-
-            DB::commit();
-
-            return $order;
-
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-            DB::rollback();
-            throw $e;
-        }
-
-        if ($order != null && $order->user->isGuest() && !empty($email)) {
-            App::make('DownloadLinkService')->createAndSendLink($order->id, $email);
-        }
-
     }
 
     public function createOrderArchive($orderId)
