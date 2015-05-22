@@ -4,6 +4,8 @@
 
     <div class="container catalog-items">
 
+        @if(Auth::user() && Auth::user()->hasRole(Role::getByName(Role::ROLE_ADMIN))):
+
         <div class="row searchform">
             <form action="{{action('CatalogController@search')}}" class="col-sm-8 col-sm-offset-2" method="get">
 
@@ -76,6 +78,8 @@
             </form>
 
         </div>
+
+        @endif
 
         @if(!empty($selected_tags) || !empty($search))
             <h2>Результаты поиска</h2>

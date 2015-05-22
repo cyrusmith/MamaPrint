@@ -1,17 +1,18 @@
 <?php
 use \Illuminate\Support\Facades\App;
+
 ?><!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8"/>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{$page_title or $site_config->getDescriptor()}}</title>
     <meta name="description" content="{{$page_description or $site_config->getSeoDescription()}}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name='yandex-verification' content='51cf46d6ef645bbd'/>
 
-    <link rel="image_src" href="{{$page_image or '/img/logobig.png'}}" />
+    <link rel="image_src" href="{{$page_image or '/img/logobig.png'}}"/>
 
     <meta property="og:type" content="{{$og_type or 'article'}}">
     <meta property="og:url" content="{{Request::url()}}">
@@ -72,12 +73,25 @@ use \Illuminate\Support\Facades\App;
 
     <div class="row header">
 
+        <!--
         <a href="/" class="logo">
             <img src="/img/logobig.png"/>
         </a>
+        -->
+        <div class="topbanner" style="position: relative;">
+            <img src="/img/bannertop.gif" width="100%"
+                 alt="{{$page_description or $site_config->getSeoDescription()}}"/>
+            <a href="/" style="position: absolute; left: 0;top: 0;width:18%;height: 100%; text-decoration: none;" title="{{$page_description or $site_config->getSeoDescription()}}">&nbsp;</a>
+            <a href="http://mama-print.ru/catalog?search=&tags=93&ages=&goals="
+               style="position: absolute; left: 18%;top: 0;width:38%;height: 100%; text-decoration: none;" title="Тематические комплекты для занятий">&nbsp;</a>
+            <a href="http://mama-print.ru/blog/5_35"
+               style="position: absolute; left: 56%;top: 0;width:18%;height: 100%; text-decoration: none;" title="Самое интересное от 5 до 35 рублей">&nbsp;</a>
+            <a href="http://mama-print.ru/catalog?search=&tags=5&ages=&goals="
+               style="position: absolute; left: 74%;top: 0;width:26%;height: 100%; text-decoration: none;" title="Научим считать до 10и">&nbsp;</a>
+        </div>
 
         @if(mb_strlen(trim($site_config->getDescriptor())) > 10)
-            <h3 class="descriptor text-center">{{$site_config->getDescriptor()}}</h3>
+            <h3 class="descriptor text-center" style="padding-top: 1em;">{{$site_config->getDescriptor()}}</h3>
         @endif
 
         <div class="authcontrols">
