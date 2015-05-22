@@ -9,3 +9,4 @@
 use \mamaprint\infrastructure\events\Events;
 
 Events::listen("OrderCompleteEvent", "UserService@clearCart");
+Events::listen("OrderCompleteEvent", "UserService@attachCatalogItems");

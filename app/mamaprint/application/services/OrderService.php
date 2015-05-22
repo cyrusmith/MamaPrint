@@ -52,8 +52,8 @@ class OrderService
                 throw new Exception("Невозможно создать заказ т.к. корзина пуста");
             }
 
-            $itemPricePolicy = App::make('\Policy\OrderItemPricePolicy');
-            $orderLimitPolicy = App::make('\Policy\OrderLimitPolicy');
+            $itemPricePolicy = App::make('OrderItemPricePolicy');
+            $orderLimitPolicy = App::make('OrderLimitPolicy');
 
             $total = 0;
 

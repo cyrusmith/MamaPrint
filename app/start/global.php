@@ -106,14 +106,6 @@ App::singleton('SiteConfigProvider', function ($app) {
     return new SiteConfigProvider();
 });
 
-App::singleton('\Policy\OrderPricePolicy', function ($app) {
-    return new \Policy\OrderPricePolicy();
-});
-
-App::singleton('\Policy\OrderLimitPolicy', function ($app) {
-    return new \Policy\OrderLimitPolicy();
-});
-
 Blade::extend(function ($value) {
     return preg_replace('/\@define(.+)/', '<?php ${1}; ?>', $value);
 });

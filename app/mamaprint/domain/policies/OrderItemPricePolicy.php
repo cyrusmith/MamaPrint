@@ -1,4 +1,4 @@
-<?php namespace Policy;
+<?php namespace mamaprint\domain\policies;
 
 class OrderItemPricePolicy
 {

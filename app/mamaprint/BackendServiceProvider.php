@@ -14,6 +14,9 @@ class BackendServiceProvider extends ServiceProvider
         $this->app->bind('UserService', 'mamaprint\application\services\UserService');
         $this->app->bind('OrderService', 'mamaprint\application\services\OrderService');
 
+        $this->app->bind('OrderItemPricePolicy', 'mamaprint\domain\policies\OrderItemPricePolicy');
+        $this->app->bind('OrderLimitPolicy', 'mamaprint\domain\policies\OrderLimitPolicy');
+
         $this->app->bind('mamaprint\infrastructure\events\EventDispatcher', 'mamaprint\infrastructure\events\LaravelEventDispatcher');
     }
 }

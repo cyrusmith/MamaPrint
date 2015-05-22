@@ -3,23 +3,16 @@
 use Order\Order;
 
 use Illuminate\Support\Facades\DB;
-
+use mamaprint\application\services\OrderService;
+use mamaprint\infrastructure\events\Events;
 
 class OrderTest extends TestCase
 {
 
-    public function setUp()
-    {
-        parent::setUp();
-        $this->orderRepoMock = Mockery::mock('mamaprint\domain\order\OrderRepositoryInterface');
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        Mockery::close();
-    }
-
+    /**
+     * @throws Exception
+     * @throws \mamaprint\application\services\Exception
+     */
     public function testCompleteOrder()
     {
 
@@ -28,14 +21,17 @@ class OrderTest extends TestCase
         $dummyOrder->total = 1205;
         $dummyOrder->user_id = 2;
 
+        Events::shouldReceive('fire')->andReturn(null);
+
         DB::shouldReceive('beginTransaction')->andReturn(null);
         DB::shouldReceive('commit')->andReturn(null);
         DB::shouldReceive('rollback')->andReturn(null);
 
+        $this->orderRepoMock = Mockery::mock('mamaprint\domain\order\OrderRepositoryInterface');
         $this->orderRepoMock->shouldReceive('find')->once()->andReturn($dummyOrder);
         $this->orderRepoMock->shouldReceive('save')->once()->andReturn($dummyOrder);
 
-        $service = new \mamaprint\application\services\OrderService($this->orderRepoMock);
+        $service = new OrderService($this->orderRepoMock);
 
         $order = $service->completeOrder(1);
 

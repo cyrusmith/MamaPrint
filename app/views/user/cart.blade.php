@@ -1,5 +1,6 @@
 <?php
-$itemPricePolicy = Illuminate\Support\Facades\App::make('\Policy\OrderItemPricePolicy');
+use Illuminate\Support\Facades\App;
+$itemPricePolicy = App::make('OrderItemPricePolicy');
 ?>
 @extends('layouts.master')
 

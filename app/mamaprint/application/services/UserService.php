@@ -44,6 +44,7 @@ class UserService
             DB::beginTransaction();
             $orderId = $orderCompleteEvent->getOrderId();
             $order = $this->orderRepository->find($orderId);
+            echo "gt:".get_class($this->orderRepository);
             if ($order->status == Order::STATUS_COMPLETE) {
                 $user = $this->userRepository->find($order->user_id);
                 $user->cart->delete();
@@ -54,6 +55,35 @@ class UserService
             Log::error($e);
             throw $e;
         }
+    }
+
+    public function attachCatalogItems(OrderCompleteEvent $orderCompleteEvent)
+    {
+
+        try {
+            DB::beginTransaction();
+
+            $order = $this->orderRepository->find($orderCompleteEvent->getOrderId());
+            $user = $this->userRepository->find($order->user_id);
+
+            $ids = [];
+            foreach ($order->items as $item) {
+                $ids[] = $item->catalog_item_id;
+            }
+
+            if (count($ids) == 0) return;
+
+            $user->catalogItems()->detach($ids);
+            $user->catalogItems()->attach($ids);
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollback();
+            Log::error($e);
+            throw $e;
+        }
+
     }
 
     public function attachItemsFromOrder($orderId)

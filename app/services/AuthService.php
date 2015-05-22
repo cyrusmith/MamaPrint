@@ -96,7 +96,7 @@ class AuthService
 
             $cart = $user->getOrCreateCart();
 
-            $itemPricePolicy = App::make("\Policy\OrderItemPricePolicy");
+            $itemPricePolicy = App::make("OrderItemPricePolicy");
             foreach ($cart->items as $cartItem) {
                 if ($itemPricePolicy->catalogItemPriceForUser($user, $cartItem->catalogItem) == 0) {
                     $cartItem->delete();

@@ -12,7 +12,8 @@
     "doctrine/dbal": "~2.3"
   },
   "require-dev": {
-    "mockery/mockery": "dev-master@dev"
+    "mockery/mockery": "dev-master@dev",
+    "phpunit/phpunit": "4.6.*"
   },
   "autoload": {
     "classmap": [
