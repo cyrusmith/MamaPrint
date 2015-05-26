@@ -6,6 +6,23 @@
 
 @section('content')
 
+    <form action="{{action('Admin\AdminStatsController@getCatalogitems')}}" class="form-inline panel panel-default">
+        <div class="panel-body">
+            <label>Дата от</label>
+            <input type="text" name="from" value="{{$from or ''}}" data-datepicker>
+            &nbsp;<label>Дата до</label>
+            <input type="text" name="to" value="{{$to or ''}}" data-datepicker>
+
+            &nbsp;<label>Тэг:</label>
+            <input type="text" name="searchtag" value="{{$searchtag or ''}}" >
+
+            &nbsp;&nbsp;
+            <button type="submit" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-search"></span>
+                Применить
+            </button>
+        </div>
+    </form>
+
     <table class="table table-condensed">
 
         <tr>
