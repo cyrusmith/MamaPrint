@@ -28,9 +28,8 @@ $error = $data['error'];
                        placeholder="Ваш пароль" value="{{$form['password'] or ''}}">
             </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Отправить</button>
+                <button type="submit" class="btn btn-primary">Войти</button> Еще нет аккаунта? <a href="/register">Зарегистрироваться</a>
             </div>
-            <p>Еще нет аккаунта? <a href="/register">Зарегистрироваться</a></p>
 
             <p>Забыли пароль? <a href="/remindpassword">Восстановить пароль</a></p>
         </form>

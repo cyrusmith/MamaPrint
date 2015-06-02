@@ -12,6 +12,7 @@
   "private": true,
   "dependencies": {
     "jquery": "1.11.1",
+    "jquery.cookie": "1.4.1",
     "requirejs": "latest",
     "bootstrap": "latest",
     "bootstrap-tagsinput": "0.4.2",

@@ -5,6 +5,7 @@ require([
     'headhesive',
     'magnific',
     'twitterbootstrap',
+    'jqueryCookie',
     '../bower_components/jquery-ui/ui/autocomplete',
     'polyfills'], function ($) {
 
@@ -13,13 +14,16 @@ require([
         'auth/user.model',
         'cart/cart.model',
         'siteconfig',
+        'registerform',
         'popup',
         'search',
         'toggle',
+        'registerform'
     ], function (authService,
                  User,
                  cartModel,
                  siteConfig,
+                 registerForm,
                  popup) {
 
         'use strict';
@@ -52,9 +56,15 @@ require([
 
         $(function () {
 
+            $('#sitepreloader').remove();
+
             var appConfig = JSON.parse($('#appconfig').text());
             if (appConfig.user) {
                 authService.setUser(new User(appConfig.user));
+                registerForm.init(!appConfig.user.guestid);
+            }
+            else {
+                registerForm.init(false);
             }
 
             siteConfig.init(appConfig.siteConfig);
@@ -74,8 +84,6 @@ require([
             $("img.lazy").lazy({
                 bind: "event"
             });
-
-            $('#sitepreloader').remove();
 
             $('.social-likes').socialLikes();
 

@@ -7,6 +7,7 @@ require.config({
 
     paths: {
         'jquery': '../bower_components/jquery/dist/jquery',
+        'jqueryCookie': '../bower_components/jquery.cookie/jquery.cookie',
         'domReady': '../bower_components/domReady/domReady',
         'backbone': '../bower_components/backbone/backbone',
         'underscore': '../bower_components/underscore/underscore',
@@ -22,9 +23,10 @@ require.config({
     urlArgs: "bust=" + Date.now(),
 
     shim: {
-        'jquery': {
+        jquery: {
             exports: 'jQuery'
         },
+        jqueryCookie: ['jquery'],
         magnific: ['jquery'],
         twitterbootstrap: ['jquery'],
         jqautocomplete: ['jquery'],

@@ -38,7 +38,7 @@ use \Illuminate\Support\Facades\App;
     </style>
 </head>
 
-<body>
+<body data-page="{{implode('.', Request::segments())}}">
 <div id="sitepreloader"></div>
 <div class="topbar">
     <nav class="navbar navbar-default">
@@ -81,13 +81,17 @@ use \Illuminate\Support\Facades\App;
         <div class="topbanner" style="position: relative;">
             <img src="/img/bannertop.gif" width="100%"
                  alt="{{$page_description or $site_config->getSeoDescription()}}"/>
-            <a href="/" style="position: absolute; left: 0;top: 0;width:18%;height: 100%; text-decoration: none;" title="{{$page_description or $site_config->getSeoDescription()}}">&nbsp;</a>
+            <a href="/" style="position: absolute; left: 0;top: 0;width:18%;height: 100%; text-decoration: none;"
+               title="{{$page_description or $site_config->getSeoDescription()}}">&nbsp;</a>
             <a href="http://mama-print.ru/catalog?search=&tags=93&ages=&goals="
-               style="position: absolute; left: 18%;top: 0;width:38%;height: 100%; text-decoration: none;" title="Тематические комплекты для занятий">&nbsp;</a>
+               style="position: absolute; left: 18%;top: 0;width:38%;height: 100%; text-decoration: none;"
+               title="Тематические комплекты для занятий">&nbsp;</a>
             <a href="http://mama-print.ru/blog/5_35"
-               style="position: absolute; left: 56%;top: 0;width:18%;height: 100%; text-decoration: none;" title="Самое интересное от 5 до 35 рублей">&nbsp;</a>
+               style="position: absolute; left: 56%;top: 0;width:18%;height: 100%; text-decoration: none;"
+               title="Самое интересное от 5 до 35 рублей">&nbsp;</a>
             <a href="http://mama-print.ru/catalog?search=&tags=5&ages=&goals="
-               style="position: absolute; left: 74%;top: 0;width:26%;height: 100%; text-decoration: none;" title="Научим считать до 10и">&nbsp;</a>
+               style="position: absolute; left: 74%;top: 0;width:26%;height: 100%; text-decoration: none;"
+               title="Научим считать до 10и">&nbsp;</a>
         </div>
 
         @if(mb_strlen(trim($site_config->getDescriptor())) > 10)
@@ -130,7 +134,6 @@ use \Illuminate\Support\Facades\App;
             @define $msg = Session::get('error')
             @define $msgType = 'danger'
         @endif
-
 
         @if(!empty($msg))
             <div class="row">
@@ -179,6 +182,41 @@ use \Illuminate\Support\Facades\App;
                                                      target="_blank">включить cookies в вашем браузере</a></p>
     </div>
 
+</div>
+
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+
+                <h2>Войти и скачать материалы бесплатно</h2>
+
+                <form role="form" action="{{URL::action('AuthController@login')}}" method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1" class="control-label">Емейл</label>
+                        <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                               placeholder="example@mail.ru" value="{{$email or ''}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1" class="control-label">Пароль</label>
+                        <input type="password" name="password" class="form-control" id="exampleInputPassword1"
+                               placeholder="Ваш пароль" value="{{$form['password'] or ''}}">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Войти</button>
+                        <a href="/register" class="btn btn-link">Регистрация</a>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Спасибо, позже</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 </div>
 
 <script type="javascript/template" id="cart-json">
