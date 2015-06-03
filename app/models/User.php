@@ -11,6 +11,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface
 
     use UserTrait, RemindableTrait;
 
+    const TYPE_VK = "vk";
+
     /**
      * The database table used by the model.
      *

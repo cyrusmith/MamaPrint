@@ -69,6 +69,8 @@ Route::group(array('before' => 'guest'), function () {
     Route::get('/remindpassword', 'RemindersController@getRemind');
     Route::post('/remindpassword', 'RemindersController@postRemind');
 
+
+    Route::get('/oauth/vk', 'OAuthController@loginVK');
 });
 
 Route::group(array('before' => 'admin'), function () {

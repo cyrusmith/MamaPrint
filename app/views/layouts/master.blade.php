@@ -189,9 +189,11 @@ use \Illuminate\Support\Facades\App;
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-
                 <h2>Войти и скачать материалы бесплатно</h2>
-
+                <p class="text-center">
+                    <a href="javascript:void(0);" class="btn btn-social btn-sm btn-vk" id="loginVk"><i class="fa fa-vk"></i> Войти через ВКонтакте</a>
+                </p>
+                <h4>С помощью email</h4>
                 <form role="form" action="{{URL::action('AuthController@login')}}" method="post">
                     <div class="form-group">
                         <label for="exampleInputEmail1" class="control-label">Емейл</label>

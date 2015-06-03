@@ -5,6 +5,9 @@ $form = Session::get('form');
 
 @section('content')
     <div class="col-sm-6 col-sm-offset-3 register">
+        <p class="text-left">
+            <a href="javascript:void(0);" class="btn btn-social btn-sm btn-vk" id="loginVk"><i class="fa fa-vk"></i> Войти через ВКонтакте</a>
+        </p>
         <h2>Регистрация</h2>
         <form role="form" action="{{URL::action('AuthController@register')}}" method="post">
             <div class="form-group {{$errors->has('email')?'has-error':''}}">
