@@ -7,7 +7,10 @@ $error = $data['error'];
 
 @section('content')
     <div class="col-sm-6 col-sm-offset-3 register">
-        <h2>Войти</h2>
+        <p class="text-left">
+            <a href="javascript:void(0);" class="btn btn-social btn-sm btn-vk" id="loginVk"><i class="fa fa-vk"></i> Войти через ВКонтакте</a>
+        </p>
+        <h3>Войти через email (рекомендуется):</h3>
         @if(!empty($error))
 
             <div class="alert alert-danger alert-dismissible fade in" role="alert">

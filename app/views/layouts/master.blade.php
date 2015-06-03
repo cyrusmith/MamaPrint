@@ -226,9 +226,12 @@ use \Illuminate\Support\Facades\App;
 @define $user = App::make("UsersService")->getUser()
 
 <script type="javascript/template" id="appconfig">
-    {"user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
+    { "siteBaseUrl": "{{URL::to('/')}}",
+    "user": @if(empty($user)) null @else {{$user->toJson()}} @endif,
     "siteConfig": {{$site_config->toJSON()}},
-    "token": "{{csrf_token()}}"}
+    "token": "{{csrf_token()}}",
+    "vkId": "{{Config::get('services.vk.id')}}"
+    }
 </script>
 
 @if (Config::get('app.debug'))

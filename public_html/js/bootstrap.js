@@ -12,6 +12,7 @@ require([
     require([
         'auth/auth.service',
         'auth/user.model',
+        'auth/vklogin',
         'cart/cart.model',
         'siteconfig',
         'registerform',
@@ -21,6 +22,7 @@ require([
         'registerform'
     ], function (authService,
                  User,
+                 vkLogin,
                  cartModel,
                  siteConfig,
                  registerForm,
@@ -68,6 +70,8 @@ require([
             }
 
             siteConfig.init(appConfig.siteConfig);
+
+            vkLogin.init(appConfig.vkId, appConfig.siteBaseUrl  + '/oauth/vk');
 
             var modelsJson = $('#cart-json').text();
             var modelsData = JSON.parse(modelsJson);

@@ -30,6 +30,11 @@ return array(
 
     'onpay' => array(
         'secret' => ''
-    )
+    ),
+
+    'vk' => [
+        'id' => '4943311',
+        'key' => 'XsR11bFHHWzNslYqfhCH'
+    ]
 
 );
