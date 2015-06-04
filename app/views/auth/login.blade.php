@@ -1,7 +1,6 @@
 <?php
 $data = Session::get('data');
 $email = $data['email'];
-$error = $data['error'];
 ?>
 @extends('layouts.master')
 
@@ -11,14 +10,6 @@ $error = $data['error'];
             <a href="javascript:void(0);" class="btn btn-social btn-sm btn-vk" id="loginVk"><i class="fa fa-vk"></i> Войти через ВКонтакте</a>
         </p>
         <h3>Войти через email (рекомендуется):</h3>
-        @if(!empty($error))
-
-            <div class="alert alert-danger alert-dismissible fade in" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                            aria-hidden="true">×</span></button>
-                {{$error}}
-            </div>
-        @endif
         <form role="form" action="{{URL::action('AuthController@login')}}" method="post">
             <div class="form-group">
                 <label for="exampleInputEmail1" class="control-label">Емейл</label>

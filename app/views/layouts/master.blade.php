@@ -136,12 +136,14 @@ use \Illuminate\Support\Facades\App;
         @endif
 
         @if(!empty($msg))
-            <div class="row">
-                <div class="col-sm-8 col-sm-offset-2">
-                    <div class="alert alert-{{$msgType}} alert-dismissible fade in" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                                    aria-hidden="true">×</span></button>
-                        {{$msg}}
+            <div class="col-sm-10 col-sm-offset-1">
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <div class="alert alert-{{$msgType}} alert-dismissible fade in" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                        aria-hidden="true">×</span></button>
+                            {{$msg}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -190,10 +192,13 @@ use \Illuminate\Support\Facades\App;
         <div class="modal-content">
             <div class="modal-body">
                 <h2>Войти и скачать материалы бесплатно</h2>
+
                 <p class="text-center">
-                    <a href="javascript:void(0);" class="btn btn-social btn-sm btn-vk" id="loginVk"><i class="fa fa-vk"></i> Войти через ВКонтакте</a>
+                    <a href="javascript:void(0);" class="btn btn-social btn-sm btn-vk" id="loginVk"><i
+                                class="fa fa-vk"></i> Войти через ВКонтакте</a>
                 </p>
                 <h4>С помощью email</h4>
+
                 <form role="form" action="{{URL::action('AuthController@login')}}" method="post">
                     <div class="form-group">
                         <label for="exampleInputEmail1" class="control-label">Емейл</label>

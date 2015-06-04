@@ -27,9 +27,8 @@ class AuthController extends BaseController
                 $pendingUser->name,
                 $pendingUser->email,
                 $pendingUser->password);
-            return Redirect::to('/login')->with('message', Lang::get('messages.thankyou_registration'));
-        }
-        catch(Exception $e) {
+            return Redirect::to('/login')->with('success', Lang::get('messages.thankyou_registration'));
+        } catch (Exception $e) {
             return Response::view('auth.confirm', array(
                 'error' => $e->getMessage()
             ), 400);
@@ -138,9 +137,8 @@ class AuthController extends BaseController
 
         } else {
             return Redirect::to('/login')->with('data', array(
-                'error' => 'Неправильные емейл или пароль',
                 'email' => $email
-            ));
+            ))->with('error', 'Неправильные емейл или пароль');
         }
 
     }
