@@ -4,7 +4,8 @@ namespace mamaprint\domain\user;
 
 use User\User;
 
-class UserRepository implements UserRepositoryInterface {
+class UserRepository implements UserRepositoryInterface
+{
 
     public function find($id)
     {
@@ -19,11 +20,18 @@ class UserRepository implements UserRepositoryInterface {
 
     public function delete($entity)
     {
-        // TODO: Implement delete() method.
+        $entity->delete();
     }
 
     public function findGuest($guestId)
     {
+        if(empty($guestId)) return null;
         return User::where('guestid', '=', $guestId)->first();
+    }
+
+    public function findSocial($socialId, $type)
+    {
+        if (empty($socialId) || empty($type)) return null;
+        return User::where('socialid', '=', $socialId)->where('type', '=', $type)->first();
     }
 }

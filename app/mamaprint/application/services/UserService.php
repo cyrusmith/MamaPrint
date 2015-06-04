@@ -10,6 +10,7 @@ use mamaprint\domain\order\OrderCompleteEvent;
 use mamaprint\domain\order\OrderRepositoryInterface;
 use mamaprint\domain\user\UserRepositoryInterface;
 use Order\Order;
+use User\User;
 
 class UserService
 {
@@ -38,13 +39,45 @@ class UserService
         }
     }
 
+    //TODO test it
+    public function saveSocialUser($guestUserId, $socialId, $type, $name)
+    {
+        if (empty($type) || empty($socialId)) {
+            throw new \InvalidArgumentException();
+        }
+        try {
+            DB::beginTransaction();
+            if (!empty($guestUserId)) {
+                $user = $this->userRepository->find($guestUserId);
+                $user->guestid = null;
+            }
+
+            if (empty($user)) {
+                $user = new User();
+            }
+
+            $user->socialid = $socialId;
+            $user->type = $type;
+            $user->email = "";
+            $user->password = "";
+            $user->name = $name;
+            $this->userRepository->save($user);
+            DB::commit();
+            return $user;
+        } catch (Exception $e) {
+            DB::rollback();
+            Log::error($e);
+            throw $e;
+        }
+    }
+
     public function clearCart(OrderCompleteEvent $orderCompleteEvent)
     {
         try {
             DB::beginTransaction();
             $orderId = $orderCompleteEvent->getOrderId();
             $order = $this->orderRepository->find($orderId);
-            echo "gt:".get_class($this->orderRepository);
+            echo "gt:" . get_class($this->orderRepository);
             if ($order->status == Order::STATUS_COMPLETE) {
                 $user = $this->userRepository->find($order->user_id);
                 $user->cart->delete();
