@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\App;
+
 ClassLoader::addDirectories(array(
 
     app_path() . '/commands',
@@ -82,6 +84,7 @@ App::down(function () {
 
 include_once 'events.php';
 
+//TODO IOCize these
 App::singleton('DownloadLinkService', function ($app) {
     return new DownloadLinkService();
 });
@@ -102,10 +105,6 @@ App::singleton('GalleryService', function ($app) {
     return new GalleryService();
 });
 
-App::singleton('SiteConfigProvider', function ($app) {
-    return new SiteConfigProvider();
-});
-
 Blade::extend(function ($value) {
     return preg_replace('/\@define(.+)/', '<?php ${1}; ?>', $value);
 });
@@ -114,44 +113,6 @@ App::missing(function ($exception) {
     return Response::view('errors.404', array('error' => $exception->getMessage()), 404);
 });
 
-View::composer('*', function ($view) {
-
-    $user = App::make("UserService")->getUser();
-    $cartItems = [];
-    $cartIds = [];
-    $userCatalogItemIds = [];
-    if (!empty($user)) {
-        $cart = $user->getOrCreateCart();
-        foreach ($cart->items as $item) {
-            $catalogItem = $item->catalogItem;
-            $cartIds[] = $catalogItem->id;
-            $cartItems[] = [
-                'id' => $catalogItem->id . "",
-                'title' => $catalogItem->title,
-                'price' => $catalogItem->getOrderPrice()
-            ];
-        }
-
-        if (Auth::check()) {
-            foreach ($user->catalogItems as $item) {
-                $userCatalogItemIds[] = $item->id;
-            }
-        }
-    }
-    $view->with('cart', $cartItems);
-    $view->with('cart_ids', $cartIds);
-    $view->with('user_item_ids', $userCatalogItemIds);
-    $view->with('user', $user);
-    $view->with('site_config', \Illuminate\Support\Facades\App::make("SiteConfigProvider")->getSiteConfig());
-
-    if (Session::has('form')) {
-        $form = Session::get('form');
-        foreach ($form as $name => $value) {
-            $view->with($name, $value);
-        }
-    }
-
-
-});
+View::composer('*', 'SiteViewComposer');
 
 require app_path() . '/filters.php';

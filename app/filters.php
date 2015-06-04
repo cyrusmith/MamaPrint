@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\App;
+
 App::before(function ($request) {
     setlocale(LC_TIME, 'Russian');
 });
@@ -113,5 +115,5 @@ Route::filter('test', function () {
 });
 
 Route::filter('register_globals', function () {
-    \Illuminate\Support\Facades\App::make("SiteConfigProvider")->init();
+    //App::make("SiteConfigProvider")->init();
 });

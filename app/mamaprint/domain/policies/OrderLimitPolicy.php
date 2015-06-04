@@ -1,13 +1,20 @@
 <?php namespace mamaprint\domain\policies;
 
-use Illuminate\Support\Facades\App;
+use mamaprint\SiteConfigProvider;
 
 class OrderLimitPolicy
 {
 
+    public function __construct(
+        SiteConfigProvider $siteConfigProvider
+    )
+    {
+        $this->siteConfigProvider = $siteConfigProvider;
+    }
+
     public function meetsLowerLimit($order)
     {
-        return $order->total >= App::make("SiteConfigProvider")->getSiteConfig()->getMinOrderPrice() * 100;
+        return $order->total >= $this->siteConfigProvider->getSiteConfig()->getMinOrderPrice() * 100;
     }
 
 }

@@ -7,18 +7,26 @@
  * Time: 21:12
  */
 
+use Catalog\CatalogItem;
+use Illuminate\Support\Facades\Log;
+use mamaprint\application\services\OrderService;
+use mamaprint\application\services\UserService;
+use mamaprint\domain\order\OrderRepositoryInterface;
 use Order\Order;
 use Order\OrderItem;
-use Catalog\CatalogItem;
-use \Illuminate\Support\Facades\Log;
-use mamaprint\repositories\OrderRepositoryInterface;
 
 class OrdersController extends BaseController
 {
 
-    public function __construct(OrderRepositoryInterface $orderRepository)
+    public function __construct(
+        OrderService $orderService,
+        OrderRepositoryInterface $orderRepository,
+        UserService $userService
+    )
     {
         $this->orderRepository = $orderRepository;
+        $this->userService = $userService;
+        $this->orderService = $orderService;
     }
 
     public function buyitem($itemId)
@@ -33,7 +41,7 @@ class OrdersController extends BaseController
             App::abort(400, "Минимальная сумма покупки - " . \Illuminate\Support\Facades\App::make("SiteConfigProvider")->getSiteConfig()->getMinOrderPrice() . " Р.");
         }
 
-        $user = App::make('UserService')->getUser();
+        $user = $this->userService->getUser();
 
         if (empty($user)) {
             App::abort(500, 'Пользователь не задан. Войдите или зарегистрируйтесь.');
@@ -75,13 +83,13 @@ class OrdersController extends BaseController
     public function createOrder()
     {
 
-        $user = App::make('UserService')->getUser();
+        $user = $this->userService->getUser();
         if (empty($user)) {
             App::abort(400, Lang::get('messages.error.usernotfound'));
         }
 
         try {
-            $order = App::make("OrderService")->createOrderFromCart($user);
+            $order = $this->orderService->createOrderFromCart($user->id);
             return Redirect::to("https://secure.onpay.ru/pay/mamaprint_ru?price_final=true&ticker=RUR&pay_mode=fix&price=" . ((float)($order->total / 100.0)) . "&pay_for=" . $order->id . "&user_email=" . ($user->isGuest() ? '' : $user->email) . "&url_success=" . URL::to('/pay/success/' . $order->id) . "&url_fail=" . URL::to('/pay/fail') . "&ln=ru");
         } catch (Exception $e) {
             Log::error($e);
@@ -124,7 +132,7 @@ class OrdersController extends BaseController
             App::abort(404, 'Заказ еще не оплачен.');
         }
 
-        $file = App::make('OrderService')->createOrderArchive($order->id);
+        $file = $this->orderService->createOrderArchive($order->id);
 
         if (file_exists($file)) {
             return Response::download($file, "Заказ №{$order->id} с сайта Mama-print.ru.zip");
@@ -144,7 +152,7 @@ class OrdersController extends BaseController
             App::abort(404, 'Заказ не найден.');
         }
 
-        $user = App::make('UserService')->getUser();
+        $user = $this->userService->getUser();
         if (empty($user)) {
             App::abort(400, 'Ошибка приложения - пользователь не задан. Обновите страницу. Если ошибка повторяется, то сообщите нам на email ' . \Illuminate\Support\Facades\Config::get('mamaprint.supportemail'));
         }
@@ -157,7 +165,7 @@ class OrdersController extends BaseController
             App::abort(404, 'Заказ еще не оплачен.');
         }
 
-        $file = App::make('OrderService')->createOrderArchive($order->id);
+        $file = $this->orderService->createOrderArchive($order->id);
 
         if (file_exists($file)) {
             return Response::download($file, "Заказ №{$order->id} с сайта Mama-print.ru.zip");

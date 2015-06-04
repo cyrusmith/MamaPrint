@@ -2,21 +2,36 @@
 
 namespace mamaprint\application\services;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use mamaprint\domain\order\OrderCompleteEvent;
 use mamaprint\domain\order\OrderRepositoryInterface;
-use mamaprint\infrastructure\events\AppEvent;
+use mamaprint\domain\policies\OrderItemPricePolicy;
+use mamaprint\domain\policies\OrderLimitPolicy;
+use mamaprint\domain\user\UserRepositoryInterface;
+use mamaprint\infrastructure\events\Events;
+use mamaprint\SiteConfigProvider;
 use Order\Order;
 use Order\OrderItem;
-use mamaprint\infrastructure\events\Events;
-use mamaprint\domain\order\OrderCompleteEvent;
 
 class OrderService
 {
 
     public function __construct(
-        OrderRepositoryInterface $orderRepository)
+        OrderRepositoryInterface $orderRepository,
+        UserRepositoryInterface $userRepository,
+        OrderItemPricePolicy $orderItemPricePolicy,
+        OrderLimitPolicy $orderLimitPolicy,
+        SiteConfigProvider $siteConfigProvider
+    )
     {
         $this->orderRepository = $orderRepository;
+        $this->userRepository = $userRepository;
+
+        $this->orderItemPricePolicy = $orderItemPricePolicy;
+        $this->orderLimitPolicy = $orderLimitPolicy;
+
+        $this->siteConfigProvider = $siteConfigProvider;
     }
 
     public function completeOrder($orderId)
@@ -42,29 +57,26 @@ class OrderService
         }
     }
 
-    public function createOrderFromCart($user)
+    public function createOrderFromCart($userId)
     {
         try {
             DB::beginTransaction();
-
+            $user = $this->userRepository->find($userId);
             $cart = $user->getOrCreateCart();
             if ($cart->items->isEmpty()) {
                 throw new Exception("Невозможно создать заказ т.к. корзина пуста");
             }
 
-            $itemPricePolicy = App::make('OrderItemPricePolicy');
-            $orderLimitPolicy = App::make('OrderLimitPolicy');
-
             $total = 0;
 
             $order = new Order;
-            $order->user()->associate($user);
+            $order->user_id = $userId;
             $order->status = Order::STATUS_PENDING;
 
             $orderItems = [];
             foreach ($cart->items as $item) {
                 if ($user->hasItem($item->catalogItem)) continue;
-                $priceForUser = $itemPricePolicy->catalogItemPriceForUser($user, $item->catalogItem);
+                $priceForUser = $this->orderItemPricePolicy->catalogItemPriceForUser($user, $item->catalogItem);
                 if ($priceForUser > 0) {
                     $orderItem = new OrderItem;
                     $orderItem->price = $priceForUser;
@@ -76,8 +88,8 @@ class OrderService
 
             $order->total = $total;
 
-            if (!$orderLimitPolicy->meetsLowerLimit($order)) {
-                throw new Exception("Минимальная сумма заказа - " . App::make("SiteConfigProvider")->getSiteConfig()->getMinOrderPrice() . " P.");
+            if (!$this->orderLimitPolicy->meetsLowerLimit($order)) {
+                throw new Exception("Минимальная сумма заказа - " . $this->siteConfigProvider->getSiteConfig()->getMinOrderPrice() . " P.");
             }
 
             $order->save();
