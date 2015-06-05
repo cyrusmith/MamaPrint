@@ -96,7 +96,6 @@
             @if($items[$i]->galleries()->first())
                 @define $image = $items[$i]->galleries()->first()->images()->first()
             @endif
-
             @if($i % 3 === 0)
                 <div class="row">
                     @endif
@@ -194,6 +193,23 @@
 
                     @if($i % 3 === 2)
                 </div>
+
+                @if(ceil($i/3) == 2)
+                    <a class="hidden-xs" href="http://mama-print.ru/catalog/summerbook1"
+                       onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('banner2'); return true;"
+                       style="display: block; padding: 0 0 3em;">
+                        <img src="/img/banner-summer-book.jpg" alt="Большая Летняя книга. Часть первая"
+                             title="Большая Летняя книга. Часть первая" style="width: 100%; max-width: 1140px;"/>
+                    </a>
+                @endif
+                @if(ceil($i/3) == 1)
+                    <a class="visible-xs-block" href="http://mama-print.ru/catalog/summerbook1"
+                       onclick="yaCounter{{Config::get('mamaprint.yandex_counter')}}.reachGoal('banner2'); return true;"
+                       style="display: block; padding: 0 0 3em;">
+                        <img src="/img/banner-summer-book.jpg" alt="Большая Летняя книга. Часть первая"
+                             title="Большая Летняя книга. Часть первая" style="width: 100%; max-width: 1140px;"/>
+                    </a>
+                @endif
             @endif
 
         @endfor
