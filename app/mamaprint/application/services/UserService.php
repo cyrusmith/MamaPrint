@@ -23,9 +23,6 @@ class UserService
         $this->orderRepository = $orderRepository;
     }
 
-    /**
-     * @deprecated
-     */
     public function getUser()
     {
         if (Auth::check()) {

@@ -19,13 +19,18 @@ class CatalogItem extends Eloquent
 {
     protected $table = 'catalog_items';
 
+    public function __construct($attributes = array())
+    {
+        parent::__construct($attributes);
+    }
+
     public function getPrice($value)
     {
         return (int)$value;
     }
 
     /**
-     * @deprecate
+     * @deprecated
      * @return int
      */
     public function getOrderPrice()
@@ -35,12 +40,6 @@ class CatalogItem extends Eloquent
             return (int)$this->registered_price;
         }
         return (int)$this->price;
-    }
-
-    public function canBuyInOneClick()
-    {
-        $siteConfig = App::make("SiteConfigProvider")->getSiteConfig();
-        return $this->getOrderPrice() >= ($siteConfig->getMinOrderPrice() * 100);
     }
 
     public function getTagsAsString($separator = ',')

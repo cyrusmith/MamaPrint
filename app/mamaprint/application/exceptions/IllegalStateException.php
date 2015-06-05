@@ -8,6 +8,6 @@ namespace mamaprint\application\exceptions;
  */
 
 
-class IllegalStateException extends Exception {
+class IllegalStateException extends \Exception {
 
 }

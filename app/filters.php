@@ -113,7 +113,3 @@ Route::filter('test', function () {
         throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
     }
 });
-
-Route::filter('register_globals', function () {
-    //App::make("SiteConfigProvider")->init();
-});

@@ -8,10 +8,13 @@
  */
 
 use Catalog\CatalogItem;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use mamaprint\application\services\OrderService;
 use mamaprint\application\services\UserService;
 use mamaprint\domain\order\OrderRepositoryInterface;
+use mamaprint\domain\policies\OrderLimitPolicy;
+use mamaprint\SiteConfigProvider;
 use Order\Order;
 use Order\OrderItem;
 
@@ -21,12 +24,16 @@ class OrdersController extends BaseController
     public function __construct(
         OrderService $orderService,
         OrderRepositoryInterface $orderRepository,
-        UserService $userService
+        UserService $userService,
+        SiteConfigProvider $siteConfigProvider,
+        OrderLimitPolicy $orderLimitPolicy
     )
     {
         $this->orderRepository = $orderRepository;
         $this->userService = $userService;
         $this->orderService = $orderService;
+        $this->siteConfigProvider = $siteConfigProvider;
+        $this->orderLimitPolicy = $orderLimitPolicy;
     }
 
     public function buyitem($itemId)
@@ -37,8 +44,8 @@ class OrdersController extends BaseController
             App::abort(404, "Товар не найден");
         }
 
-        if (!$item->canBuyInOneClick()) {
-            App::abort(400, "Минимальная сумма покупки - " . \Illuminate\Support\Facades\App::make("SiteConfigProvider")->getSiteConfig()->getMinOrderPrice() . " Р.");
+        if (!$this->orderLimitPolicy->canBuyInOneClick($this->userService->getUser(), $item)) {
+            App::abort(400, "Минимальная сумма покупки - " . $this->siteConfigProvider->getSiteConfig()->getMinOrderPrice() . " Р.");
         }
 
         $user = $this->userService->getUser();

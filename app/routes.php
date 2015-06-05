@@ -151,6 +151,4 @@ Route::group(array('before' => 'test'), function () {
 
 });
 
-Route::when('*', 'register_globals');
-
 Route::get('/{path}', 'ArticlesController@getStaticArticle')->where('path', '(.+)');

@@ -4,6 +4,9 @@ namespace mamaprint\application\services;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use mamaprint\application\exceptions\IllegalStateException;
+use mamaprint\domain\catalog\CatalogRepositoryInterface;
 use mamaprint\domain\order\OrderCompleteEvent;
 use mamaprint\domain\order\OrderRepositoryInterface;
 use mamaprint\domain\policies\OrderItemPricePolicy;
@@ -19,6 +22,7 @@ class OrderService
 
     public function __construct(
         OrderRepositoryInterface $orderRepository,
+        CatalogRepositoryInterface $catalogRepository,
         UserRepositoryInterface $userRepository,
         OrderItemPricePolicy $orderItemPricePolicy,
         OrderLimitPolicy $orderLimitPolicy,
@@ -26,12 +30,76 @@ class OrderService
     )
     {
         $this->orderRepository = $orderRepository;
+        $this->catalogRepository = $catalogRepository;
         $this->userRepository = $userRepository;
 
         $this->orderItemPricePolicy = $orderItemPricePolicy;
         $this->orderLimitPolicy = $orderLimitPolicy;
 
         $this->siteConfigProvider = $siteConfigProvider;
+    }
+
+    /**
+     * @param $catalogItemId
+     * @return mixed
+     * @throws IllegalStateException
+     * @throws NotFoundException
+     * @throws InvalidArgumentException
+     */
+    public function buyItem($catalogItemId)
+    {
+
+        try {
+            DB::beginTransacton();
+
+            $catalogItem = $this->catalogRepository->find($catalogItemId);
+            if (empty($catalogItem)) {
+                throw new NotFoundException("Товар не найден");
+            }
+
+            if (!$this->orderLimitPolicy->canBuyInOneClick($this->userService->getUser(), $catalogItem)) {
+                throw new \InvalidArgumentException("Минимальная сумма покупки - " . $this->siteConfigProvider->getSiteConfig()->getMinOrderPrice() . " Р.");
+            }
+
+            $user = $this->userService->getUser();
+
+            if (empty($user)) {
+                throw new IllegalStateException('Пользователь не задан. Войдите или зарегистрируйтесь.');
+            }
+
+            if ($user->hasItem($catalogItem)) {
+                throw new \InvalidArgumentException("Материал &laquo;" . $catalogItem->title . "&raquo; уже оплачен и доступен для скачивания в <a href='" . URL::to('/user') . "'>личном кабинете.");
+            }
+
+            $order = new Order;
+
+            $itemPrice = $this->orderItemPricePolicy->catalogItemPriceForUser($user, $catalogItem);
+
+            $order->total = $itemPrice;
+            $order->status = Order::STATUS_PENDING;
+            $order->user_id = $user->id;
+            $this->orderRepository->save($order);
+
+            $orderItem = new OrderItem;
+            $orderItem->price = $itemPrice;
+            $orderItem->catalog_item_id = $catalogItemId;
+            $order->items()->save($orderItem);
+
+            DB::commit();
+            return $order;
+        } catch (\Exception $e) {
+            DB::rollback();
+            Log::error($e);
+            throw $e;
+        }
+
+
+        if ($order->id) {
+            return Redirect::to('/pay/' . $order->id);
+        }
+
+        App::abort(500, 'Could not create order');
+
     }
 
     public function completeOrder($orderId)

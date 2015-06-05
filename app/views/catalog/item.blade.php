@@ -106,7 +106,7 @@
                             <a class="btn btn-inverse downloadlink" href="/catalog/{{$item->slug}}/download"><span
                                         class="glyphicon glyphicon-download"></span> Скачать</a>
                         @else
-                            @if($item->canBuyInOneClick())
+                            @if($orderLimitPolicy->canBuyInOneClick($user, $item))
                                 <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
                         'itemId' => $item->id
                     ])}}" method="post">
@@ -161,7 +161,7 @@
                                 <a class="btn btn-inverse" href="/catalog/{{$item->slug}}/download"><span
                                             class="glyphicon glyphicon-download"></span> Скачать</a>
                             @else
-                                @if($item->canBuyInOneClick())
+                                @if($orderLimitPolicy->canBuyInOneClick($user, $item))
                                     <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
                         'itemId' => $item->id
                     ])}}" method="post">
