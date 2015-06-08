@@ -56,19 +56,28 @@
                                         class="glyphicon glyphicon-download"></span> Скачать</a>
                         @else
                             @if(!empty($item->old_price))
-                                <span class="oldprice">{{$item->old_price/100}} руб.</span><br/>
+                                <span class="oldprice"><del>{{$item->old_price/100}} руб.</del></span><br/>
                             @endif
                             <span class="price">{{$item->getOrderPrice()/100}} руб.</span>
                         @endif
                     @else
-                        <span class="price">{{$item->getOrderPrice()/100}} руб.</span>
+                        <span class="price">
+					@if(!empty($item->registered_price))
+					<del>
+					@endif
+					{{$item->getOrderPrice()/100}} руб.
+					@if(!empty($item->registered_price))
+					</del>
+					@endif
+					</span>
                         @if(empty($item->registered_price))
                             <span class="text-muted">Бесплатно для зарегистрированных.</span>
                             <a class="btn btn-primary btn-xs" href="/login"><span
                                         class="glyphicon glyphicon-log-in"></span> Войти</a>
                         @else
-                            <span class="registeredprice"><span class="pricesum">{{$item->registered_price/100}}
-                                    руб. <sup>*</sup></span>
+                            <span class="registeredprice"> <span class="pricesum" >				
+							<span style="font-size: .55em;position: relative;top: -.2em;color: #333;">Всего лишь</span> <span style="color:red;">{{$item->registered_price/100}}
+                                    руб. </span><sup>*</sup></span>
                                 <small class="title"><span class="text-red">*</span>
                                     - {{Lang::get('static.catalogitem.registeredprice')}}. <a
                                             href="{{action('AuthController@login')}}">{{Lang::get('static.login')}}</a>
