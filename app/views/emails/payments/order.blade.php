@@ -12,7 +12,7 @@
     <p>Чтобы скачать ваш заказ, пройдите по ссылке <a
                 href="{{URL::to('/downloads/'.$token)}}">{{URL::to('/downloads/'.$token)}}</a></p>
 
-    <p><strong style="font-weight: bold;">Внимание!</strong> Ссылка дейсвует в
+    <p><strong style="font-weight: bold;">Внимание!</strong> Ссылка действует в
         течение {{Config::get('mamaprint.download_link_timeout')}} мин.</p>
 
     @if(Auth::check())

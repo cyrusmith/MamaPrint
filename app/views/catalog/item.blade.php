@@ -63,21 +63,22 @@
                     @else
                         <span class="price">
 					@if(!empty($item->registered_price))
-					<del>
-					@endif
-					{{$item->getOrderPrice()/100}} руб.
-					@if(!empty($item->registered_price))
-					</del>
-					@endif
+                                <del>
+                                    @endif
+                                    {{$item->getOrderPrice()/100}} руб.
+                                    @if(!empty($item->registered_price))
+                                </del>
+                            @endif
 					</span>
                         @if(empty($item->registered_price))
                             <span class="text-muted">Бесплатно для зарегистрированных.</span>
                             <a class="btn btn-primary btn-xs" href="/login"><span
                                         class="glyphicon glyphicon-log-in"></span> Войти</a>
                         @else
-                            <span class="registeredprice"> <span class="pricesum" >				
-							<span style="font-size: .55em;position: relative;top: -.2em;color: #333;">Всего лишь</span> <span style="color:red;">{{$item->registered_price/100}}
-                                    руб. </span><sup>*</sup></span>
+                            <span class="registeredprice"> <span class="pricesum">
+							<span style="font-size: .55em;position: relative;top: -.2em;color: #333;">Всего лишь</span> <span
+                                            style="color:red;">{{$item->registered_price/100}}
+                                        руб. </span><sup>*</sup></span>
                                 <small class="title"><span class="text-red">*</span>
                                     - {{Lang::get('static.catalogitem.registeredprice')}}. <a
                                             href="{{action('AuthController@login')}}">{{Lang::get('static.login')}}</a>
@@ -115,7 +116,7 @@
                             <a class="btn btn-inverse downloadlink" href="/catalog/{{$item->slug}}/download"><span
                                         class="glyphicon glyphicon-download"></span> Скачать</a>
                         @else
-                            @if($item->canBuyInOneClick())
+                            @if($item->canBuyInOneClick() && false)
                                 <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
                         'itemId' => $item->id
                     ])}}" method="post">
@@ -134,17 +135,22 @@
                                style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
                                 заказ</a>
                             <br>
+                            <br>
                             <img src="/img/ic-payments.gif"/>
                         @endif
                     </div>
                 @endif
 
-
                 <div class="social-likes social-likes_notext" data-url="{{Request::url()}}">
                     <span class="btn btn-xs">Поделиться:</span>
+
                     <div class="vkontakte" title="Поделитесь в VK.com">&nbsp;&nbsp;&nbsp;</div>
                     <div class="odnoklassniki" title="Поделитесь в Одноклассниках"></div>
-                    <div class="pinterest" title="Поделитесь в Pinterest"></div>
+                    @if(count($images) > 0)
+                        <div class="pinterest"
+                             data-media="{{action('GalleryController@view', ['id'=>$images[0]->id, 'ext'=>$images[0]->extension])}}"
+                             title="Поделитесь в Pinterest"></div>
+                    @endif
                     <div class="facebook" title="Поделитесь в Facebook"></div>
                     <div class="twitter" title="Поделитесь в Twitter"></div>
                     <div class="plusone" title="Поделитесь в Google+"></div>
@@ -168,7 +174,7 @@
                                 <a class="btn btn-inverse" href="/catalog/{{$item->slug}}/download"><span
                                             class="glyphicon glyphicon-download"></span> Скачать</a>
                             @else
-                                @if($item->canBuyInOneClick())
+                                @if($item->canBuyInOneClick() && false)
                                     <form class="oneclickorder" action="{{URL::action('OrdersController@buyitem', [
                         'itemId' => $item->id
                     ])}}" method="post">
@@ -186,6 +192,7 @@
                                    class="btn btn-success" @if(!in_array($item->id, $cart_ids))
                                    style="display:none;"@endif><span class="glyphicon glyphicon-ok"></span> Оформить
                                     заказ</a>
+                                <br>
                                 <br>
                                 <img src="/img/ic-payments.gif"/>
                             @endif

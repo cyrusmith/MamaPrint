@@ -15,7 +15,7 @@ class CatalogController extends BaseController
     public function index()
     {
         return View::make('catalog.index', [
-            'items' => CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->paginate(20),
+            'items' => CatalogItem::orderBy('weight', 'desc')->where('active', '=', true)->paginate(21),
             'tags' => Tag::getExisting(Tag::TYPE_TAG),
             'ages' => Tag::getExisting(Tag::TYPE_AGE),
             'goals' => Tag::getExisting(Tag::TYPE_GOAL),
@@ -61,7 +61,7 @@ class CatalogController extends BaseController
             return Response::json($query->get(), 200);
         } else {
             return View::make('catalog.index', [
-                'items' => $query->paginate(20),
+                'items' => $query->paginate(21),
                 'tags' => Tag::getExisting(Tag::TYPE_TAG),
                 'ages' => Tag::getExisting(Tag::TYPE_AGE),
                 'goals' => Tag::getExisting(Tag::TYPE_GOAL),

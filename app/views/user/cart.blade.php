@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="col-sm-8 col-sm-offset-2">
+    <div class="col-sm-8 col-sm-offset-2" xmlns="http://www.w3.org/1999/html">
         <h3><span class="glyphicon glyphicon-shopping-cart text-primary"></span> Корзина</h3>
         @if(count($items) > 0)
             <table class="table table-hover" data-widget="cartitems">
@@ -16,7 +16,7 @@
                             <span data-cart-item-price>{{$item['price']/100}}</span> P
                             @if($item['registered_price'] ==0)
                                 <a href="/login" class="btn btn-xs btn-default">Войти</a> и скачать бесплатно
-                                @endif
+                            @endif
                         </td>
                         <th class="text-right"><a class="btn btn-danger btn-sm"
                                                   href="javascript:void(0);"
@@ -44,9 +44,23 @@
                                 Оплатить <span class="glyphicon glyphicon-chevron-right"></span></button>
                         </form>
 
-
                     </th>
                 </tr>
+
+                @if($total >= ($site_config->getMinOrderPrice()*100))
+                    <tr data-summary-row>
+
+                        <td colspan="3">
+                            <p class="text-warning text-right"><strong>Внимание!</strong> Если вы оплачиваете через SMS, то
+                                убедитесь, что после оплаты на балансе телефона останется не менее 50 рублей,
+                            <nobr>
+                                иначе платеж не пройдет.
+                            </nobr>
+                            </p>
+                        </td>
+
+                    </tr>
+                @endif
             </table>
 
             <p class="text-center payments-icons" @if($total < ($site_config->getMinOrderPrice()*100))
@@ -66,9 +80,9 @@
                 покупки</a></p>
 
         @if(!empty($text))
-        <article>
-            {{$text}}
-        </article>
+            <article>
+                {{$text}}
+            </article>
         @endif
 
     </div>
