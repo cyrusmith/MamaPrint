@@ -58,7 +58,11 @@
                             @if(!empty($item->old_price))
                                 <span class="oldprice"><del>{{$item->old_price/100}} руб.</del></span><br/>
                             @endif
-                            <span class="price">{{$item->getOrderPrice()/100}} руб.</span>
+                            <span class="price">
+                                <span style="font-size: .85em;position: relative;top: -.2em;color: #333;">Всего лишь</span> <span
+                                        style="color:red;font-size: 1.65em;"> {{$item->getOrderPrice()/100}} руб. </span>
+
+                               </span>
                         @endif
                     @else
                         <span class="price">

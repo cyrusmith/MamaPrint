@@ -77,19 +77,29 @@ class AdminStatsController extends AdminController
     public function getCatalogitems()
     {
 
-        $from = Input::get('from');
-        $to = Input::get('to');
+        $moscowTz = new \DateTimeZone('Europe/Moscow');
+        $utcTz = new \DateTimeZone("UTC");
+
+        $fromInput = Input::get('from');
+        $toInput = Input::get('to');
         $searchtag = Input::get('searchtag');
 
-        if(empty($to)) {
-            $to = date('Y-m-d');
+        if (empty($fromInput)) {
+            $from = new \DateTime('1970-01-01', $moscowTz);
+        } else {
+            $from = new \DateTime($fromInput, $moscowTz);
         }
 
-        if(empty($from)) {
-            $from = '1970-01-01';
+        if (empty($toInput)) {
+            $to = new \DateTime('NOW', $moscowTz);
+        } else {
+            $to = new \DateTime($toInput, $moscowTz);
         }
 
-        $dateWhere = "orders.updated_at BETWEEN STR_TO_DATE('$from 00:00:00', '%Y-%m-%d %H:%i:%s') AND STR_TO_DATE('$to 23:59:59', '%Y-%m-%d %H:%i:%s')";
+        $from->setTimezone($utcTz);
+        $to->setTimezone($utcTz);
+
+        $dateWhere = "orders.updated_at BETWEEN STR_TO_DATE('".$from->format('Y-m-d')." 00:00:00', '%Y-%m-%d %H:%i:%s') AND STR_TO_DATE('".$to->format('Y-m-d')." 23:59:59', '%Y-%m-%d %H:%i:%s')";
 
         $this->setPageTitle('Статистика по материалам');
 
@@ -108,8 +118,8 @@ from order_items
 left join orders on orders.id=order_items.order_id
 left join catalog_items on order_items.catalog_item_id=catalog_items.id
 where
-  orders.status=? and ".$dateWhere."
-group by catalog_items.id having tags LIKE '%".$searchtag."%'", [Order::STATUS_COMPLETE]));
+  orders.status=? and " . $dateWhere . "
+group by catalog_items.id having tags LIKE '%" . $searchtag . "%'", [Order::STATUS_COMPLETE]));
 
         //$items = DB::select('select catalog_items.id, catalog_items.price, count(catalog_items.id) as count, sum(order_items.price) as sum, catalog_items.title, order_items.price, orders.updated_at from orders inner join order_items on orders.id=order_items.order_id inner join catalog_items on order_items.catalog_item_id=catalog_items.id where orders.status=? group by catalog_items.id order by sum desc limit ' . (($page - 1) * $perPage) . ', ' . $perPage, [Order::STATUS_COMPLETE]);
         $items = DB::select("select
@@ -127,8 +137,8 @@ from order_items
 left join orders on orders.id=order_items.order_id
 left join catalog_items on order_items.catalog_item_id=catalog_items.id
 where
-  orders.status=? and ".$dateWhere."
-group by catalog_items.id having tags LIKE '%".$searchtag."%' order by catalog_items.title asc limit ". (($page - 1) * $perPage) . ', ' . $perPage, [Order::STATUS_COMPLETE]);
+  orders.status=? and " . $dateWhere . "
+group by catalog_items.id having tags LIKE '%" . $searchtag . "%' order by number_bought desc limit " . (($page - 1) * $perPage) . ', ' . $perPage, [Order::STATUS_COMPLETE]);
 
         $pagedItems = Paginator::make($items, $total, $perPage);
 
