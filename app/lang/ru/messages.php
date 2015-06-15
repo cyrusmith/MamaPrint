@@ -5,6 +5,7 @@ return [
     'filenotfound' => 'Файл не найден',
     'insufficient_amount' => 'Недостаточно средств',
     'thankyou_registration' => 'Спасибо за регистрацию!',
+    'thankyou_confirm_email' => 'Спасибо за подтверждение email!',
     'admin.catalogitemsaved' => 'Товар сохранен',
     'gallery.filenotallowed' => 'Файл с типом :type не разрешен',
     'gallery.notanimage' => 'Файл не :file является изображением',

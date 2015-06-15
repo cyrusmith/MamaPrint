@@ -6,9 +6,6 @@
  * Date: 21.12.2014
  * Time: 20:23
  */
-
-use Cart\CartItem;
-
 class AuthController extends BaseController
 {
 
@@ -64,6 +61,60 @@ class AuthController extends BaseController
         } catch (Exception $e) {
             DB::rollback();
         }
+    }
+
+    /**
+     * Confirm existing users email
+     */
+    public function confirmSocial()
+    {
+
+        $hash = Input::get('hash');
+
+        if (empty($hash)) {
+            Response::view('auth.confirm', array(
+                'error' => 'Неверный запрос'
+            ), 400);
+        }
+
+        try {
+
+            DB::beginTransaction();
+
+            $pendingUser = UserPending::where('hash', '=', $hash)->first();
+            if (empty($pendingUser)) {
+                return Response::view('auth.confirm', array(
+                    'error' => 'Устаревший запрос'
+                ), 400);
+            }
+
+            $user = User::where('email', '=', $pendingUser->email)->first();
+
+            if (!empty($user)) {
+                UserPending::where('email', '=', $user->email)->delete();
+                return Response::view('auth.confirm', array(
+                    'error' => 'Email уже подтвержден'
+                ), 400);
+            }
+
+            if (!empty($pendingUser->name)) {
+                $socialUser = User::where('socialid', '=', $pendingUser->name)->first();
+                if (!empty($socialUser)) {
+                    $socialUser->email = $pendingUser->email;
+                    $socialUser->save();
+                }
+            }
+
+            UserPending::where('email', '=', $user->email)->delete();
+
+            DB::commit();
+
+            return Redirect::to('/')->with('message', Lang::get('messages.thankyou_registration'));
+
+        } catch (Exception $e) {
+            DB::rollback();
+        }
+
     }
 
     public function register()
