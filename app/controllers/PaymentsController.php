@@ -179,6 +179,17 @@ class PaymentsController extends BaseController
 
                     if (!empty($userEmail)) {
 
+                        try {
+                            $user = User::find($user->id);
+                            if(!empty($user->socialid) && empty($user->email)) {
+                                $user->email = $userEmail;
+                                $user->save();
+                            }
+                        }
+                        catch(Exception $e) {
+                            Log::error($e);
+                        }
+
                         $todata = [
                             'email' => $userEmail,
                             'name' => $userName
