@@ -14,7 +14,7 @@
                     <h2>
                         <span class="publishdate">{{iconv("Windows-1251", "UTF-8", $article->publish_date->formatLocalized('%d %b %Y'))}}</span>
 
-                        <a href="{{action('ArticlesController@getArticle', ['path'=>$article->urlpath])}}">{{$article->title}}</a>
+                        <a href="{{action('ArticlesController@getArticle', ['path'=>$article->urlpath])}}#articlecut">{{$article->title}}</a>
                     </h2>
 
                     <p class="description">

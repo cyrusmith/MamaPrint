@@ -157,3 +157,4 @@ View::composer('*', function ($view) {
 });
 
 require app_path() . '/filters.php';
+require app_path().'/helpers.php';

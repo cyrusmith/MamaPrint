@@ -11,7 +11,7 @@
                 <p class="description">
                     {{$article->description}}
                 </p>
-                {{$article->content}}
+                {{replacePagebreakWithCut($article->content)}}
             </article>
 
             @include('disqus')
