@@ -22,6 +22,19 @@ class Article extends Eloquent
         return array('created_at', 'updated_at', 'publish_date');
     }
 
+    public function getImagePath() {
+        $gallery = $this->galleries()->first();
+        if(empty($gallery)) return null;
+        $image =  $gallery->images()->first();
+        if(empty($image)) return null;
+        return URL::to('/')."/images/".$image->id.".".$image->extension;
+    }
+
+    public function galleries()
+    {
+        return $this->morphToMany('Gallery\Gallery', 'gallery_relation');
+    }
+
     public static function getArticleContent($path)
     {
         $article = Article::where('urlpath', '=', $path)->first();

@@ -24,6 +24,7 @@
                     <div class="cut">
                         {{$article->getPagebreak()}}
                     </div>
+
                 </div>
             @endforeach
         </div>

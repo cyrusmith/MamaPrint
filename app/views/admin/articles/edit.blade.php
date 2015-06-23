@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    <form role="form" action="{{action('Admin\AdminArticlesController@postArticle')}}" method="post">
+    <form role="form" action="{{action('Admin\AdminArticlesController@postArticle')}}" method="post" enctype="multipart/form-data">
 
         @if(!empty($id))
             <a href="{{action('ArticlesController@getArticle', ['path'=>$urlpath])}}" class="btn btn-default"
@@ -76,6 +76,15 @@
                     @if($errors->has('seo_title'))
                         <p class="text-danger">{{$errors->first('seo_title')}}</p>
                     @endif
+                </div>
+
+                <div class="form-group">
+                    @if(!empty($image))
+                        <img src="{{$image}}" style="max-width:300px;"/><br/>
+                    @endif
+                    <label for="image">Картинка для статьи (для pinterest)</label>
+                    <input type="file" id="image" name="image">
+                    <p class="help-block">png, jpg, gif</p>
                 </div>
 
                 <div class="form-group {{$errors->has('publish_date')?'has-error':''}}">
