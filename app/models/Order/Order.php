@@ -12,7 +12,11 @@ use Eloquent;
 class Order extends Eloquent
 {
 
+    /**
+     * @deprecated
+     */
     const STATUS_CART = 'cart';
+
     const STATUS_PENDING = 'pending';
     const STATUS_COMPLETE = 'complete';
 

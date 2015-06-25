@@ -1,4 +1,11 @@
 <?php
+use Account\OperationPurchase;
+use Account\OperationRefill;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Order\Order;
 
 /**
  * Created by PhpStorm.
@@ -9,18 +16,38 @@
 class OrderService
 {
 
-    public function payOrder($orderId)
+    /**
+     * @param $orderId
+     * @throws Exception
+     */
+    public function payOrder($orderId, $paymentAmount, $paymentCurrency, $paymentTransactionId, $paymentEmail = '')
     {
-        DB::beginTransaction();
+
         try {
 
-            $order = \Order\Order::find($orderId);
+            DB::beginTransaction();
+
+            $order = Order::find($orderId);
 
             if (empty($order)) {
                 throw new InvalidArgumentException("Order #$orderId not found");
             }
 
-            if ($order->status !== \Order\Order::STATUS_PENDING) {
+            $account = $order->user->accounts()->where('currency', '=', $paymentCurrency)->first();
+
+            if (empty($account)) {
+                throw new InvalidArgumentException('Could not find account with currency' . $paymentCurrency);
+            }
+
+            $refill = new OperationRefill();
+            $refill->amount = intval($paymentAmount * 100);
+
+            $refill->gateway = 'onpay';
+            $refill->gateway_operation_id = $paymentTransactionId;
+            $account->addOperation($refill);
+            $account->save();
+
+            if ($order->status !== Order::STATUS_PENDING) {
                 throw new InvalidArgumentException("Order #$orderId already payed");
             }
 
@@ -32,7 +59,7 @@ class OrderService
 
             $account = $user->accounts()->first();
 
-            $purchase = new \Account\OperationPurchase();
+            $purchase = new OperationPurchase();
             $purchase->amount = $sum;
             $account->addOperation($purchase);
             $order->status = \Order\Order::STATUS_COMPLETE;
@@ -52,6 +79,47 @@ class OrderService
                 }
             }
             $user->attachCatalogItems($catalogItems);
+
+
+            $downloadToken = $this->createDownloadLink($order->id);
+
+            $userEmail = $paymentEmail;
+            $userName = '';
+
+            $user = $order->user;
+            $emailConfirmHash = null;
+
+            if (!$user->isGuest()) {
+                $userName = $user->name;
+                if (!empty($user->email)) {
+                    $userEmail = $user->email;
+                }
+                else if (!empty($paymentEmail) && !empty($user->socialid) && empty($user->email)) {
+                    $emailConfirmHash = UserPending::createSocialConfirm($paymentEmail, $user->socialid);
+                }
+            }
+
+            if (!empty($userEmail)) {
+
+                $todata = [
+                    'email' => $userEmail,
+                    'name' => $userName
+                ];
+
+                try {
+                    Mail::send('emails.payments.order', array(
+                        'isGuest' => $user->isGuest(),
+                        'confirm_hash' => $emailConfirmHash,
+                        'orderId' => $order->id,
+                        'token' => $downloadToken
+                    ), function ($message) use ($todata) {
+                        Log::debug($todata);
+                        $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($todata['email'], empty($todata['name']) ? "Клиент mama-print" : $todata['name'])->subject('Покупка на сайте mama-print.ru');
+                    });
+                } catch (Exception $e) {
+                    Log::error("Failed to send message: " . $e->getMessage());
+                }
+            }
 
             DB::commit();
 

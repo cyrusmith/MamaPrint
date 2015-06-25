@@ -5,6 +5,16 @@
     <div class="row">
         <div class="col-sm-4">
             <form action="{{URL::action('UserController@saveName')}}" method="post">
+
+                <div class="form-group">
+
+                    @define $hasEmail = !empty(Auth::user()->email)
+                    @define $fromRedir = Session::get('success')
+
+                    <label for="name">E-mail</label>
+                    <input type="text" class="form-control @if(!$hasEmail && empty($fromRedir)) popoveropen @endif" id="name" placeholder="Ваш email" name="email"
+                           value="{{Auth::user()->email}}" @if($hasEmail) readonly="true" @elseif(empty($fromRedir)) data-toggle="popover" title="Укажите email" data-content="С подтвержденным email вы сможете пользоваться услугами сайта без ограничений" @endif />
+                </div>
                 <div class="form-group">
                     <label for="name">Имя</label>
                     <input type="text" class="form-control" id="name" placeholder="Ваше имя (ник)" name="name"
@@ -16,6 +26,7 @@
 
             </form>
 
+            <br/>
             <form action="{{URL::action('UserController@savePassword')}}" method="post">
 
                 <fieldset>

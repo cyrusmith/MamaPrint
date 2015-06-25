@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\Redirect;
+
 Route::group(array('before' => 'guest_create'), function () {
 
     Route::get('/', 'CatalogController@index');
@@ -34,10 +36,11 @@ Route::group(array('before' => 'guest_create'), function () {
 
 Route::group(array('before' => 'auth'), function () {
 
-    Route::get('/user', 'UserController@viewCatalogItems');
+    Route::get('/user/emailconfirm', 'AuthController@confirmSocial');
     Route::get('/user/settings', function () {
         return View::make('user.settings');
     });
+    Route::get('/user', 'UserController@viewCatalogItems');
     Route::get('/logout', 'AuthController@logout');
     Route::post('/user/settings/name', array('before' => 'csrf', 'uses' => 'UserController@saveName'));
     Route::post('/user/settings/password', array('before' => 'csrf', 'uses' => 'UserController@savePassword'));
@@ -47,10 +50,16 @@ Route::group(array('before' => 'auth'), function () {
 Route::group(array('before' => 'guest'), function () {
 
     Route::get('/login', function () {
+        if(Auth::check()) {
+            return Redirect::to("/");
+        }
         return View::make('auth.login');
     });
 
     Route::get('/register', function () {
+        if(Auth::check()) {
+            return Redirect::to("/");
+        }
         return View::make('auth.register');
     });
 
@@ -141,14 +150,7 @@ Route::get('/api/v1/goals', 'CatalogController@getGoals');
 Route::get('/images/{id}.{ext}', 'GalleryController@view');
 
 Route::group(array('before' => 'test'), function () {
-
-    Route::get('/test', function () {
-        return View::make('test.index');
-    });
-
-    Route::post('/test/orders/payorder', 'Test\OrdersTestController@testPayOrder');
-    Route::post('/test/orders/downloadlink', 'Test\OrdersTestController@testDownloadLink');
-
+    Route::get('/test/orders/payorder', 'Test\OrdersTestController@testPayOrder');
 });
 
 Route::when('*', 'register_globals');

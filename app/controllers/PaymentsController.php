@@ -13,6 +13,24 @@ use Account\OperationRefill;
 class PaymentsController extends BaseController
 {
 
+    /**
+     * @var OrderService
+     */
+    private $orderService;
+
+    /**
+     * @var UsersService
+     */
+    private $usersService;
+
+    public function __controller(
+        UsersService $usersService,
+        OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+        $this->usersService = $usersService;
+    }
+
     public function pay($orderId)
     {
 
@@ -138,94 +156,24 @@ class PaymentsController extends BaseController
                     ), 400);
                 }
 
-                $orderService = App::make('OrderService');
+                $orderService = $this->orderService;
+                $currencyIfTST = $currency == 'TST' ? "RUR" : $currency;
 
                 try {
-                    Log::debug("About to payOrder");
-
-                    DB::beginTransaction();
-
-                    $currencyIfTST = $currency == 'TST' ? "RUR" : $currency;
-
-                    $account = $order->user->accounts()->where('currency', '=', $currencyIfTST)->first();
-
-                    if (empty($account)) {
-                        throw new InvalidArgumentException('Could not find account with currency' . $currencyIfTST);
-                    }
-
-                    $refill = new OperationRefill;
-                    $refill->amount = intval($fromAmount * 100);
-
-                    $refill->gateway = 'onpay';
-                    $refill->gateway_operation_id = $paymentId;
-                    $account->addOperation($refill);
-                    $account->save();
-
-                    $orderService->payOrder($order->id);
-
-                    $downloadToken = $orderService->createDownloadLink($order->id);
-
-                    $userEmail = Input::get('user.email');
-                    $userName = '';
-
-                    $user = $order->user;
-
-                    if (!$user->isGuest()) {
-                        if (empty($userEmail)) {
-                            $userEmail = $user->email;
-                        }
-                        $userName = $user->name;
-                    }
-
-                    if (!empty($userEmail)) {
-
-                        try {
-                            $user = User::find($user->id);
-                            if(!empty($user->socialid) && empty($user->email)) {
-                                $user->email = $userEmail;
-                                $user->save();
-                            }
-                        }
-                        catch(Exception $e) {
-                            Log::error($e);
-                        }
-
-                        $todata = [
-                            'email' => $userEmail,
-                            'name' => $userName
-                        ];
-
-                        try {
-                            Mail::send('emails.payments.order', array(
-                                'orderId' => $order->id,
-                                'token' => $downloadToken
-                            ), function ($message) use ($todata) {
-                                Log::debug($todata);
-                                $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($todata['email'], empty($todata['name']) ? "Клиент mama-print" : $todata['name'])->subject('Покупка на сайте mama-print.ru');
-                            });
-                        } catch (Exception $e) {
-                            Log::error("Failed to send message: " . $e->getMessage());
-                        }
-
-                        DB::commit();
-
-                        return Response::json(array(
-                            "status" => true,
-                            "pay_for" => $payFor,
-                            "signature" => sha1("pay;true;$payFor;" . Config::get('services.onpay.secret'))
-                        ), 200);
-                    }
+                    $orderService->payOrder($order->id, $fromAmount, $currencyIfTST, $paymentId);
+                    return Response::json(array(
+                        "status" => true,
+                        "pay_for" => $payFor,
+                        "signature" => sha1("pay;true;$payFor;" . Config::get('services.onpay.secret'))
+                    ), 200);
                 } catch (Exception $e) {
                     Log::error('Fail to pay order: ' . $e->getMessage());
-                    DB::rollback();
                     return Response::json(array(
                         "code" => false,
                         "pay_for" => $payFor,
                         "signature" => sha1("pay;false;$payFor;" . Config::get('services.onpay.secret'))
                     ), 500);
-
                 }
-
                 break;
         }
 

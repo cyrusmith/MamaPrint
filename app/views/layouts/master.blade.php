@@ -37,7 +37,6 @@ use \Illuminate\Support\Facades\App;
         }
     </style>
 </head>
-
 <body data-page="{{implode('.', Request::segments())}}">
 <div id="sitepreloader"></div>
 <div class="topbar">

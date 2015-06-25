@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Created by PhpStorm.
@@ -56,7 +57,9 @@ class AuthController extends BaseController
 
             DB::commit();
 
-            return Redirect::to('/login')->with('message', Lang::get('messages.thankyou_registration'));
+            Auth::loginUsingId($user->id);
+
+            return Redirect::to('/')->with('success', Lang::get('messages.thankyou_registration'));
 
         } catch (Exception $e) {
             DB::rollback();
@@ -105,11 +108,11 @@ class AuthController extends BaseController
                 }
             }
 
-            UserPending::where('email', '=', $user->email)->delete();
+            UserPending::where('email', '=', $pendingUser->email)->delete();
 
             DB::commit();
 
-            return Redirect::to('/')->with('message', Lang::get('messages.thankyou_registration'));
+            return Redirect::to('/')->with('success', Lang::get('messages.thankyou_confirm_email'));
 
         } catch (Exception $e) {
             DB::rollback();

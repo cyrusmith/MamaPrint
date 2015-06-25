@@ -42,7 +42,12 @@ class OAuthController extends BaseController
                             $user = $existingUser;
                         }
                         Auth::loginUsingId($user->id);
-                        Redirect::to("/");
+                        if(!empty($user->email)) {
+                            return Redirect::to("/");
+                        }
+                        else {
+                            return Redirect::to("/user/settings");
+                        }
                     }
                 }
             } catch (Exception $e) {

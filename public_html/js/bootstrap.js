@@ -91,6 +91,9 @@ require([
 
             $('.social-likes').socialLikes();
 
+            $('[data-toggle="popover"].popoveropen').popover('show');
+            $('.form-control.popoveropen').focus();
+
         });
 
     });

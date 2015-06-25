@@ -15,11 +15,19 @@
     <p><strong style="font-weight: bold;">Внимание!</strong> Ссылка действует в
         течение {{Config::get('mamaprint.download_link_timeout')}} мин.</p>
 
-    @if(Auth::check())
+    @if(!$isGuest)
         <p>Также, оплаченные материалы доступны в вашем личном кабинете {{URL::to('/user')}}.</p>
     @else
         <p>Чтобы иметь постоянный доступ к приобретеным материалам, необходимо <a href="{{URL::to('/register/')}}">зарегистрироваться
                 на сайте</a>.</p>
+    @endif
+
+    @if(!$isGuest)
+        @if(!empty($confirm_hash))
+            <strong>Внимание!</strong> Чтобы закончить процесс регистрации, подтвердите свой e-mail по ссылке <a href="{{URL::to('/user/emailconfirm')}}?hash={{$confirm_hash}}">{{URL::to('/user/emailconfirm')}}?hash={{$confirm_hash}}</a>
+        @else
+            <strong>Внимание!</strong> Чтобы закончить процесс регистрации, укажите свой e-mail в <a href="{{URL::to('/user/settings')}}">личном кабинете</a>
+        @endif
     @endif
 
     <p>С уважением, команда Mama-Print.ru.<br><i>Скачайте и распечатайте качественные
