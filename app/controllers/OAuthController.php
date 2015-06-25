@@ -12,11 +12,20 @@ use Illuminate\Support\Facades\URL;
 class OAuthController extends BaseController
 {
 
+    public function __construct(UsersService $usersService)
+    {
+        $this->usersService = $usersService;
+    }
+
     public function loginVk()
     {
-        $user = App::make('UsersService')->getUser();
-        if (!$user->isGuest()) {
+        $user = $this->usersService->getUser();
+        if (!empty($user) && !$user->isGuest()) {
             return Redirect::to("/");
+        }
+
+        if (empty($user)) {
+            $user = new User();
         }
 
         $error = Input::get('error');
@@ -41,11 +50,10 @@ class OAuthController extends BaseController
                         } else {
                             $user = $existingUser;
                         }
-                        Auth::loginUsingId($user->id);
-                        if(!empty($user->email)) {
+                        Auth::loginUsingId($user->id, true);
+                        if (!empty($user->email)) {
                             return Redirect::to("/");
-                        }
-                        else {
+                        } else {
                             return Redirect::to("/user/settings");
                         }
                     }

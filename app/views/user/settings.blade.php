@@ -13,7 +13,7 @@
 
                     <label for="name">E-mail</label>
                     <input type="text" class="form-control @if(!$hasEmail && empty($fromRedir)) popoveropen @endif" id="name" placeholder="Ваш email" name="email"
-                           value="{{Auth::user()->email}}" @if($hasEmail) readonly="true" @elseif(empty($fromRedir)) data-toggle="popover" title="Укажите email" data-content="С подтвержденным email вы сможете пользоваться услугами сайта без ограничений" @endif />
+                           value="{{Auth::user()->email}}" @if($hasEmail) readonly="true" @elseif(empty($fromRedir)) data-toggle="popover" title="Укажите email" data-content="Подтвердите email и пользуйтесь услугами сайта без ограничений" @endif />
                 </div>
                 <div class="form-group">
                     <label for="name">Имя</label>

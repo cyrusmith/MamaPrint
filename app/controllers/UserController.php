@@ -32,8 +32,7 @@ class UserController extends BaseController
         if (!empty($name)) {
             $user->name = $name;
             $user->save();
-        }
-        else {
+        } else {
             return $this->withSuccessMessage(Redirect::to('/user/settings'), 'Упс! Кажется, имя пусто. Мы оставили ваше имя прежним во избежание недоразумений.');
         }
 
@@ -44,11 +43,17 @@ class UserController extends BaseController
                 array('name' => 'required|email')
             );
 
-            if(!$validator->fails()) {
+            if (!$validator->fails()) {
+
+                $existingUser = User::where('email', '=', $email)->first();
+                if (!empty($existingUser)) {
+                    return $this->withErrorMessage(Redirect::to('/user/settings'), 'Упс! Похоже, у вас уже есть подтвержденный аккаунт с email ' . $email . ". Попробуйте <a href='".URL::to("/logout")."'>выйти</a> и авторизоваться через email." );
+                }
+
                 Mail::send('emails.auth.emailconfirm', array(
                     'action' => URL::to("/user/emailconfirm") . "?hash=" . UserPending::createSocialConfirm($email, $user->socialid)
                 ), function ($message) use ($email) {
-                    $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($email, "Подтверждение email на " . $_SERVER['HTTP_HOST'])->subject('Покупка на сайте mama-print.ru');
+                    $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($email, "Подтверждение email на " . $_SERVER['HTTP_HOST'])->subject('Подтверждение email на сайте mama-print.ru');
                 });
                 return $this->withSuccessMessage(Redirect::to('/user/settings'), 'Проверьте ваш email. Пройдите по ссылке в письме для подтверждения изменения email.');
             }

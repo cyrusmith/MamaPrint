@@ -4,7 +4,7 @@
     <meta charset="utf-8">
 </head>
 <body>
-<h2>Регистрация на mama-print.ru</h2>
+<h2>Изменение email на сайте mama-print.ru</h2>
 
 <div>
     <p>Вы запросили изменение email на сайте {{URL::to("/")}}</p>

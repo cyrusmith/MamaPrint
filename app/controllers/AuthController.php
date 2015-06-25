@@ -57,7 +57,7 @@ class AuthController extends BaseController
 
             DB::commit();
 
-            Auth::loginUsingId($user->id);
+            Auth::loginUsingId($user->id, true);
 
             return Redirect::to('/')->with('success', Lang::get('messages.thankyou_registration'));
 
@@ -213,7 +213,7 @@ class AuthController extends BaseController
         $email = Input::get('email');
         $password = Input::get('password');
 
-        if (Auth::attempt(array('email' => $email, 'password' => $password))) {
+        if (Auth::attempt(array('email' => $email, 'password' => $password), true)) {
             App::make('UsersService')->moveInfoFromGuest();
             if (Auth::user()->hasRole(Role::getByName(Role::ROLE_ADMIN))) {
                 return Redirect::intended('/admin/catalog');
@@ -233,7 +233,7 @@ class AuthController extends BaseController
     public function logout()
     {
         Auth::logout();
-        return Redirect::to('/');
+        return Redirect::to('/login');
     }
 
 }
