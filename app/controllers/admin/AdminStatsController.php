@@ -27,10 +27,10 @@ class AdminStatsController extends AdminController
 
         $query = Order::orderBy('created_at', 'desc');
         if (!empty($from)) {
-            $query->where('updated_at', '>=', $from);
+            $query->where('created_at', '>=', $from);
         }
         if (!empty($from)) {
-            $query->where('updated_at', '<=', $to);
+            $query->where('created_at', '<=', $to);
         }
         if ($complete) {
             $query->where('status', '=', Order::STATUS_COMPLETE);
@@ -99,7 +99,7 @@ class AdminStatsController extends AdminController
         $from->setTimezone($utcTz);
         $to->setTimezone($utcTz);
 
-        $dateWhere = "orders.updated_at BETWEEN STR_TO_DATE('".$from->format('Y-m-d')." 00:00:00', '%Y-%m-%d %H:%i:%s') AND STR_TO_DATE('".$to->format('Y-m-d')." 23:59:59', '%Y-%m-%d %H:%i:%s')";
+        $dateWhere = "orders.created_at BETWEEN STR_TO_DATE('".$from->format('Y-m-d')." 00:00:00', '%Y-%m-%d %H:%i:%s') AND STR_TO_DATE('".$to->format('Y-m-d')." 23:59:59', '%Y-%m-%d %H:%i:%s')";
 
         $this->setPageTitle('Статистика по материалам');
 
