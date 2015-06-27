@@ -59,7 +59,7 @@ class AdminStatsController extends AdminController
         $status = Input::has('status');
         if($status == "complete") {
             try {
-                $this->orderService->payOrder($orderId, $order->amount / 100.0, "RUR", "-1");
+                $this->orderService->payOrder($orderId, $order->total / 100.0, "RUR", "-1");
                 return $this->withSuccessMessage(Redirect::back(), 'Заказ завершен');
             }
             catch(\Exception $e) {

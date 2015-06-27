@@ -2,7 +2,6 @@
 use Account\OperationPurchase;
 use Account\OperationRefill;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Order\Order;
@@ -28,6 +27,8 @@ class OrderService
             DB::beginTransaction();
 
             $order = Order::find($orderId);
+
+            Log::debug("payOrder: order found " . $order->id);
 
             if (empty($order)) {
                 throw new InvalidArgumentException("Order #$orderId not found");
@@ -70,6 +71,8 @@ class OrderService
                 $userCatalogItemIds[] = $userCatalogItem->id;
             }
 
+            Log::debug("payOrder: about to attach items");
+
             $catalogItems = [];
             foreach ($order->items as $item) {
                 if (!in_array($item->catalogItem->id, $userCatalogItemIds)) {
@@ -91,8 +94,7 @@ class OrderService
                 $userName = $user->name;
                 if (!empty($user->email)) {
                     $userEmail = $user->email;
-                }
-                else if (!empty($paymentEmail) && !empty($user->socialid) && empty($user->email)) {
+                } else if (!empty($paymentEmail) && !empty($user->socialid) && empty($user->email)) {
                     $emailConfirmHash = UserPending::createSocialConfirm($paymentEmail, $user->socialid);
                 }
             }
@@ -104,25 +106,20 @@ class OrderService
                     'name' => $userName
                 ];
 
-                try {
-                    Mail::send('emails.payments.order', array(
-                        'isGuest' => $user->isGuest(),
-                        'confirm_hash' => $emailConfirmHash,
-                        'orderId' => $order->id,
-                        'token' => $downloadToken
-                    ), function ($message) use ($todata) {
-                        Log::debug($todata);
-                        $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($todata['email'], empty($todata['name']) ? "Клиент mama-print" : $todata['name'])->subject('Покупка на сайте mama-print.ru');
-                    });
-                } catch (Exception $e) {
-                    Log::error("Failed to send message: " . $e->getMessage());
-                }
+                Mail::send('emails.payments.order', array(
+                    'isGuest' => $user->isGuest(),
+                    'confirm_hash' => $emailConfirmHash,
+                    'orderId' => $order->id,
+                    'token' => $downloadToken
+                ), function ($message) use ($todata) {
+                    Log::debug($todata);
+                    $message->from('noreply@' . $_SERVER['HTTP_HOST'])->to($todata['email'], empty($todata['name']) ? "Клиент mama-print" : $todata['name'])->subject('Покупка на сайте mama-print.ru');
+                });
             }
 
             DB::commit();
 
         } catch (Exception $e) {
-            Log::error($e->getMessage());
             DB::rollback();
             throw $e;
         }

@@ -23,7 +23,7 @@ class PaymentsController extends BaseController
      */
     private $usersService;
 
-    public function __controller(
+    public function __construct(
         UsersService $usersService,
         OrderService $orderService)
     {
@@ -130,6 +130,8 @@ class PaymentsController extends BaseController
                 $currency = Input::get('balance.way');
                 $signature = Input::get('signature');
 
+                $paymentEmail = Input::get('user.email');
+
                 $paymentId = Input::get('payment.id');
                 $paymentAmount = Input::get('payment.amount');
                 //$paymentAmount = intval($paymentAmount * 100) / 100.0;
@@ -155,11 +157,9 @@ class PaymentsController extends BaseController
                     ), 400);
                 }
 
-                $orderService = $this->orderService;
-                $currencyIfTST = $currency == 'TST' ? "RUR" : $currency;
-
                 try {
-                    $orderService->payOrder($order->id, $fromAmount, $currencyIfTST, $paymentId);
+                    $currencyIfTST = $currency == 'TST' ? "RUR" : $currency;
+                    $this->orderService->payOrder($order->id, $fromAmount, $currencyIfTST, $paymentId, $paymentEmail);
                     return Response::json(array(
                         "status" => true,
                         "pay_for" => $payFor,
