@@ -11,6 +11,7 @@ namespace Admin;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Paginator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -18,6 +19,11 @@ use Order\Order;
 
 class AdminStatsController extends AdminController
 {
+
+    public function __construct(\OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
 
     public function getOrders()
     {
@@ -46,18 +52,22 @@ class AdminStatsController extends AdminController
 
     public function postOrder($orderId)
     {
-        DB::transaction(function () use ($orderId) {
-            $order = Order::find($orderId);
-            if (empty($order)) {
-                App::abort(400, 'Заказ не найден');
+        $order = Order::find($orderId);
+        if (empty($order)) {
+            App::abort(400, 'Заказ не найден');
+        }
+        $status = Input::has('status');
+        if($status == "complete") {
+            try {
+                $this->orderService->payOrder($orderId, $order->amount / 100.0, "RUR", "-1");
+                return $this->withSuccessMessage(Redirect::back(), 'Заказ завершен');
             }
-            if (Input::has('status')) {
-                $status = Input::get('status');
-                $order->updateStatus($status);
+            catch(\Exception $e) {
+                Log::error($e);
+                return $this->withErrorMessage(Redirect::back(), $e->getMessage());
             }
-            $order->save();
-        });
-        return $this->withSuccessMessage(Redirect::back(), 'Заказ обновлен');
+        }
+        return $this->withSuccessMessage(Redirect::back(), 'Заказ не обновлен');
     }
 
     public function getOrder($orderId)
@@ -99,7 +109,7 @@ class AdminStatsController extends AdminController
         $from->setTimezone($utcTz);
         $to->setTimezone($utcTz);
 
-        $dateWhere = "orders.created_at BETWEEN STR_TO_DATE('".$from->format('Y-m-d')." 00:00:00', '%Y-%m-%d %H:%i:%s') AND STR_TO_DATE('".$to->format('Y-m-d')." 23:59:59', '%Y-%m-%d %H:%i:%s')";
+        $dateWhere = "orders.created_at BETWEEN STR_TO_DATE('" . $from->format('Y-m-d') . " 00:00:00', '%Y-%m-%d %H:%i:%s') AND STR_TO_DATE('" . $to->format('Y-m-d') . " 23:59:59', '%Y-%m-%d %H:%i:%s')";
 
         $this->setPageTitle('Статистика по материалам');
 

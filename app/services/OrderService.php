@@ -57,8 +57,6 @@ class OrderService
             $cart = $user->cart;
             $cart->items()->delete();
 
-            $account = $user->accounts()->first();
-
             $purchase = new OperationPurchase();
             $purchase->amount = $sum;
             $account->addOperation($purchase);

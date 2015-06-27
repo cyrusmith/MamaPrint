@@ -123,7 +123,6 @@ class PaymentsController extends BaseController
                 $fromAmount = Input::get('order.from_amount');
                 $fromAmount = intval($fromAmount * 100) / 100.0;
 
-
                 $balanceAmount = Input::get('balance.amount');
                 //$balanceAmount = intval($balanceAmount * 100) / 100.0;
                 $balanceAmountStr = $this->amountStr($balanceAmount);
