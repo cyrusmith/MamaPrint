@@ -41,11 +41,11 @@
                     {{$order->id}}
                 </td>
                 <td><a href="/admin/users/{{$order->user['id']}}" class="btn btn-link">{{$order->user['name']}}</a></td>
-                <td>{{$order->created_at}}</td>
+                <td>{{toMoscowTZ($order->created_at)}}</td>
 
                 <td>
                     @if($order->status == \Order\Order::STATUS_COMPLETE)
-                        {{$order->updated_at}}
+                        {{toMoscowTZ($order->updated_at)}}
                     @else
                         -
                     @endif
